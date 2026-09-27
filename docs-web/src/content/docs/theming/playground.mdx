@@ -15,6 +15,6 @@ Switch between the [bundled themes](/theming/bundled-themes/), toggle light and 
 
 ## How it works
 
-The playground calls `applyTheme` from `@yarcl/react/css` whenever you pick a theme or apply your edits. It regenerates the stylesheet in the browser with the same generator the Vite plugin runs at build time, and switches the defaults components read, so each theme's per-component choices (like pill buttons) show up too. See [switching themes](/theming/switching-themes/#at-runtime).
+The playground calls `applyTheme` from `@yarcl/react/css` whenever you pick a theme or apply your edits. It regenerates the stylesheet in the browser with the same generator the build plugin runs at build time, and switches the defaults components read, so each theme's per-component choices (like pill buttons) show up too. See [switching themes](/theming/switching-themes/#at-runtime).
 
 **Copy config** copies the current theme as a config file you can paste into `src/yarcl.config.ts`.

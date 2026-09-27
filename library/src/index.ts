@@ -1,4 +1,4 @@
-import 'virtual:yarcl.css';
+import '@yarcl/react/styles.css';
 import './styles.css';
 
 export { Button } from './components/Button';

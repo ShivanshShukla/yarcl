@@ -58,7 +58,7 @@ resetTheme(); // back to the build-time config
 
 It does two things:
 
-1. **Replaces the styles.** It runs `generateCss`, the same generator the Vite plugin uses at build time, and puts the result in a `<style>` element that overrides the build-time stylesheet. Dialogs, menus and toasts switch too.
+1. **Replaces the styles.** It runs `generateCss`, the same generator the build plugin uses at build time, and puts the result in a `<style>` element that overrides the build-time stylesheet. Dialogs, menus and toasts switch too.
 2. **Switches the defaults.** Components read `defaults`, per-component `components` defaults and heading levels from the applied theme, and re-render. A theme with `components: { Button: { radius: 'rounded' } }` gets pill buttons, and one with `defaults: { density: 'compact' }` gets compact tables.
 
 The theme must define the keys your app uses, because prop types still come from the build-time config. The bundled themes share the defaults' keys (the contract above), so any of them can replace another.

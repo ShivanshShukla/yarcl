@@ -40,7 +40,7 @@ The same happens with colors, variants and spacing. Each is a **configuration co
 yarcl lets the consumer own the contract. The library derives its API from your config, using three things you already have:
 
 1. **`as const` generics.** `defineConfig` keeps your config's literal types, so `keyof` your `sizes` is `"talla-s" | "talla-m"`, not `string`.
-2. **A module alias.** The library imports `@yarcl/config`. A Vite plugin points that import at your config file at runtime, and a `paths` entry in your `tsconfig.json` does the same for types. There's no codegen and no module augmentation.
+2. **A module alias.** The library imports `@yarcl/config`. A build plugin points that import at your config file at runtime, and a `paths` entry in your `tsconfig.json` does the same for types. There's no codegen and no module augmentation.
 3. **Build-time CSS.** The plugin reads your config and generates CSS variables and one class per key. Components only set class names; nothing is computed at runtime.
 
 The result: adding a key to your config makes it a valid, rendered option everywhere, and removing one turns every stale usage into a compile error.

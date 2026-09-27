@@ -16,26 +16,26 @@ Benefits:
 - **Themeable without code changes.** Light and dark mode from `{ light, dark }` pairs, per-component defaults in the config, bundled themes, and `applyTheme` for runtime switching.
 - **Accessible by default.** Keyboard support, ARIA wiring and computed readable text colors, checked with axe.
 
-Trade-offs: Vite only for now, and one design system per build.
+Trade-off: one design system per build.
 
 ## Install
 
-Requires React 19+ and Vite 6.1+ (Vite only).
+Requires React 19+. Build plugins are available for Vite, webpack, Rspack, Rollup and esbuild.
 
 ```sh
 npx @yarcl/react init
 ```
 
-This installs the package, updates Vite and TypeScript, and creates `src/yarcl.config.ts`. Use `pnpm dlx @yarcl/react init` or `yarn dlx @yarcl/react init` with those package managers.
+This installs the package, updates the detected build config and TypeScript, and creates `src/yarcl.config.ts`. Use `pnpm dlx @yarcl/react init`, `yarn dlx @yarcl/react init` or `bunx @yarcl/react init` with those package managers. Pass `--bundler <name>` when more than one supported build config exists.
 
-For manual setup, all three wiring steps are required:
+For manual setup, all three wiring steps are required. This example uses Vite; other build tools use `@yarcl/react/webpack`, `/rspack`, `/rollup` or `/esbuild`.
 
 1. `vite.config.ts`:
 
 ```ts
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-import { yarcl } from '@yarcl/react/plugin';
+import yarcl from '@yarcl/react/vite';
 
 export default defineConfig({ plugins: [react(), yarcl({ config: 'src/yarcl.config.ts' })] });
 ```
@@ -76,20 +76,20 @@ import { Button, Field, Input } from '@yarcl/react';
 
 Importing from `@yarcl/react` also loads the generated CSS and the component styles; there is no stylesheet to import. Editing the config hot-reloads the CSS.
 
-## How the Vite plugin and tsconfig work together
+## How the build plugin and tsconfig work together
 
 The library imports a placeholder module, `@yarcl/config`. Two pieces of wiring point it at your config file, one for runtime and one for types:
 
-- **Vite plugin** (`yarcl()` from `@yarcl/react/plugin`):
+- **Build plugin** (`yarcl()` from `@yarcl/react/vite`, `/webpack`, `/rspack`, `/rollup` or `/esbuild`):
   - aliases `@yarcl/config` to your config file, so components read your values at runtime
-  - loads the config at build time and generates the stylesheet (`virtual:yarcl.css`): CSS variables and one class per key
+  - loads the config at build time and generates the virtual stylesheet (`@yarcl/react/styles.css`): CSS variables and one class per key
   - regenerates the CSS when the config or its imports change
   - verifies that TypeScript resolves `@yarcl/config` to the same file and reports a clear error when it does not
-  - option `config`: path to the config file, relative to the Vite root; default `'src/yarcl.config.ts'`. If the file doesn't exist, it falls back to the library defaults.
+  - option `config`: path to the config file, relative to the project root; default `'src/yarcl.config.ts'`. If the file doesn't exist, it falls back to the library defaults.
 - **tsconfig `paths`**: makes TypeScript resolve `@yarcl/config` to the same file, so prop types are the keys of your config. The second entry is a fallback to the library defaults.
 - Both must point at the same file. The plugin stops startup if they differ. Re-run `npx @yarcl/react init` to repair the mapping.
 - With Vite's React template, the app's compiler options live in `tsconfig.app.json`: put `paths` there, not in the root `tsconfig.json` that only has `references`. `paths` resolve relative to the tsconfig file; no `baseUrl` needed.
-- Tests with Vitest need the plugin too: add `yarcl()` to the Vitest config, or reuse the Vite config with `mergeConfig`.
+- Tests that run through a build tool need the matching plugin too. With Vitest, add the Vite adapter or reuse the Vite config with `mergeConfig`.
 
 ## Configuring
 
@@ -101,12 +101,12 @@ The library imports a placeholder module, `@yarcl/config`. Two pieces of wiring 
 - Global defaults go in `defaults`; per-component defaults in `components`, e.g. `components: { Button: { radius: 'square' }, Tooltip: { padding: 'sm', textStyle: 'caption' } }`. Props override both.
 - Component spacing, typography and radii come from config tokens. `Alert`, `Tooltip` and `Toast` accept token-backed `gap`, `padding`, `textStyle` and `radius` where applicable; `Table` accepts `radius` for its frame.
 - Style with props and config, not inline styles. Custom CSS can use the generated variables, e.g. `var(--yarcl-color-brand)`, `var(--yarcl-space-md)`.
-- Imports: components and `toast` from `@yarcl/react`; `/define`, `/defaults`, `/plugin`; bundled themes from `@yarcl/react/themes`; `applyTheme` from `@yarcl/react/css`.
-- "Failed to resolve import @yarcl/config" means the Vite plugin is missing. Type errors on `@yarcl/config` mean the tsconfig `paths` entry is missing or points at a different file.
+- Imports: components and `toast` from `@yarcl/react`; config helpers from `/define` and `/defaults`; build plugins from `/vite`, `/webpack`, `/rspack`, `/rollup` or `/esbuild`; bundled themes from `@yarcl/react/themes`; `applyTheme` from `@yarcl/react/css`.
+- "Failed to resolve import @yarcl/config" means the build plugin is missing. Type errors on `@yarcl/config` mean the tsconfig `paths` entry is missing or points at a different file.
 
 ## Working in a yarcl project
 
-- Start by reading `src/yarcl.config.ts` (or the file passed to the Vite plugin): it lists every valid size, color, variant, spacing step and text style.
+- Start by reading `src/yarcl.config.ts` (or the file passed to the build plugin): it lists every valid size, color, variant, spacing step and text style.
 - Props and JSDoc for every component ship as declarations: `node_modules/@yarcl/react/dist/components/<Name>.d.ts`.
 - To type your own components with the same tokens: `import type { Size, Color, Variant, Radius, Spacing, TextStyle } from '@yarcl/react'`. They are the keys of the project's config.
 - Config values at runtime: `config` from `@yarcl/react`, or `useConfig()` inside components (follows runtime theme switches).
@@ -156,7 +156,7 @@ Conventions:
 - [Typography](https://yarcl.dev/configuration/typography/)
 - [Defaults](https://yarcl.dev/configuration/component-defaults/)
 - [Generated CSS](https://yarcl.dev/configuration/generated-css/): CSS variables and classes
-- [Vite plugin](https://yarcl.dev/configuration/vite-plugin/): options, fallback and hot reload
+- [Build plugins](https://yarcl.dev/configuration/build-plugins/): Vite, webpack, Rspack, Rollup and esbuild setup, options, fallback and watching
 - [TypeScript](https://yarcl.dev/configuration/typescript/): how prop types come from your config
 - [Creating a theme](https://yarcl.dev/theming/creating-a-theme/)
 - [Switching themes](https://yarcl.dev/theming/switching-themes/): build-time, per-build and runtime

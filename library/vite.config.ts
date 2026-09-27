@@ -6,11 +6,12 @@ const externalPackages = [
   '@floating-ui/react',
   '@yarcl/config',
   'date-fns',
+  'jiti',
   'jsonc-parser',
   'react',
   'react-dom',
-  'virtual:yarcl.css',
-  'vite',
+  '@yarcl/react/styles.css',
+  'unplugin',
 ];
 
 export default defineConfig({
@@ -23,7 +24,11 @@ export default defineConfig({
         index: entry('./src/index.ts'),
         define: entry('./src/define.ts'),
         'yarcl.config': entry('./src/yarcl.config.ts'),
-        plugin: entry('./src/plugin.ts'),
+        vite: entry('./src/vite.ts'),
+        webpack: entry('./src/webpack.ts'),
+        rspack: entry('./src/rspack.ts'),
+        rollup: entry('./src/rollup.ts'),
+        esbuild: entry('./src/esbuild.ts'),
         'reference/index': entry('./src/reference/index.ts'),
         'themes/index': entry('./src/themes/index.ts'),
         apply: entry('./src/apply.ts'),

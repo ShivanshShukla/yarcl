@@ -2,7 +2,7 @@
 import react from '@astrojs/react';
 import starlight from '@astrojs/starlight';
 import { defineConfig } from 'astro/config';
-import { yarcl } from '@yarcl/react/plugin';
+import yarcl from '@yarcl/react/vite';
 
 const componentSections = [
   ['Buttons', 'buttons'],

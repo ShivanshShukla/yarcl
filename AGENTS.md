@@ -8,7 +8,7 @@ The library source never imports a concrete config. It imports a placeholder mod
 
 The consumer wires it twice, pointing at the same file:
 
-In `vite.config.ts`, for runtime values:
+In the build-tool config, for runtime values (Vite shown):
 
 ```ts
 plugins: [react(), yarcl({ config: 'src/yarcl.config.ts' })]
@@ -24,7 +24,7 @@ In `tsconfig.json`, for types:
 
 What each side does:
 
-- **Vite plugin** (`library/src/plugin.ts`): sets a `resolve.alias` from `@yarcl/config` to the consumer's file. If that file doesn't exist, it points to the compiled library default in `library/dist/yarcl.config.js`. It also loads the config in Node and serves the generated CSS as `virtual:yarcl.css`, and invalidates that CSS when the config or its imports change.
+- **Build plugin** (`library/src/plugin.ts`): uses unplugin to resolve `@yarcl/config` to the consumer's file for Vite, webpack, Rspack, Rollup and esbuild. If that file doesn't exist, it points to the compiled library default in `library/dist/yarcl.config.js`. It also loads the config in Node and serves the generated CSS as `@yarcl/react/styles.css`, and invalidates that CSS when the config or its imports change. Tool-specific entry points live in `library/src/vite.ts`, `webpack.ts`, `rspack.ts`, `rollup.ts` and `esbuild.ts`.
 - **tsconfig `paths`**: TypeScript resolves `@yarcl/config` to the same file, so `typeof config` is the consumer's literal config. The second entry falls back to the library defaults.
 - **Library side**:
   - `library/src/types.ts` does `import type config from '@yarcl/config'` and derives prop types from its keys (`keyof Config['sizes']`, and so on). Adding a key to the config makes it a valid prop value with no other changes.
