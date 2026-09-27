@@ -99,6 +99,7 @@ export default defineConfig({
     modalSize: 'md',
   },
   components: {
+    Avatar: { radius: 'rounded' },
     Alert: { gap: 'sm', padding: 'md', textStyle: 'label' },
     Drawer: { size: 'sm' },
     Tooltip: { radius: 'md', padding: 'sm', textStyle: 'caption' },

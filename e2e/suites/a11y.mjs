@@ -21,6 +21,7 @@ export default async function (ctx) {
   const floating = page.locator('section', { has: page.getByRole('heading', { name: 'Floating', exact: true }) });
 
   await audit(ctx, 'whole demo page');
+  await audit(ctx, 'avatars', '[data-testid="avatar-demo"]');
 
   await page.getByRole('slider', { name: 'Price range Maximum' }).focus();
   await page.keyboard.press('Home');

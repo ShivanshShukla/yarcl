@@ -61,6 +61,7 @@ export default defineConfig({
   zIndex: { ...defaults.zIndex, banner: 900 },
   focusRing: { ...defaults.focusRing, color: 'brand' },
   components: {
+    Avatar: { radius: 'rounded' },
     Alert: { gap: 'tight', padding: 'normal', textStyle: 'label' },
     Badge: { radius: 'rounded' },
     Drawer: { size: 'sm' },

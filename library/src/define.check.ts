@@ -254,6 +254,22 @@ defineConfig({
 defineConfig({
   ...defaults,
   components: {
+    Avatar: { size: 'lg', radius: 'rounded', color: 'success', variant: 'outline' },
+    AvatarGroup: { size: 'sm', radius: 'size', color: 'neutral', variant: 'soft' },
+  },
+});
+
+defineConfig({
+  ...defaults,
+  components: {
+    // @ts-expect-error
+    Avatar: { padding: 'md' },
+  },
+});
+
+defineConfig({
+  ...defaults,
+  components: {
     // @ts-expect-error
     Progress: { variant: 'solid' },
   },

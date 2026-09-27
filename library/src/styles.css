@@ -1507,6 +1507,53 @@ html:has(.yarcl-modal[open]) {
   color: var(--yarcl-c);
 }
 
+/* Avatar */
+
+.yarcl-avatar {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--yarcl-h);
+  height: var(--yarcl-h);
+  overflow: hidden;
+  color: var(--yarcl-v-fg);
+  font-size: var(--yarcl-fs);
+  font-weight: 600;
+  line-height: 1;
+  background: var(--yarcl-v-bg);
+  border: var(--yarcl-border-width) solid var(--yarcl-v-border);
+  border-radius: var(--yarcl-r);
+}
+
+.yarcl-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.yarcl-avatar-fallback {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.yarcl-avatar-group {
+  display: inline-flex;
+  align-items: center;
+}
+
+.yarcl-avatar-group > .yarcl-avatar + .yarcl-avatar {
+  margin-inline-start: calc(var(--yarcl-h) / -4);
+  box-shadow: 0 0 0 var(--yarcl-border-width) var(--yarcl-neutral-surface);
+}
+
+.yarcl-avatar-overflow {
+  position: relative;
+  z-index: 1;
+  font-size: calc(var(--yarcl-fs) * 0.85);
+}
+
 /* Badge */
 
 .yarcl-badge {

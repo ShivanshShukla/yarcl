@@ -91,6 +91,8 @@ export { Table } from './components/Table';
 export type { TableProps, TableHeaderCellProps, TableCellProps, CellAlign } from './components/Table';
 export { Badge } from './components/Badge';
 export type { BadgeProps } from './components/Badge';
+export { Avatar, AvatarGroup } from './components/Avatar';
+export type { AvatarProps, AvatarGroupProps } from './components/Avatar';
 export { Alert } from './components/Alert';
 export type { AlertProps } from './components/Alert';
 export { Spinner } from './components/Spinner';

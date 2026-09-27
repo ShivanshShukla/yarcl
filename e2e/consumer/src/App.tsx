@@ -2,6 +2,8 @@ import { useState } from 'react';
 import {
   Accordion,
   Alert,
+  Avatar,
+  AvatarGroup,
   Badge,
   Breadcrumb,
   Button,
@@ -77,6 +79,11 @@ export function App() {
           <Link href="?page=reference" underline="hover" color="ink">
             Design reference
           </Link>
+          <AvatarGroup aria-label="Design team" max={2} total={4}>
+            <Avatar name="Ada Lovelace" />
+            <Avatar name="Grace Hopper" />
+            <Avatar name="Alan Turing" />
+          </AvatarGroup>
           <CommandPalette
             trigger={
               <Button variant="text" size="talla-s">
@@ -126,6 +133,12 @@ export function App() {
                 <Badge color="moss" variant="line">
                   Organic linen
                 </Badge>
+              </Inline>
+              <Inline gap="2" align="center">
+                <Avatar name="Lena Ortiz" />
+                <Text textStyle="fine" muted>
+                  Curated by Lena Ortiz
+                </Text>
               </Inline>
               <Heading level={1}>Linen overshirt</Heading>
               <Text textStyle="price">€ 185</Text>

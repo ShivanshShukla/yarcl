@@ -113,6 +113,8 @@ export interface ComponentTokenProps {
   Switch: 'size' | 'color';
   Slider: 'size' | 'radius' | 'color';
   Badge: 'size' | 'radius' | 'color' | 'variant';
+  Avatar: 'size' | 'radius' | 'color' | 'variant';
+  AvatarGroup: 'size' | 'radius' | 'color' | 'variant';
   Alert: 'radius' | 'color' | 'variant' | 'gap' | 'padding' | 'textStyle';
   Card: 'radius' | 'padding' | 'shadow';
   Popover: 'radius' | 'padding';

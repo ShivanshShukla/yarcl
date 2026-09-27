@@ -108,7 +108,7 @@ components: { Button: { radius: 'square' } },   // except buttons: always sharp
 **Typography & layout**: Text, Heading, Link, Stack, Inline, Card, Divider
 **Floating**: Tooltip, HoverCard, Popover, Menu
 **Overlays**: Dialog, Drawer, CommandPalette, Toast
-**Data & navigation**: Tabs, Accordion, Table, Pagination, Breadcrumb
+**Data & navigation**: Avatar, AvatarGroup, Tabs, Accordion, Table, Pagination, Breadcrumb
 **Feedback**: Badge, Alert, Spinner, Skeleton, Progress
 **Reference**: `DesignReference` from `@yarcl/react/reference` renders your whole design system from your config.
 

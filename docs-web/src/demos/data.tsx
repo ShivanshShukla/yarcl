@@ -1,5 +1,25 @@
 import { useState } from 'react';
-import { Accordion, Badge, Breadcrumb, Pagination, Stack, Table, Tabs, Text, ToggleGroup, config, type Density } from '@yarcl/react';
+import { Accordion, Avatar, AvatarGroup, Badge, Breadcrumb, Inline, Pagination, Stack, Table, Tabs, Text, ToggleGroup, config, type Density } from '@yarcl/react';
+
+const avatarImage = '/avatar-demo.svg';
+
+export function AvatarDemo() {
+  return (
+    <Stack gap="sm">
+      <Inline gap="sm">
+        <Avatar name="Ada Lovelace" src={avatarImage} />
+        <Avatar name="Grace Hopper" color="success" />
+        <Avatar name="Alan Turing" color="warning" variant="outline" />
+      </Inline>
+      <AvatarGroup max={3} total={5} aria-label="Project members">
+        <Avatar name="Ada Lovelace" />
+        <Avatar name="Grace Hopper" color="success" />
+        <Avatar name="Alan Turing" color="warning" />
+        <Avatar name="Katherine Johnson" color="danger" />
+      </AvatarGroup>
+    </Stack>
+  );
+}
 
 export function TabsDemo() {
   return (

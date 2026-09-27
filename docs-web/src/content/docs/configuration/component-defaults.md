@@ -65,6 +65,7 @@ For any token prop, the first value found wins:
 | `DatePicker` | `size`, `radius`, `color`, `variant` |
 | `Checkbox`, `Radio`, `Switch` | `size`, `color` |
 | `Badge` | `size`, `radius`, `color`, `variant` |
+| `Avatar`, `AvatarGroup` | `size`, `radius`, `color`, `variant` |
 | `Label` | `textStyle`, `color`, `variant`, `size`, `radius` |
 | `Alert` | `radius`, `color`, `variant`, `gap`, `padding`, `textStyle` |
 | `Card` | `radius`, `padding`, `shadow` |

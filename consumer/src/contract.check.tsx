@@ -7,6 +7,8 @@ import {
   Field,
   Alert,
   Badge,
+  Avatar,
+  AvatarGroup,
   ButtonGroup,
   RadioGroup,
   ToggleGroup,
@@ -169,6 +171,11 @@ export const contract = (
     <Accordion type="multiple" value={['a']} onValueChange={(v: string[]) => v} />
     <Table density="dense" radius="rounded" striped interactive />
     <Badge color="success" variant="outline" size="sm" radius="rounded" onRemove={() => {}} />
+    <Avatar name="Ada Lovelace" alt="Ada" fallback="AL" size="lg" radius="rounded" color="success" variant="outline" onImageError={() => {}} />
+    <AvatarGroup max={2} total={4} overflowLabel={(count) => `${count} more teammates`} size="sm" radius="rounded" color="neutral" variant="quiet">
+      <Avatar name="Ada Lovelace" />
+      <Avatar name="Grace Hopper" />
+    </AvatarGroup>
     <Alert color="warning" variant="solid" radius="md" gap="tight" padding="normal" textStyle="caption" live="polite" onDismiss={() => {}} />
     <Spinner size="xl" color="danger" />
     <Skeleton shape="control" size="lg" radius="lg" />
@@ -370,6 +377,14 @@ export const contract = (
     <Table density="comfortable" />
     {/* @ts-expect-error */}
     <Badge variant="soft" />
+    {/* @ts-expect-error */}
+    <Avatar size="huge" />
+    {/* @ts-expect-error */}
+    <Avatar color="primary" />
+    {/* @ts-expect-error */}
+    <AvatarGroup radius="full" />
+    {/* @ts-expect-error */}
+    <AvatarGroup variant="ghost" />
     {/* @ts-expect-error */}
     <Alert live="rude" />
     {/* @ts-expect-error */}

@@ -8,6 +8,31 @@ export default async function ({ page, check }) {
   const h1 = page.getByRole('heading', { level: 1 });
   check('h1 uses the serif family', (await h1.evaluate((el) => getComputedStyle(el).fontFamily)).startsWith('Fraunces'));
 
+  const team = page.getByRole('group', { name: 'Design team' });
+  const groupAvatar = team.getByRole('img', { name: 'Ada Lovelace' });
+  const groupAvatarStyle = await groupAvatar.evaluate((el) => ({
+    height: el.getBoundingClientRect().height,
+    radius: getComputedStyle(el).borderRadius,
+    color: getComputedStyle(el).color,
+  }));
+  check(
+    'avatar group uses Maison Talla component defaults',
+    groupAvatarStyle.height === 36 && groupAvatarStyle.radius === '0px' && groupAvatarStyle.color === (await resolveColor(page, 'var(--yarcl-color-moss-text)')),
+    JSON.stringify(groupAvatarStyle),
+  );
+  check('avatar group shows the omitted member count', (await team.getByRole('img', { name: '2 more' }).count()) === 1);
+  const curator = page.getByRole('img', { name: 'Lena Ortiz' });
+  const curatorStyle = await curator.evaluate((el) => ({
+    height: el.getBoundingClientRect().height,
+    radius: getComputedStyle(el).borderRadius,
+    color: getComputedStyle(el).color,
+  }));
+  check(
+    'avatar uses Maison Talla component defaults',
+    curatorStyle.height === 36 && curatorStyle.radius === '2px' && curatorStyle.color === (await resolveColor(page, 'var(--yarcl-color-clay-text)')),
+    JSON.stringify(curatorStyle),
+  );
+
   const trail = page.getByRole('navigation', { name: 'Breadcrumb' });
   check('component default: breadcrumb uses fine text (12px)', (await trail.evaluate((el) => getComputedStyle(el).fontSize)) === '12px');
   check('breadcrumb collapses to first and last two', (await trail.locator('> ol > li').count()) === 4 && (await trail.getByRole('link', { name: 'Women' }).count()) === 0);
