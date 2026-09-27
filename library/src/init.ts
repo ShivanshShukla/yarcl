@@ -160,7 +160,8 @@ function detectPackageManager(root: string): string {
 function install(root: string): void {
   const manager = detectPackageManager(root);
   const executable = platform() === 'win32' ? `${manager}.cmd` : manager;
-  const result = spawnSync(executable, ['install'], { cwd: root, stdio: 'inherit' });
+  const args = manager === 'pnpm' ? ['install', '--no-frozen-lockfile'] : ['install'];
+  const result = spawnSync(executable, args, { cwd: root, stdio: 'inherit' });
   if (result.error) throw result.error;
   if (result.status !== 0) throw new Error(`yarcl: ${manager} install failed with status ${result.status ?? 'unknown'}.`);
 }
