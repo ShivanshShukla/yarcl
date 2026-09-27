@@ -29,6 +29,7 @@ export default defineConfig({
         rspack: entry('./src/rspack.ts'),
         rollup: entry('./src/rollup.ts'),
         esbuild: entry('./src/esbuild.ts'),
+        demo: entry('./src/demo.ts'),
         'reference/index': entry('./src/reference/index.ts'),
         'themes/index': entry('./src/themes/index.ts'),
         apply: entry('./src/apply.ts'),
