@@ -1,0 +1,7 @@
+import { createElement } from 'react';
+import { createRoot } from 'react-dom/client';
+import { DemoYarcl } from '@yarcl/react/reference';
+
+const root = globalThis.document.createElement('div');
+globalThis.document.body.append(root);
+createRoot(root).render(createElement(DemoYarcl, { title: 'Rollup yarcl demo' }));

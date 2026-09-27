@@ -72,6 +72,7 @@ export const yarclPlugin = createUnplugin<YarclPluginOptions | undefined>((optio
   let componentStyles = '';
   let generatedStyles = '';
   let staticStyles = '';
+  let referenceStyles = '';
   let watched = new Set<string>();
 
   const prepare = (): void => {
@@ -80,6 +81,7 @@ export const yarclPlugin = createUnplugin<YarclPluginOptions | undefined>((optio
     const fallback = defaultConfig();
     target = existsSync(consumerConfig) ? consumerConfig : fallback;
     staticStyles = resolve(dirname(fallback), 'styles.css');
+    referenceStyles = resolve(dirname(fallback), 'reference/reference.css');
   };
 
   return {
@@ -99,10 +101,10 @@ export const yarclPlugin = createUnplugin<YarclPluginOptions | undefined>((optio
     },
 
     load: {
-      filter: { id: /(?:@yarcl\/react\/styles\.css|\/styles\.css)$/ },
+      filter: { id: /(?:@yarcl\/react\/styles\.css|\/(?:styles|reference)\.css)$/ },
       async handler(id) {
-        if (meta.framework === 'rollup' && id === staticStyles) {
-          componentStyles = await readFile(id, 'utf8');
+        if (meta.framework === 'rollup' && (id === staticStyles || id === referenceStyles)) {
+          componentStyles += `${await readFile(id, 'utf8')}\n`;
           return '';
         }
         if (id !== RESOLVED_CSS) return;

@@ -59,5 +59,8 @@ jobs:
       - name: Packed package
         run: pnpm test:package
 
+      - name: Initialize and build consumers
+        run: pnpm test:init
+
       - name: Tests
         run: pnpm test

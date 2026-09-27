@@ -18,6 +18,14 @@ import { DesignReference } from '@yarcl/react/reference';
 
 Add it to an internal route, a Storybook page or your docs, and it stays accurate because it reads the same config your app uses.
 
+Use `DemoYarcl` when you want a build smoke test for the complete package. It renders the design reference and a representative instance of every exported component, so a consumer build verifies that the package entry points, components and styles all work together.
+
+```tsx
+import { DemoYarcl } from '@yarcl/react/reference';
+
+<DemoYarcl title="Acme component build" />
+```
+
 This is the reference for the config of this documentation site:
 
 <Preview column>
