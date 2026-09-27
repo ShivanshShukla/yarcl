@@ -11,6 +11,13 @@ const packs = join(temporary, 'packs');
 const consumers = join(temporary, 'consumers');
 const pnpm = platform() === 'win32' ? 'pnpm.cmd' : 'pnpm';
 const bundlers = ['vite', 'webpack', 'rspack', 'rollup', 'esbuild'];
+const buildConfigs = {
+  vite: 'vite.config.mjs',
+  webpack: 'webpack.config.cjs',
+  rspack: 'rspack.config.mjs',
+  rollup: 'rollup.config.mjs',
+  esbuild: 'esbuild.config.mjs',
+};
 
 function run(args, cwd = root) {
   execFileSync(pnpm, args, { cwd, stdio: 'inherit' });
@@ -73,9 +80,7 @@ try {
       throw new Error(`${bundler} init did not configure TypeScript`);
     }
 
-    const buildConfig = (await files(consumer)).find((file) => file.includes(`${bundler}.config.`));
-    if (!buildConfig) throw new Error(`${bundler} config was not found`);
-    const buildSource = await readFile(buildConfig, 'utf8');
+    const buildSource = await readFile(join(consumer, buildConfigs[bundler]), 'utf8');
     if (!buildSource.includes(`@yarcl/react/${bundler}`) || !buildSource.includes('yarcl({')) {
       throw new Error(`${bundler} init did not configure its build plugin`);
     }
