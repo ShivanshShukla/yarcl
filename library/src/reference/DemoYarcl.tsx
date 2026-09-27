@@ -112,7 +112,7 @@ export interface DemoYarclProps {
 
 /**
  * A package-wide demo for validating a yarcl installation and previewing its active config.
- * Import from `@yarcl/react/reference`.
+ * Import from `@yarcl/react/demo`.
  */
 export function DemoYarcl({ title = 'yarcl demo' }: DemoYarclProps) {
   const componentNames = components.map((component) => component.name).join(',');

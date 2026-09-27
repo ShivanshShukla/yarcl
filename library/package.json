@@ -73,6 +73,10 @@
       "types": "./dist/reference/index.d.ts",
       "default": "./dist/reference/index.js"
     },
+    "./demo": {
+      "types": "./dist/demo.d.ts",
+      "default": "./dist/demo.js"
+    },
     "./themes": {
       "types": "./dist/themes/index.d.ts",
       "default": "./dist/themes/index.js"

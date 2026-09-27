@@ -37,6 +37,7 @@ try {
     access(join(installed, 'dist/index.d.ts')),
     access(join(installed, 'dist/cli.js')),
     access(join(installed, 'dist/vite.js')),
+    access(join(installed, 'dist/demo.js')),
     access(join(installed, 'dist/webpack.cjs')),
     access(join(installed, 'dist/styles.css')),
     access(join(installed, 'dist/yarcl.config.js')),
