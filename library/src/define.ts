@@ -136,6 +136,7 @@ export interface ComponentTokenProps {
   Spinner: 'size' | 'color';
   Skeleton: 'size' | 'radius';
   Progress: 'size' | 'color' | 'radius';
+  EmptyState: 'color' | 'gap' | 'padding' | 'textStyle';
   Tooltip: 'radius' | 'padding' | 'textStyle';
   Toast: 'radius' | 'color' | 'gap' | 'padding' | 'textStyle';
 }

@@ -6,6 +6,7 @@ import {
   Badge,
   Button,
   Card,
+  EmptyState,
   IconButton,
   Inline,
   Progress,
@@ -18,7 +19,7 @@ import {
   type Size,
   type Variant,
 } from '@yarcl/react';
-import { PlusIcon } from './icons';
+import { PlusIcon, SearchIcon } from './icons';
 
 const colors = Object.keys(config.colors) as Color[];
 const variants = Object.keys(config.variants) as Variant[];
@@ -97,6 +98,15 @@ export function FeedbackDemo() {
           <Avatar name="Katherine Johnson" color="danger" />
         </AvatarGroup>
       </Stack>
+
+      <EmptyState
+        data-testid="empty-state-demo"
+        headingLevel={3}
+        icon={<SearchIcon />}
+        title="No matching projects"
+        description="Try changing or clearing your filters."
+        actions={<Button variant="outline">Clear filters</Button>}
+      />
 
       <Stack gap="tight">
         {alertOpen && (

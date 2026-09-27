@@ -109,7 +109,7 @@ components: { Button: { radius: 'square' } },   // except buttons: always sharp
 **Floating**: Tooltip, HoverCard, Popover, Menu
 **Overlays**: Dialog, Drawer, CommandPalette, Toast
 **Data & navigation**: Avatar, AvatarGroup, Tabs, Accordion, Table, Pagination, Breadcrumb
-**Feedback**: Badge, Alert, Spinner, Skeleton, Progress
+**Feedback**: Badge, Alert, Spinner, Skeleton, Progress, EmptyState
 **Reference**: `DesignReference` from `@yarcl/react/reference` renders your whole design system from your config.
 
 ## Themes

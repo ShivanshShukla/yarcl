@@ -6,6 +6,7 @@ export default async function (ctx) {
   await page.evaluate(() => document.fonts.ready);
   await audit(ctx, 'shop page');
   await audit(ctx, 'avatar group', '[aria-label="Design team"]');
+  await audit(ctx, 'empty state', '[data-testid="brand-b-empty-state"]');
   await audit(ctx, 'pagination', '.yarcl-pagination');
 
   await page.getByRole('button', { name: 'Delivery date' }).click();

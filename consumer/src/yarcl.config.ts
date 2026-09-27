@@ -62,6 +62,7 @@ export default defineConfig({
   focusRing: { ...defaults.focusRing, color: 'brand' },
   components: {
     Avatar: { radius: 'rounded' },
+    EmptyState: { color: 'neutral', gap: 'tight', padding: 'normal', textStyle: 'caption' },
     Alert: { gap: 'tight', padding: 'normal', textStyle: 'label' },
     Badge: { radius: 'rounded' },
     Drawer: { size: 'sm' },

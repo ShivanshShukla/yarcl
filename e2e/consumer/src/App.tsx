@@ -13,6 +13,7 @@ import {
   Combobox,
   Dialog,
   Divider,
+  EmptyState,
   Heading,
   Inline,
   Label,
@@ -260,6 +261,15 @@ export function App() {
             <Progress value={185} max={200} label="€ 15 away from free express shipping" />
 
             <Divider />
+
+            <EmptyState
+              data-testid="brand-b-empty-state"
+              headingLevel={2}
+              icon={<span>★</span>}
+              title="No reviews yet"
+              description="Be the first to review this piece."
+              actions={<Button variant="line">Write a review</Button>}
+            />
 
             <Tabs defaultValue="details">
               <Tabs.List aria-label="Product information">

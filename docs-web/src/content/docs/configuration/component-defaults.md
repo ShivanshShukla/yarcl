@@ -66,6 +66,7 @@ For any token prop, the first value found wins:
 | `Checkbox`, `Radio`, `Switch` | `size`, `color` |
 | `Badge` | `size`, `radius`, `color`, `variant` |
 | `Avatar`, `AvatarGroup` | `size`, `radius`, `color`, `variant` |
+| `EmptyState` | `color`, `gap`, `padding`, `textStyle` |
 | `Label` | `textStyle`, `color`, `variant`, `size`, `radius` |
 | `Alert` | `radius`, `color`, `variant`, `gap`, `padding`, `textStyle` |
 | `Card` | `radius`, `padding`, `shadow` |

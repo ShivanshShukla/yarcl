@@ -76,6 +76,7 @@ export default defineConfig({
   components: {
     Avatar: { size: 'talla-s', radius: 'hairline', color: 'clay', variant: 'wash' },
     AvatarGroup: { size: 'talla-s', radius: 'square', color: 'moss', variant: 'wash' },
+    EmptyState: { color: 'clay', gap: '3', padding: '6', textStyle: 'fine' },
     Alert: { gap: '2', padding: '4', textStyle: 'copy' },
     Button: { radius: 'square' },
     IconButton: { radius: 'square' },

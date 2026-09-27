@@ -23,6 +23,7 @@ export default async function (ctx) {
   await audit(ctx, 'whole demo page');
   await audit(ctx, 'avatars', '[data-testid="avatar-demo"]');
   await audit(ctx, 'visually hidden accessible name', '[data-testid="visually-hidden-demo"]');
+  await audit(ctx, 'empty state', '[data-testid="empty-state-demo"]');
 
   await page.getByRole('slider', { name: 'Price range Maximum' }).focus();
   await page.keyboard.press('Home');

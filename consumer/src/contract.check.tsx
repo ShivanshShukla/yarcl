@@ -4,6 +4,7 @@ import {
   Card,
   Checkbox,
   Divider,
+  EmptyState,
   Field,
   Alert,
   Badge,
@@ -89,6 +90,17 @@ export const contract = (
     <Inline gap="tight" justify="between" wrap={false} />
     <Card padding="tight" radius="rounded" shadow="lg" as="article" />
     <Divider orientation="vertical" />
+    <EmptyState
+      title="No projects"
+      description="Create your first project."
+      icon={<span />}
+      actions={<Button>Create project</Button>}
+      headingLevel={3}
+      color="neutral"
+      gap="tight"
+      padding="loose"
+      textStyle="caption"
+    />
     <VisuallyHidden id="hidden-description">Additional context</VisuallyHidden>
     <Tooltip content="Hi" radius="rounded" padding="tight" textStyle="caption">
       <Button />
@@ -387,6 +399,14 @@ export const contract = (
     <AvatarGroup radius="full" />
     {/* @ts-expect-error */}
     <AvatarGroup variant="ghost" />
+    {/* @ts-expect-error */}
+    <EmptyState title="Empty" color="primary" />
+    {/* @ts-expect-error */}
+    <EmptyState title="Empty" gap="md" />
+    {/* @ts-expect-error */}
+    <EmptyState title="Empty" padding="lg" />
+    {/* @ts-expect-error */}
+    <EmptyState title="Empty" textStyle="body-sm" />
     {/* @ts-expect-error */}
     <Alert live="rude" />
     {/* @ts-expect-error */}

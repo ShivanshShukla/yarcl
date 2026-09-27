@@ -1569,6 +1569,45 @@ html:has(.yarcl-modal[open]) {
   font-size: calc(var(--yarcl-fs) * 0.85);
 }
 
+/* EmptyState */
+
+.yarcl-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--yarcl-component-gap);
+  box-sizing: border-box;
+  padding: var(--yarcl-component-padding);
+  text-align: center;
+}
+
+.yarcl-empty-state-icon {
+  display: flex;
+  color: var(--yarcl-c);
+}
+
+.yarcl-empty-state-icon > svg {
+  width: calc(var(--yarcl-icon) * 2);
+  height: calc(var(--yarcl-icon) * 2);
+}
+
+.yarcl-empty-state-title,
+.yarcl-empty-state-description {
+  margin: 0;
+}
+
+.yarcl-empty-state-description {
+  color: var(--yarcl-neutral-muted);
+}
+
+.yarcl-empty-state-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--yarcl-component-gap);
+}
+
 /* Badge */
 
 .yarcl-badge {

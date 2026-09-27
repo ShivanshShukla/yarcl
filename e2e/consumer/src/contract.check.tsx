@@ -1,4 +1,4 @@
-import { Accordion, Alert, Avatar, AvatarGroup, Badge, Breadcrumb, Button, Combobox, CommandPalette, DatePicker, Dialog, Heading, Inline, Input, Label, NumberInput, Pagination, Progress, Slider, Stack, Table, Text, Tooltip, VisuallyHidden, toast } from '@yarcl/react';
+import { Accordion, Alert, Avatar, AvatarGroup, Badge, Breadcrumb, Button, Combobox, CommandPalette, DatePicker, Dialog, EmptyState, Heading, Inline, Input, Label, NumberInput, Pagination, Progress, Slider, Stack, Table, Text, Tooltip, VisuallyHidden, toast } from '@yarcl/react';
 
 export const contract = (
   <>
@@ -28,6 +28,7 @@ export const contract = (
     <AvatarGroup max={2} total={3} size="talla-s" radius="square" color="clay" variant="wash">
       <Avatar name="Ada Lovelace" />
     </AvatarGroup>
+    <EmptyState title="No reviews" description="Be the first." icon={<span />} actions={<Button>Review</Button>} headingLevel={2} color="moss" gap="2" padding="6" textStyle="fine" />
 
     {/* consumer A's keys are not valid here */}
     {/* @ts-expect-error */}
@@ -68,6 +69,14 @@ export const contract = (
     <AvatarGroup radius="md" />
     {/* @ts-expect-error */}
     <AvatarGroup variant="solid" />
+    {/* @ts-expect-error */}
+    <EmptyState title="Empty" color="brand" />
+    {/* @ts-expect-error */}
+    <EmptyState title="Empty" gap="normal" />
+    {/* @ts-expect-error */}
+    <EmptyState title="Empty" padding="loose" />
+    {/* @ts-expect-error */}
+    <EmptyState title="Empty" textStyle="body" />
     {/* @ts-expect-error */}
     <Table density="regular" />
     {/* @ts-expect-error */}

@@ -256,6 +256,7 @@ defineConfig({
   components: {
     Avatar: { size: 'lg', radius: 'rounded', color: 'success', variant: 'outline' },
     AvatarGroup: { size: 'sm', radius: 'size', color: 'neutral', variant: 'soft' },
+    EmptyState: { color: 'neutral', gap: 'sm', padding: 'lg', textStyle: 'body' },
   },
 });
 
@@ -264,6 +265,14 @@ defineConfig({
   components: {
     // @ts-expect-error
     Avatar: { padding: 'md' },
+  },
+});
+
+defineConfig({
+  ...defaults,
+  components: {
+    // @ts-expect-error
+    EmptyState: { radius: 'md' },
   },
 });
 

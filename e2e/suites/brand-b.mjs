@@ -33,6 +33,23 @@ export default async function ({ page, check }) {
     JSON.stringify(curatorStyle),
   );
 
+  const emptyState = page.getByTestId('brand-b-empty-state');
+  const emptyStateStyle = await emptyState.evaluate((el) => {
+    const style = getComputedStyle(el);
+    const description = getComputedStyle(el.querySelector('.yarcl-empty-state-description'));
+    const icon = getComputedStyle(el.querySelector('.yarcl-empty-state-icon'));
+    return { gap: style.gap, padding: style.padding, fontSize: description.fontSize, iconColor: icon.color };
+  });
+  check(
+    'empty state uses Maison Talla component defaults',
+    emptyStateStyle.gap === '12px' &&
+      emptyStateStyle.padding === '24px' &&
+      emptyStateStyle.fontSize === '12px' &&
+      emptyStateStyle.iconColor === (await resolveColor(page, 'var(--yarcl-color-clay)')),
+    JSON.stringify(emptyStateStyle),
+  );
+  check('empty state keeps its heading in the page outline', (await emptyState.getByRole('heading', { name: 'No reviews yet' }).evaluate((el) => el.tagName)) === 'H2');
+
   const trail = page.getByRole('navigation', { name: 'Breadcrumb' });
   check('component default: breadcrumb uses fine text (12px)', (await trail.evaluate((el) => getComputedStyle(el).fontSize)) === '12px');
   check('breadcrumb collapses to first and last two', (await trail.locator('> ol > li').count()) === 4 && (await trail.getByRole('link', { name: 'Women' }).count()) === 0);

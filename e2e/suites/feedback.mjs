@@ -69,6 +69,21 @@ export default async function (ctx) {
     (await group.getByRole('img').count()) === 4 && (await group.getByRole('img', { name: '2 more' }).count()) === 1,
   );
 
+  const emptyState = section.getByTestId('empty-state-demo');
+  const emptyStateStyle = await emptyState.evaluate((el) => {
+    const style = getComputedStyle(el);
+    const description = getComputedStyle(el.querySelector('.yarcl-empty-state-description'));
+    return { gap: style.gap, padding: style.padding, fontSize: description.fontSize };
+  });
+  check(
+    'empty state uses component spacing and typography defaults',
+    emptyStateStyle.gap === '8px' && emptyStateStyle.padding === '16px' && emptyStateStyle.fontSize === '13px',
+    JSON.stringify(emptyStateStyle),
+  );
+  check('empty state uses a contextual heading', (await emptyState.getByRole('heading', { name: 'No matching projects' }).evaluate((el) => el.tagName)) === 'H3');
+  check('empty state icon is decorative', (await emptyState.locator('.yarcl-empty-state-icon').getAttribute('aria-hidden')) === 'true');
+  check('empty state renders its action', (await emptyState.getByRole('button', { name: 'Clear filters' }).count()) === 1);
+
   const trial = section.getByText('Trial ends in 3 days');
   const alertStyle = await trial.locator('xpath=..').locator('xpath=..').evaluate((el) => {
     const style = getComputedStyle(el);

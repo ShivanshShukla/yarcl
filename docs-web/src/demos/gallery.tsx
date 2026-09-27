@@ -12,6 +12,7 @@ import {
   Checkbox,
   DatePicker,
   Divider,
+  EmptyState,
   Field,
   Heading,
   IconButton,
@@ -619,6 +620,21 @@ const groups: Record<string, Item[]> = {
     },
   ],
   feedback: [
+    {
+      name: 'Empty state',
+      href: '/components/feedback/empty-state/',
+      description: 'A centered message and actions when a view has no content.',
+      preview: (
+        <EmptyState
+          headingLevel={3}
+          icon={<SearchIcon />}
+          title="No results"
+          description="Try another search."
+          padding="sm"
+          gap="xs"
+        />
+      ),
+    },
     {
       name: 'Badge',
       href: '/components/feedback/badge/',
