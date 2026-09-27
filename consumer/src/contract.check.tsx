@@ -44,6 +44,7 @@ import {
   Switch,
   Text,
   Textarea,
+  VisuallyHidden,
 } from '@yarcl/react';
 
 export const contract = (
@@ -88,6 +89,7 @@ export const contract = (
     <Inline gap="tight" justify="between" wrap={false} />
     <Card padding="tight" radius="rounded" shadow="lg" as="article" />
     <Divider orientation="vertical" />
+    <VisuallyHidden id="hidden-description">Additional context</VisuallyHidden>
     <Tooltip content="Hi" radius="rounded" padding="tight" textStyle="caption">
       <Button />
     </Tooltip>

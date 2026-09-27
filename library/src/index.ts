@@ -45,6 +45,8 @@ export { Card } from './components/Card';
 export type { CardProps } from './components/Card';
 export { Divider } from './components/Divider';
 export type { DividerProps } from './components/Divider';
+export { VisuallyHidden } from './components/VisuallyHidden';
+export type { VisuallyHiddenProps } from './components/VisuallyHidden';
 export { Popover } from './components/Popover';
 export type { PopoverProps, PopoverTriggerProps, PopoverContentProps } from './components/Popover';
 export { Tooltip } from './components/Tooltip';

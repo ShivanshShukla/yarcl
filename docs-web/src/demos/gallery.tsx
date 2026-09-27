@@ -35,6 +35,7 @@ import {
   Text,
   Textarea,
   ToggleGroup,
+  VisuallyHidden,
 } from '@yarcl/react';
 import { InfoIcon, PlusIcon, SearchIcon, TrashIcon } from './icons';
 
@@ -368,6 +369,17 @@ const groups: Record<string, Item[]> = {
             <Text textStyle="caption">Right</Text>
           </Inline>
         </Stack>
+      ),
+    },
+    {
+      name: 'Visually hidden',
+      href: '/components/layout/visually-hidden/',
+      description: 'Provides accessible names and descriptions without visual content.',
+      preview: (
+        <Button size="sm" variant="outline">
+          <SearchIcon />
+          <VisuallyHidden>Search projects</VisuallyHidden>
+        </Button>
       ),
     },
   ],

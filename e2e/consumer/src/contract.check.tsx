@@ -1,9 +1,10 @@
-import { Accordion, Alert, Avatar, AvatarGroup, Badge, Breadcrumb, Button, Combobox, CommandPalette, DatePicker, Dialog, Heading, Inline, Input, Label, NumberInput, Pagination, Progress, Slider, Stack, Table, Text, Tooltip, toast } from '@yarcl/react';
+import { Accordion, Alert, Avatar, AvatarGroup, Badge, Breadcrumb, Button, Combobox, CommandPalette, DatePicker, Dialog, Heading, Inline, Input, Label, NumberInput, Pagination, Progress, Slider, Stack, Table, Text, Tooltip, VisuallyHidden, toast } from '@yarcl/react';
 
 export const contract = (
   <>
     <Button size="talla-l" color="clay" variant="wash" radius="hairline" />
     <Stack gap="12" />
+    <VisuallyHidden lang="es">Descripción adicional</VisuallyHidden>
     <Text textStyle="price" />
     <Label htmlFor="size" textStyle="fine" color="clay" required disabled />
     <Heading level={1} />

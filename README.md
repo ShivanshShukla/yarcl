@@ -105,7 +105,7 @@ components: { Button: { radius: 'square' } },   // except buttons: always sharp
 ## Components
 
 **Controls**: Button, IconButton, ButtonGroup, ToggleGroup, Input, NumberInput, Textarea, Checkbox, Radio, RadioGroup, Switch, Slider, Select, Combobox, DatePicker, Field, Label
-**Typography & layout**: Text, Heading, Link, Stack, Inline, Card, Divider
+**Typography & layout**: Text, Heading, Link, Stack, Inline, Card, Divider, VisuallyHidden
 **Floating**: Tooltip, HoverCard, Popover, Menu
 **Overlays**: Dialog, Drawer, CommandPalette, Toast
 **Data & navigation**: Avatar, AvatarGroup, Tabs, Accordion, Table, Pagination, Breadcrumb

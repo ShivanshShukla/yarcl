@@ -1,4 +1,5 @@
-import { Badge, Button, Card, Divider, Heading, Inline, Stack, Text, config, type Shadow, type Spacing } from '@yarcl/react';
+import { Badge, Button, Card, Divider, Heading, Inline, Stack, Text, VisuallyHidden, config, type Shadow, type Spacing } from '@yarcl/react';
+import { SearchIcon } from './icons';
 
 const spacings = Object.keys(config.spacing) as Spacing[];
 const shadows = Object.keys(config.shadows) as Shadow[];
@@ -114,5 +115,14 @@ export function DividerDemo() {
         <Text>Right</Text>
       </Inline>
     </Stack>
+  );
+}
+
+export function VisuallyHiddenDemo() {
+  return (
+    <Button variant="outline">
+      <SearchIcon />
+      <VisuallyHidden>Search projects</VisuallyHidden>
+    </Button>
   );
 }

@@ -623,6 +623,21 @@ p.yarcl-text {
 .yarcl-justify-end { justify-content: flex-end; }
 .yarcl-justify-between { justify-content: space-between; }
 
+/* VisuallyHidden */
+
+.yarcl-visually-hidden {
+  position: absolute;
+  width: var(--yarcl-border-width);
+  height: var(--yarcl-border-width);
+  padding: 0;
+  margin: calc(var(--yarcl-border-width) * -1);
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* Card */
 
 .yarcl-card {
