@@ -45,6 +45,8 @@ export { Card } from './components/Card';
 export type { CardProps } from './components/Card';
 export { Divider } from './components/Divider';
 export type { DividerProps } from './components/Divider';
+export { VisuallyHidden } from './components/VisuallyHidden';
+export type { VisuallyHiddenProps } from './components/VisuallyHidden';
 export { Popover } from './components/Popover';
 export type { PopoverProps, PopoverTriggerProps, PopoverContentProps } from './components/Popover';
 export { Tooltip } from './components/Tooltip';
@@ -91,6 +93,8 @@ export { Table } from './components/Table';
 export type { TableProps, TableHeaderCellProps, TableCellProps, CellAlign } from './components/Table';
 export { Badge } from './components/Badge';
 export type { BadgeProps } from './components/Badge';
+export { Avatar, AvatarGroup } from './components/Avatar';
+export type { AvatarProps, AvatarGroupProps } from './components/Avatar';
 export { Alert } from './components/Alert';
 export type { AlertProps } from './components/Alert';
 export { Spinner } from './components/Spinner';
@@ -99,6 +103,8 @@ export { Skeleton } from './components/Skeleton';
 export type { SkeletonProps } from './components/Skeleton';
 export { Progress } from './components/Progress';
 export type { ProgressProps } from './components/Progress';
+export { EmptyState } from './components/EmptyState';
+export type { EmptyStateProps } from './components/EmptyState';
 export type {
   Size,
   Radius,

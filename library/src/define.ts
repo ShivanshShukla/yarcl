@@ -113,6 +113,8 @@ export interface ComponentTokenProps {
   Switch: 'size' | 'color';
   Slider: 'size' | 'radius' | 'color';
   Badge: 'size' | 'radius' | 'color' | 'variant';
+  Avatar: 'size' | 'radius' | 'color' | 'variant';
+  AvatarGroup: 'size' | 'radius' | 'color' | 'variant';
   Alert: 'radius' | 'color' | 'variant' | 'gap' | 'padding' | 'textStyle';
   Card: 'radius' | 'padding' | 'shadow';
   Popover: 'radius' | 'padding';
@@ -134,6 +136,7 @@ export interface ComponentTokenProps {
   Spinner: 'size' | 'color';
   Skeleton: 'size' | 'radius';
   Progress: 'size' | 'color' | 'radius';
+  EmptyState: 'color' | 'gap' | 'padding' | 'textStyle';
   Tooltip: 'radius' | 'padding' | 'textStyle';
   Toast: 'radius' | 'color' | 'gap' | 'padding' | 'textStyle';
 }

@@ -24,6 +24,7 @@ import {
   Textarea,
   Toaster,
   ToggleGroup,
+  VisuallyHidden,
   config,
   type Color,
   type Radius,
@@ -426,6 +427,10 @@ export function App() {
           </Section>
 
           <Section title="Layout">
+            <Button variant="outline" data-testid="visually-hidden-demo">
+              <SearchIcon />
+              <VisuallyHidden>Search projects</VisuallyHidden>
+            </Button>
             {spacings.map((gap) => (
               <Row key={gap} label={`gap ${gap}`}>
                 <Inline gap={gap}>

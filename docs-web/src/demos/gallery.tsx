@@ -2,6 +2,8 @@ import type { ReactNode } from 'react';
 import {
   Accordion,
   Alert,
+  Avatar,
+  AvatarGroup,
   Badge,
   Breadcrumb,
   Button,
@@ -10,6 +12,7 @@ import {
   Checkbox,
   DatePicker,
   Divider,
+  EmptyState,
   Field,
   Heading,
   IconButton,
@@ -33,6 +36,7 @@ import {
   Text,
   Textarea,
   ToggleGroup,
+  VisuallyHidden,
 } from '@yarcl/react';
 import { InfoIcon, PlusIcon, SearchIcon, TrashIcon } from './icons';
 
@@ -368,6 +372,17 @@ const groups: Record<string, Item[]> = {
         </Stack>
       ),
     },
+    {
+      name: 'Visually hidden',
+      href: '/components/layout/visually-hidden/',
+      description: 'Provides accessible names and descriptions without visual content.',
+      preview: (
+        <Button size="sm" variant="outline">
+          <SearchIcon />
+          <VisuallyHidden>Search projects</VisuallyHidden>
+        </Button>
+      ),
+    },
   ],
   overlays: [
     {
@@ -510,6 +525,18 @@ const groups: Record<string, Item[]> = {
   ],
   data: [
     {
+      name: 'Avatar',
+      href: '/components/data/avatar/',
+      description: 'Person images with initials fallback and overlapping groups.',
+      preview: (
+        <AvatarGroup max={3} total={5} aria-label="Project members">
+          <Avatar name="Ada Lovelace" size="sm" />
+          <Avatar name="Grace Hopper" size="sm" color="success" />
+          <Avatar name="Alan Turing" size="sm" color="warning" />
+        </AvatarGroup>
+      ),
+    },
+    {
       name: 'Tabs',
       href: '/components/data/tabs/',
       description: 'Switches between panels, with arrow key navigation.',
@@ -593,6 +620,21 @@ const groups: Record<string, Item[]> = {
     },
   ],
   feedback: [
+    {
+      name: 'Empty state',
+      href: '/components/feedback/empty-state/',
+      description: 'A centered message and actions when a view has no content.',
+      preview: (
+        <EmptyState
+          headingLevel={3}
+          icon={<SearchIcon />}
+          title="No results"
+          description="Try another search."
+          padding="sm"
+          gap="xs"
+        />
+      ),
+    },
     {
       name: 'Badge',
       href: '/components/feedback/badge/',

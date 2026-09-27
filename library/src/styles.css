@@ -623,6 +623,21 @@ p.yarcl-text {
 .yarcl-justify-end { justify-content: flex-end; }
 .yarcl-justify-between { justify-content: space-between; }
 
+/* VisuallyHidden */
+
+.yarcl-visually-hidden {
+  position: absolute;
+  width: var(--yarcl-border-width);
+  height: var(--yarcl-border-width);
+  padding: 0;
+  margin: calc(var(--yarcl-border-width) * -1);
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* Card */
 
 .yarcl-card {
@@ -1505,6 +1520,92 @@ html:has(.yarcl-modal[open]) {
 
 .yarcl-spinner-colored {
   color: var(--yarcl-c);
+}
+
+/* Avatar */
+
+.yarcl-avatar {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--yarcl-h);
+  height: var(--yarcl-h);
+  overflow: hidden;
+  color: var(--yarcl-v-fg);
+  font-size: var(--yarcl-fs);
+  font-weight: 600;
+  line-height: 1;
+  background: var(--yarcl-v-bg);
+  border: var(--yarcl-border-width) solid var(--yarcl-v-border);
+  border-radius: var(--yarcl-r);
+}
+
+.yarcl-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.yarcl-avatar-fallback {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.yarcl-avatar-group {
+  display: inline-flex;
+  align-items: center;
+}
+
+.yarcl-avatar-group > .yarcl-avatar + .yarcl-avatar {
+  margin-inline-start: calc(var(--yarcl-h) / -4);
+  box-shadow: 0 0 0 var(--yarcl-border-width) var(--yarcl-neutral-surface);
+}
+
+.yarcl-avatar-overflow {
+  position: relative;
+  z-index: 1;
+  font-size: calc(var(--yarcl-fs) * 0.85);
+}
+
+/* EmptyState */
+
+.yarcl-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--yarcl-component-gap);
+  box-sizing: border-box;
+  padding: var(--yarcl-component-padding);
+  text-align: center;
+}
+
+.yarcl-empty-state-icon {
+  display: flex;
+  color: var(--yarcl-c);
+}
+
+.yarcl-empty-state-icon > svg {
+  width: calc(var(--yarcl-icon) * 2);
+  height: calc(var(--yarcl-icon) * 2);
+}
+
+.yarcl-empty-state-title,
+.yarcl-empty-state-description {
+  margin: 0;
+}
+
+.yarcl-empty-state-description {
+  color: var(--yarcl-neutral-muted);
+}
+
+.yarcl-empty-state-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--yarcl-component-gap);
 }
 
 /* Badge */

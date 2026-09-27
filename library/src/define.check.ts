@@ -254,6 +254,31 @@ defineConfig({
 defineConfig({
   ...defaults,
   components: {
+    Avatar: { size: 'lg', radius: 'rounded', color: 'success', variant: 'outline' },
+    AvatarGroup: { size: 'sm', radius: 'size', color: 'neutral', variant: 'soft' },
+    EmptyState: { color: 'neutral', gap: 'sm', padding: 'lg', textStyle: 'body' },
+  },
+});
+
+defineConfig({
+  ...defaults,
+  components: {
+    // @ts-expect-error
+    Avatar: { padding: 'md' },
+  },
+});
+
+defineConfig({
+  ...defaults,
+  components: {
+    // @ts-expect-error
+    EmptyState: { radius: 'md' },
+  },
+});
+
+defineConfig({
+  ...defaults,
+  components: {
     // @ts-expect-error
     Progress: { variant: 'solid' },
   },

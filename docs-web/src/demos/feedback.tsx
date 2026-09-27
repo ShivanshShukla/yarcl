@@ -4,6 +4,7 @@ import {
   Badge,
   Button,
   Card,
+  EmptyState,
   Inline,
   Progress,
   Skeleton,
@@ -15,7 +16,7 @@ import {
   type Size,
   type Variant,
 } from '@yarcl/react';
-import { InfoIcon } from './icons';
+import { InfoIcon, SearchIcon } from './icons';
 
 const colors = Object.keys(config.colors) as Color[];
 const variants = Object.keys(config.variants) as Variant[];
@@ -89,6 +90,23 @@ export function AlertDemo() {
       </Alert>
       <Alert color="neutral" variant="outline" title="Outline variant" />
     </Stack>
+  );
+}
+
+export function EmptyStateDemo() {
+  return (
+    <EmptyState
+      headingLevel={3}
+      icon={<SearchIcon />}
+      title="No matching projects"
+      description="Try changing or clearing your filters."
+      actions={
+        <Inline gap="sm">
+          <Button variant="outline">Clear filters</Button>
+          <Button>Create project</Button>
+        </Inline>
+      }
+    />
   );
 }
 

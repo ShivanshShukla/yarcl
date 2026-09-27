@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import {
   Alert,
+  Avatar,
+  AvatarGroup,
   Badge,
   Button,
   Card,
+  EmptyState,
   IconButton,
   Inline,
   Progress,
@@ -16,11 +19,12 @@ import {
   type Size,
   type Variant,
 } from '@yarcl/react';
-import { PlusIcon } from './icons';
+import { PlusIcon, SearchIcon } from './icons';
 
 const colors = Object.keys(config.colors) as Color[];
 const variants = Object.keys(config.variants) as Variant[];
 const sizes = Object.keys(config.sizes) as Size[];
+const avatarImage = '/avatar-demo.svg';
 
 function InfoIcon() {
   return (
@@ -80,6 +84,29 @@ export function FeedbackDemo() {
           ))}
         </Inline>
       </Stack>
+
+      <Stack gap="tight" data-testid="avatar-demo">
+        <Inline gap="tight">
+          <Avatar name="Ada Lovelace" src={avatarImage} />
+          <Avatar name="Grace Hopper" color="success" />
+          <Avatar name="Alan Turing" fallback="AT" color="warning" variant="outline" />
+        </Inline>
+        <AvatarGroup max={3} total={5} aria-label="Project members">
+          <Avatar name="Ada Lovelace" />
+          <Avatar name="Grace Hopper" color="success" />
+          <Avatar name="Alan Turing" color="warning" />
+          <Avatar name="Katherine Johnson" color="danger" />
+        </AvatarGroup>
+      </Stack>
+
+      <EmptyState
+        data-testid="empty-state-demo"
+        headingLevel={3}
+        icon={<SearchIcon />}
+        title="No matching projects"
+        description="Try changing or clearing your filters."
+        actions={<Button variant="outline">Clear filters</Button>}
+      />
 
       <Stack gap="tight">
         {alertOpen && (

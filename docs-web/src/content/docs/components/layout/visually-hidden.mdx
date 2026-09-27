@@ -1,0 +1,35 @@
+---
+title: "Visually hidden"
+description: "Keeps content available to assistive technology without displaying it visually."
+sidebar:
+  order: 5
+---
+
+import Preview from '@/components/Preview.astro';
+import Props from '@/components/Props.astro';
+import { VisuallyHiddenDemo } from '@/demos/layout';
+
+```tsx
+import { VisuallyHidden } from '@yarcl/react';
+```
+
+<Preview>
+  <VisuallyHiddenDemo />
+</Preview>
+
+```tsx
+<Button>
+  <SearchIcon />
+  <VisuallyHidden>Search projects</VisuallyHidden>
+</Button>
+```
+
+Use `VisuallyHidden` when visible context is clear but an accessible name or description is still required. Its content remains in the accessibility tree and can name a surrounding button or link.
+
+The `.yarcl-visually-hidden` class provides the same behavior for plain HTML. Do not use either form to hide interactive elements because keyboard users could focus a control they cannot see.
+
+## Props
+
+Accepts every native `<span>` attribute.
+
+<Props of="VisuallyHiddenProps" />

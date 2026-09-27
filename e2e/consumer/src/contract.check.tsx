@@ -1,9 +1,10 @@
-import { Accordion, Alert, Badge, Breadcrumb, Button, Combobox, CommandPalette, DatePicker, Dialog, Heading, Inline, Input, Label, NumberInput, Pagination, Progress, Slider, Stack, Table, Text, Tooltip, toast } from '@yarcl/react';
+import { Accordion, Alert, Avatar, AvatarGroup, Badge, Breadcrumb, Button, Combobox, CommandPalette, DatePicker, Dialog, EmptyState, Heading, Inline, Input, Label, NumberInput, Pagination, Progress, Slider, Stack, Table, Text, Tooltip, VisuallyHidden, toast } from '@yarcl/react';
 
 export const contract = (
   <>
     <Button size="talla-l" color="clay" variant="wash" radius="hairline" />
     <Stack gap="12" />
+    <VisuallyHidden lang="es">Descripción adicional</VisuallyHidden>
     <Text textStyle="price" />
     <Label htmlFor="size" textStyle="fine" color="clay" required disabled />
     <Heading level={1} />
@@ -23,6 +24,11 @@ export const contract = (
     <Accordion type="multiple" size="talla-s" radius="hairline" color="moss" />
     <Combobox multiple options={[]} size="talla-s" color="clay" radius="square" maxSelected={2} onValueChange={(v: string[]) => v} />
     <NumberInput size="talla-s" color="moss" radius="square" min={1} />
+    <Avatar name="Ada Lovelace" size="talla-l" radius="hairline" color="moss" variant="text" />
+    <AvatarGroup max={2} total={3} size="talla-s" radius="square" color="clay" variant="wash">
+      <Avatar name="Ada Lovelace" />
+    </AvatarGroup>
+    <EmptyState title="No reviews" description="Be the first." icon={<span />} actions={<Button>Review</Button>} headingLevel={2} color="moss" gap="2" padding="6" textStyle="fine" />
 
     {/* consumer A's keys are not valid here */}
     {/* @ts-expect-error */}
@@ -55,6 +61,22 @@ export const contract = (
     <Label textStyle="body" />
     {/* @ts-expect-error */}
     <Badge variant="subtle" />
+    {/* @ts-expect-error */}
+    <Avatar size="md" />
+    {/* @ts-expect-error */}
+    <Avatar color="brand" />
+    {/* @ts-expect-error */}
+    <AvatarGroup radius="md" />
+    {/* @ts-expect-error */}
+    <AvatarGroup variant="solid" />
+    {/* @ts-expect-error */}
+    <EmptyState title="Empty" color="brand" />
+    {/* @ts-expect-error */}
+    <EmptyState title="Empty" gap="normal" />
+    {/* @ts-expect-error */}
+    <EmptyState title="Empty" padding="loose" />
+    {/* @ts-expect-error */}
+    <EmptyState title="Empty" textStyle="body" />
     {/* @ts-expect-error */}
     <Table density="regular" />
     {/* @ts-expect-error */}

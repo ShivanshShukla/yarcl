@@ -4,9 +4,12 @@ import {
   Card,
   Checkbox,
   Divider,
+  EmptyState,
   Field,
   Alert,
   Badge,
+  Avatar,
+  AvatarGroup,
   ButtonGroup,
   RadioGroup,
   ToggleGroup,
@@ -42,6 +45,7 @@ import {
   Switch,
   Text,
   Textarea,
+  VisuallyHidden,
 } from '@yarcl/react';
 
 export const contract = (
@@ -86,6 +90,18 @@ export const contract = (
     <Inline gap="tight" justify="between" wrap={false} />
     <Card padding="tight" radius="rounded" shadow="lg" as="article" />
     <Divider orientation="vertical" />
+    <EmptyState
+      title="No projects"
+      description="Create your first project."
+      icon={<span />}
+      actions={<Button>Create project</Button>}
+      headingLevel={3}
+      color="neutral"
+      gap="tight"
+      padding="loose"
+      textStyle="caption"
+    />
+    <VisuallyHidden id="hidden-description">Additional context</VisuallyHidden>
     <Tooltip content="Hi" radius="rounded" padding="tight" textStyle="caption">
       <Button />
     </Tooltip>
@@ -169,6 +185,11 @@ export const contract = (
     <Accordion type="multiple" value={['a']} onValueChange={(v: string[]) => v} />
     <Table density="dense" radius="rounded" striped interactive />
     <Badge color="success" variant="outline" size="sm" radius="rounded" onRemove={() => {}} />
+    <Avatar name="Ada Lovelace" alt="Ada" fallback="AL" size="lg" radius="rounded" color="success" variant="outline" onImageError={() => {}} />
+    <AvatarGroup max={2} total={4} overflowLabel={(count) => `${count} more teammates`} size="sm" radius="rounded" color="neutral" variant="quiet">
+      <Avatar name="Ada Lovelace" />
+      <Avatar name="Grace Hopper" />
+    </AvatarGroup>
     <Alert color="warning" variant="solid" radius="md" gap="tight" padding="normal" textStyle="caption" live="polite" onDismiss={() => {}} />
     <Spinner size="xl" color="danger" />
     <Skeleton shape="control" size="lg" radius="lg" />
@@ -370,6 +391,22 @@ export const contract = (
     <Table density="comfortable" />
     {/* @ts-expect-error */}
     <Badge variant="soft" />
+    {/* @ts-expect-error */}
+    <Avatar size="huge" />
+    {/* @ts-expect-error */}
+    <Avatar color="primary" />
+    {/* @ts-expect-error */}
+    <AvatarGroup radius="full" />
+    {/* @ts-expect-error */}
+    <AvatarGroup variant="ghost" />
+    {/* @ts-expect-error */}
+    <EmptyState title="Empty" color="primary" />
+    {/* @ts-expect-error */}
+    <EmptyState title="Empty" gap="md" />
+    {/* @ts-expect-error */}
+    <EmptyState title="Empty" padding="lg" />
+    {/* @ts-expect-error */}
+    <EmptyState title="Empty" textStyle="body-sm" />
     {/* @ts-expect-error */}
     <Alert live="rude" />
     {/* @ts-expect-error */}
