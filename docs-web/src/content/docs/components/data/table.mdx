@@ -1,6 +1,6 @@
 ---
 title: "Table"
-description: "A data table with density from your config."
+description: "A data table with density from your config, sortable columns, row selection and row virtualization."
 sidebar:
   order: 2
 ---
@@ -18,27 +18,37 @@ import { Table } from '@yarcl/react';
 </Preview>
 
 ```tsx
-<Table density="compact" radius="md" striped interactive caption="Invoices">
+<Table density="compact" radius="md" striped interactive stickyHeader caption="Invoices">
   <Table.Head>
     <Table.Row>
-      <Table.HeaderCell>Customer</Table.HeaderCell>
+      <Table.SelectAllCell checked={allSelected} indeterminate={someSelected} onCheckedChange={toggleAll} />
+      <Table.HeaderCell sortable sortDirection={sortDir} onSort={setSortDir}>Customer</Table.HeaderCell>
       <Table.HeaderCell align="end">Amount</Table.HeaderCell>
     </Table.Row>
   </Table.Head>
-  <Table.Body>
-    <Table.Row>
-      <Table.Cell>Ada Lovelace</Table.Cell>
-      <Table.Cell align="end">$1,200.00</Table.Cell>
-    </Table.Row>
-  </Table.Body>
+  <Table.VirtualBody items={invoices}>
+    {(invoice) => (
+      <Table.Row key={invoice.id} selected={selectedIds.has(invoice.id)}>
+        <Table.SelectionCell
+          aria-label={`Select ${invoice.customer}`}
+          checked={selectedIds.has(invoice.id)}
+          onCheckedChange={() => toggleRow(invoice.id)}
+        />
+        <Table.Cell>{invoice.customer}</Table.Cell>
+        <Table.Cell align="end">${invoice.amount.toFixed(2)}</Table.Cell>
+      </Table.Row>
+    )}
+  </Table.VirtualBody>
 </Table>
 ```
 
 - `density` accepts the keys of your [density](/configuration/spacing-shadows-density/#density) group.
 - `radius` accepts the keys of your [radii](/configuration/sizes-and-radii/#radii) group and styles the table frame.
+- `sortable` on `Table.HeaderCell` manages `aria-sort` state and accessible sort triggers.
+- `Table.SelectAllCell` and `Table.SelectionCell` provide accessible row selection checkboxes.
+- `Table.VirtualBody` efficiently renders large datasets by windowing rows in the viewport.
 - `align="end"` also uses tabular numbers, so amounts line up.
 - `caption` is visible and names the table for screen readers.
-- The table scrolls horizontally when it doesn't fit.
 
 ## Props
 
@@ -46,6 +56,26 @@ import { Table } from '@yarcl/react';
 
 <Props of="TableProps" />
 
-### Table.Cell and Table.HeaderCell
+### Table.HeaderCell
+
+<Props of="TableHeaderCellProps" />
+
+### Table.Cell
 
 <Props of="TableCellProps" />
+
+### Table.Row
+
+<Props of="TableRowProps" />
+
+### Table.SelectAllCell
+
+<Props of="TableSelectAllCellProps" />
+
+### Table.SelectionCell
+
+<Props of="TableSelectionCellProps" />
+
+### Table.VirtualBody
+
+<Props of="TableVirtualBodyProps" />

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   Button,
   CommandPalette,
@@ -19,16 +19,38 @@ import {
   type Color,
   type CommandPaletteCommand,
   type Density,
+  type SortDirection,
 } from '@yarcl/react';
 
 const colors = Object.keys(config.colors) as Color[];
 const densities = (Object.keys(config.density) as Density[]).map((d) => ({ value: d, label: d }));
 
-const invoices = [
-  { id: 'INV-1042', customer: 'Ada Lovelace', status: 'Paid', amount: 1200 },
-  { id: 'INV-1043', customer: 'Grace Hopper', status: 'Pending', amount: 860.5 },
-  { id: 'INV-1044', customer: 'Alan Turing', status: 'Overdue', amount: 45 },
-  { id: 'INV-1045', customer: 'Katherine Johnson', status: 'Paid', amount: 13075.25 },
+const customers = [
+  'Ada Lovelace',
+  'Grace Hopper',
+  'Alan Turing',
+  'Katherine Johnson',
+  'Margaret Hamilton',
+  'John von Neumann',
+  'Claude Shannon',
+  'Hedy Lamarr',
+  'Tim Berners-Lee',
+  'Dorothy Vaughan',
+];
+
+const statuses = ['Paid', 'Pending', 'Overdue'] as const;
+
+const initialInvoices = [
+  { id: 'INV-1042', customer: 'Ada Lovelace', status: 'Paid' as const, amount: 1200 },
+  { id: 'INV-1043', customer: 'Grace Hopper', status: 'Pending' as const, amount: 860.5 },
+  { id: 'INV-1044', customer: 'Alan Turing', status: 'Overdue' as const, amount: 45 },
+  { id: 'INV-1045', customer: 'Katherine Johnson', status: 'Paid' as const, amount: 13075.25 },
+  ...Array.from({ length: 996 }, (_, i) => ({
+    id: `INV-${1046 + i}`,
+    customer: customers[i % customers.length],
+    status: statuses[i % statuses.length],
+    amount: ((i * 37 + 120) % 5000) + 50,
+  })),
 ];
 
 const ran = (title: string) => () => toast({ title });
@@ -55,6 +77,37 @@ export function OverlaysDemo() {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [density, setDensity] = useState<Density>(config.defaults.density);
   const [invoicePage, setInvoicePage] = useState(1);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(() => new Set(['INV-1042']));
+  const [sortField, setSortField] = useState<'customer' | 'amount' | null>(null);
+  const [sortDirection, setSortDirection] = useState<SortDirection | null>(null);
+
+  const sortedInvoices = useMemo(() => {
+    if (!sortField || !sortDirection || sortDirection === 'none') return initialInvoices;
+    return [...initialInvoices].sort((a, b) => {
+      const cmp = sortField === 'customer' ? a.customer.localeCompare(b.customer) : a.amount - b.amount;
+      return sortDirection === 'ascending' ? cmp : -cmp;
+    });
+  }, [sortField, sortDirection]);
+
+  const allSelected = sortedInvoices.length > 0 && selectedIds.size === sortedInvoices.length;
+  const someSelected = selectedIds.size > 0;
+
+  function toggleAll(checked: boolean) {
+    if (checked) {
+      setSelectedIds(new Set(sortedInvoices.map((inv) => inv.id)));
+    } else {
+      setSelectedIds(new Set());
+    }
+  }
+
+  function toggleRow(id: string) {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
 
   return (
     <Stack gap="loose">
@@ -178,23 +231,55 @@ export function OverlaysDemo() {
       </Tabs>
 
       <Stack gap="tight">
-        <Inline>
+        <Inline justify="between" align="center">
           <Field label="Density">
             <Select options={densities} value={density} onValueChange={(d) => d && setDensity(d)} size="sm" />
           </Field>
+          <Text textStyle="caption" muted>
+            {selectedIds.size} of {sortedInvoices.length} selected
+          </Text>
         </Inline>
-        <Table density={density} striped interactive caption="Invoices">
+        <Table density={density} striped interactive stickyHeader caption="Invoices" wrapStyle={{ maxHeight: '22rem' }}>
           <Table.Head>
             <Table.Row>
+              <Table.SelectAllCell
+                checked={allSelected}
+                indeterminate={someSelected && !allSelected}
+                onCheckedChange={toggleAll}
+              />
               <Table.HeaderCell>Invoice</Table.HeaderCell>
-              <Table.HeaderCell>Customer</Table.HeaderCell>
+              <Table.HeaderCell
+                sortable
+                sortDirection={sortField === 'customer' ? sortDirection : undefined}
+                onSort={(dir) => {
+                  setSortField('customer');
+                  setSortDirection(dir);
+                }}
+              >
+                Customer
+              </Table.HeaderCell>
               <Table.HeaderCell>Status</Table.HeaderCell>
-              <Table.HeaderCell align="end">Amount</Table.HeaderCell>
+              <Table.HeaderCell
+                align="end"
+                sortable
+                sortDirection={sortField === 'amount' ? sortDirection : undefined}
+                onSort={(dir) => {
+                  setSortField('amount');
+                  setSortDirection(dir);
+                }}
+              >
+                Amount
+              </Table.HeaderCell>
             </Table.Row>
           </Table.Head>
-          <Table.Body>
-            {invoices.map((invoice) => (
-              <Table.Row key={invoice.id}>
+          <Table.VirtualBody items={sortedInvoices} estimateRowHeight={36}>
+            {(invoice) => (
+              <Table.Row key={invoice.id} selected={selectedIds.has(invoice.id)}>
+                <Table.SelectionCell
+                  aria-label={`Select invoice ${invoice.id}`}
+                  checked={selectedIds.has(invoice.id)}
+                  onCheckedChange={() => toggleRow(invoice.id)}
+                />
                 <Table.Cell>
                   <Text textStyle="code">{invoice.id}</Text>
                 </Table.Cell>
@@ -206,8 +291,8 @@ export function OverlaysDemo() {
                 </Table.Cell>
                 <Table.Cell align="end">{money.format(invoice.amount)}</Table.Cell>
               </Table.Row>
-            ))}
-          </Table.Body>
+            )}
+          </Table.VirtualBody>
         </Table>
         <Inline justify="between">
           <Text muted aria-live="polite" data-testid="invoice-page">

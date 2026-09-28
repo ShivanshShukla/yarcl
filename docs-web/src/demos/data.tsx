@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Accordion, Avatar, AvatarGroup, Badge, Breadcrumb, Inline, Pagination, Stack, Table, Tabs, Text, ToggleGroup, config, type Density } from '@yarcl/react';
+import { useMemo, useState } from 'react';
+import { Accordion, Avatar, AvatarGroup, Badge, Breadcrumb, Inline, Pagination, Stack, Table, Tabs, Text, ToggleGroup, config, type Density, type SortDirection } from '@yarcl/react';
 
 const avatarImage = '/avatar-demo.svg';
 
@@ -57,8 +57,32 @@ const statusColor = { Paid: 'success', Pending: 'warning', Overdue: 'danger' } a
 
 export function TableDemo() {
   const [density, setDensity] = useState<string | null>(config.defaults.density);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(() => new Set(['INV-1042']));
+  const [sortDir, setSortDir] = useState<SortDirection | null>(null);
+
+  const sortedInvoices = useMemo(() => {
+    if (!sortDir || sortDir === 'none') return invoices;
+    return [...invoices].sort((a, b) => (sortDir === 'ascending' ? a.amount - b.amount : b.amount - a.amount));
+  }, [sortDir]);
+
+  const allSelected = selectedIds.size === sortedInvoices.length;
+  const someSelected = selectedIds.size > 0;
+
+  const toggleAll = (checked: boolean) => {
+    setSelectedIds(checked ? new Set(sortedInvoices.map((i) => i.id)) : new Set());
+  };
+
+  const toggleRow = (id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
   return (
-    <Stack className="demo-wide">
+    <Stack className="demo-wide" gap="tight">
       <ToggleGroup type="single" required value={density} onValueChange={setDensity} size="sm" aria-label="Density">
         {Object.keys(config.density).map((key) => (
           <ToggleGroup.Item key={key} value={key}>
@@ -69,15 +93,23 @@ export function TableDemo() {
       <Table density={(density ?? undefined) as Density | undefined} striped interactive caption="Invoices">
         <Table.Head>
           <Table.Row>
+            <Table.SelectAllCell checked={allSelected} indeterminate={someSelected && !allSelected} onCheckedChange={toggleAll} />
             <Table.HeaderCell>Invoice</Table.HeaderCell>
             <Table.HeaderCell>Customer</Table.HeaderCell>
             <Table.HeaderCell>Status</Table.HeaderCell>
-            <Table.HeaderCell align="end">Amount</Table.HeaderCell>
+            <Table.HeaderCell align="end" sortable sortDirection={sortDir} onSort={setSortDir}>
+              Amount
+            </Table.HeaderCell>
           </Table.Row>
         </Table.Head>
         <Table.Body>
-          {invoices.map((invoice) => (
-            <Table.Row key={invoice.id}>
+          {sortedInvoices.map((invoice) => (
+            <Table.Row key={invoice.id} selected={selectedIds.has(invoice.id)}>
+              <Table.SelectionCell
+                aria-label={`Select ${invoice.customer}`}
+                checked={selectedIds.has(invoice.id)}
+                onCheckedChange={() => toggleRow(invoice.id)}
+              />
               <Table.Cell>
                 <Text textStyle="code">{invoice.id}</Text>
               </Table.Cell>

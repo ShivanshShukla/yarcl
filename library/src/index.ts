@@ -92,7 +92,17 @@ export type { TabsProps, TabsBaseProps, TabsListProps, TabsTriggerProps, TabsPan
 export { Pagination } from './components/Pagination';
 export type { PaginationProps } from './components/Pagination';
 export { Table } from './components/Table';
-export type { TableProps, TableHeaderCellProps, TableCellProps, CellAlign } from './components/Table';
+export type {
+  TableProps,
+  TableHeaderCellProps,
+  TableCellProps,
+  TableRowProps,
+  TableSelectAllCellProps,
+  TableSelectionCellProps,
+  TableVirtualBodyProps,
+  CellAlign,
+  SortDirection,
+} from './components/Table';
 export { Badge } from './components/Badge';
 export type { BadgeProps } from './components/Badge';
 export { Avatar, AvatarGroup } from './components/Avatar';

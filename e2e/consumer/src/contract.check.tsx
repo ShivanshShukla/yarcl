@@ -23,9 +23,26 @@ export const contract = (
     <Label htmlFor="size" textStyle="fine" color="clay" required disabled />
     <Heading level={1} />
     <Label htmlFor="x" required variant="wash" color="clay" size="talla-s" radius="hairline" textStyle="label" />
-    <Table density="cozy" radius="hairline" />
     <Tooltip content="Ayuda" radius="hairline" padding="2" textStyle="fine"><Button /></Tooltip>
     <Alert gap="2" padding="4" textStyle="copy" />
+    <Table density="cozy" radius="hairline" striped stickyHeader>
+      <Table.Head>
+        <Table.Row>
+          <Table.SelectAllCell checked onCheckedChange={() => {}} />
+          <Table.HeaderCell sortable sortDirection="descending" onSort={() => {}}>Size</Table.HeaderCell>
+          <Table.HeaderCell align="end">Chest</Table.HeaderCell>
+        </Table.Row>
+      </Table.Head>
+      <Table.VirtualBody items={[{ s: 'XS', c: 96 }]} estimateRowHeight={34}>
+        {(item) => (
+          <Table.Row key={item.s} selected>
+            <Table.SelectionCell aria-label={`Select size ${item.s}`} checked />
+            <Table.Cell>{item.s}</Table.Cell>
+            <Table.Cell align="end">{item.c}</Table.Cell>
+          </Table.Row>
+        )}
+      </Table.VirtualBody>
+    </Table>
     <Slider size="talla-s" color="moss" radius="hairline" defaultValue={[10, 90]} />
     <Slider.Range aria-label="Price" size="talla-s" color="clay" radius="hairline" defaultValue={[10, 90]} />
     <Progress value={1} max={2} label="L" showValue formatValue={(v) => String(v)} size="talla-s" color="moss" radius="hairline" />
@@ -99,6 +116,10 @@ export const contract = (
     <Tooltip content="Ayuda" padding="normal"><Button /></Tooltip>
     {/* @ts-expect-error */}
     <Alert textStyle="body" />
+    {/* @ts-expect-error */}
+    <Table.HeaderCell sortDirection="invalid" />
+    {/* @ts-expect-error */}
+    <Table.SelectionCell />
     {/* @ts-expect-error */}
     <Progress size="md" />
     {/* @ts-expect-error */}

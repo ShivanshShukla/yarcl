@@ -198,7 +198,26 @@ export const contract = (
     </Accordion>
     <Accordion type="single" value={null} onValueChange={(v: string | null) => v} />
     <Accordion type="multiple" value={['a']} onValueChange={(v: string[]) => v} />
-    <Table density="dense" radius="rounded" striped interactive />
+    <Table density="dense" radius="rounded" striped interactive stickyHeader wrapClassName="test-wrap">
+      <Table.Head>
+        <Table.Row>
+          <Table.SelectAllCell checked indeterminate onCheckedChange={(c: boolean) => c} />
+          <Table.HeaderCell sortable sortDirection="ascending" onSort={(d: 'ascending' | 'descending') => d}>
+            Name
+          </Table.HeaderCell>
+          <Table.HeaderCell align="end">Value</Table.HeaderCell>
+        </Table.Row>
+      </Table.Head>
+      <Table.VirtualBody items={[{ id: '1', name: 'Item 1' }]} estimateRowHeight={36} overscan={5} getItemKey={(item) => item.id}>
+        {(item) => (
+          <Table.Row key={item.id} selected>
+            <Table.SelectionCell aria-label="Select row" checked onCheckedChange={(c: boolean) => c} />
+            <Table.Cell>{item.name}</Table.Cell>
+            <Table.Cell align="end">100</Table.Cell>
+          </Table.Row>
+        )}
+      </Table.VirtualBody>
+    </Table>
     <Badge color="success" variant="outline" size="sm" radius="rounded" onRemove={() => {}} />
     <Avatar name="Ada Lovelace" alt="Ada" fallback="AL" size="lg" radius="rounded" color="success" variant="outline" onImageError={() => {}} />
     <AvatarGroup max={2} total={4} overflowLabel={(count) => `${count} more teammates`} size="sm" radius="rounded" color="neutral" variant="quiet">
@@ -404,6 +423,10 @@ export const contract = (
     <Tabs value="a" defaultValue="b" />
     {/* @ts-expect-error */}
     <Table density="comfortable" />
+    {/* @ts-expect-error */}
+    <Table.HeaderCell sortDirection="invalid" />
+    {/* @ts-expect-error */}
+    <Table.SelectionCell />
     {/* @ts-expect-error */}
     <Badge variant="soft" />
     {/* @ts-expect-error */}
