@@ -23,7 +23,7 @@ export function configMappings(root: string, tsconfig: string, configPath: strin
   ];
 }
 
-export function assertConfigMapping(root: string, configPath: string): void {
+export function assertConfigMapping(root: string, configPath: string, buildTool = 'build tool'): void {
   const tsconfig = findTsconfig(root);
   if (!tsconfig) {
     throw new Error(`yarcl: No tsconfig.app.json or tsconfig.json found in ${root}. Run "yarcl init".`);
@@ -40,6 +40,6 @@ export function assertConfigMapping(root: string, configPath: string): void {
 
   const current = actual ? `"${projectPath(root, actual)}"` : 'no path';
   throw new Error(
-    `yarcl: Config path mismatch. Vite uses "${configPath}", but ${projectPath(root, tsconfig)} has ${current} for "${CONFIG_MODULE}". Run "yarcl init --config ${configPath}".`,
+    `yarcl: Config path mismatch. ${buildTool} uses "${configPath}", but ${projectPath(root, tsconfig)} has ${current} for "${CONFIG_MODULE}". Run "yarcl init --config ${configPath}".`,
   );
 }

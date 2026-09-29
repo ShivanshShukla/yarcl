@@ -36,20 +36,20 @@ export default defineConfig({
 ## How it works
 
 1. **`as const` + `keyof typeof`**: `defineConfig` keeps literal types, and the library derives `Size`, `Color`, `Variant`, … from them.
-2. **A module alias**: the library imports `@yarcl/config`. The Vite plugin points it at your config file at runtime, and a matching `paths` entry in your `tsconfig.json` does the same for types. If your file doesn't exist, both fall back to the library defaults.
-3. **Build-time CSS**: the plugin loads your config and serves `virtual:yarcl.css`: CSS variables on `:root` plus one `yarcl-{group}-{key}` class per key. Components only set class names; no inline styles, nothing computed at runtime. Editing the config hot-reloads the CSS.
+2. **A module alias**: the library imports `@yarcl/config`. The build plugin points it at your config file at runtime, and a matching `paths` entry in your `tsconfig.json` does the same for types. If your file doesn't exist, both fall back to the library defaults.
+3. **Build-time CSS**: the plugin loads your config and serves `@yarcl/react/styles.css`: CSS variables on `:root` plus one `yarcl-{group}-{key}` class per key. Components only set class names; no inline styles, nothing computed at runtime. Editing the config hot-reloads the CSS.
 
 Why an alias instead of module augmentation or codegen: see [ADR 0001](docs/decisions/0001-config-delivery.md).
 
 ## Setup
 
-From an existing Vite React project:
+From an existing React project using Vite, webpack, Rspack, Rollup or esbuild:
 
 ```sh
 npx @yarcl/react init
 ```
 
-This installs the package, connects Vite and TypeScript to the same config, and creates `src/yarcl.config.ts`. For manual setup:
+This installs the package, detects the build tool, connects it and TypeScript to the same config, and creates `src/yarcl.config.ts`. For manual Vite setup:
 
 ```sh
 npm install @yarcl/react
@@ -58,10 +58,12 @@ npm install @yarcl/react
 ```ts
 // vite.config.ts
 import react from '@vitejs/plugin-react';
-import { yarcl } from '@yarcl/react/plugin';
+import yarcl from '@yarcl/react/vite';
 
 export default defineConfig({ plugins: [react(), yarcl({ config: 'src/yarcl.config.ts' })] });
 ```
+
+Use the matching `@yarcl/react/webpack`, `/rspack`, `/rollup` or `/esbuild` entry point for another build tool. See the [installation guide](https://yarcl.dev/getting-started/installation/) for complete examples.
 
 ```jsonc
 // tsconfig.json
@@ -126,7 +128,7 @@ export { editorial as default } from '@yarcl/react/themes';
 
 | Path | What |
 |---|---|
-| `library/` | the `@yarcl/react` package: components, `defineConfig`, Vite plugin, CSS generator |
+| `library/` | the `@yarcl/react` package: components, `defineConfig`, build plugins, CSS generator |
 | `consumer/` | demo app with one design system; every component, light and dark |
 | `docs-web/` | documentation site (Astro + Starlight) with live examples and a config playground |
 | `e2e/` | browser tests; `e2e/consumer/` is a fixture app with completely different keys ("Maison Talla"), proving the types come from each app's own config |
@@ -145,6 +147,5 @@ pnpm docs:api     # API reference from JSDoc → docs/api
 
 ## Limitations
 
-- **Vite only.** The alias works the same way in webpack, Rollup, esbuild and Turbopack; adapters aren't written yet.
 - **One config per build.** Two brands in one bundle would need a Provider for the runtime values.
 - **Types are a development-time guarantee.** Keep config changes and deploys in the same build.

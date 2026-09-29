@@ -5,7 +5,7 @@ sidebar:
   order: 9
 ---
 
-The plugin serves a virtual stylesheet, `virtual:yarcl.css`, generated from your config at build time. Importing `@yarcl/react` loads it together with the library's own styles.
+The plugin serves a virtual stylesheet, `@yarcl/react/styles.css`, generated from your config at build time. Importing `@yarcl/react` loads it together with the library's own styles.
 
 Components never set inline styles. They render class names, and all values come from CSS. That means:
 

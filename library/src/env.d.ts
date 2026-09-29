@@ -1,1 +1,1 @@
-declare module 'virtual:yarcl.css';
+declare module '@yarcl/react/styles.css';

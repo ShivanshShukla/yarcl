@@ -1,0 +1,22 @@
+{
+  "name": "yarcl-build-tools-e2e",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "webpack --config webpack.config.cjs && rspack build --config rspack.config.mjs && rollup --config rollup.config.mjs && node esbuild.config.mjs && node verify.mjs"
+  },
+  "dependencies": {
+    "@yarcl/react": "workspace:*",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@rspack/cli": "^1.5.8",
+    "@rspack/core": "^1.5.8",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "esbuild": "^0.28.2",
+    "rollup": "^4.52.3",
+    "webpack": "^5.101.3",
+    "webpack-cli": "^6.0.1"
+  }
+}

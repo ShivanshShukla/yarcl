@@ -3,17 +3,17 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { parse } from 'jsonc-parser';
 import { afterEach, describe, expect, it } from 'vitest';
-import { initProject } from '../src/init.ts';
+import { initProject, type BuildTool } from '../src/init.ts';
 import { assertConfigMapping } from '../src/setup.ts';
 
 const directories: string[] = [];
 
-async function project(viteConfig: string, tsconfig: string): Promise<string> {
+async function project(buildConfig: string, tsconfig: string, file = 'vite.config.ts'): Promise<string> {
   const root = await mkdtemp(join(tmpdir(), 'yarcl-init-'));
   directories.push(root);
   await Promise.all([
     writeFile(join(root, 'package.json'), '{"name":"fixture","private":true,"dependencies":{"react":"^19.0.0"}}\n'),
-    writeFile(join(root, 'vite.config.ts'), viteConfig),
+    writeFile(join(root, file), buildConfig),
     writeFile(join(root, 'tsconfig.app.json'), tsconfig),
   ]);
   return root;
@@ -36,7 +36,7 @@ describe('yarcl init', () => {
     const tsconfigSource = await readFile(join(root, 'tsconfig.app.json'), 'utf8');
     const tsconfig = parse(tsconfigSource);
     const manifest = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'));
-    expect(viteConfig).toContain("import { yarcl } from '@yarcl/react/plugin';");
+    expect(viteConfig).toContain("import yarcl from '@yarcl/react/vite';");
     expect(viteConfig).toContain("plugins: [react(), yarcl({ config: 'src/yarcl.config.ts' })]");
     expect(tsconfigSource).toContain('// application compiler options');
     expect(tsconfig.compilerOptions.paths['@yarcl/config']).toEqual([
@@ -72,6 +72,7 @@ describe('yarcl init', () => {
 
     await initProject({ root, install: false, version: '0.1.0' });
 
+    expect(await readFile(join(root, 'vite.config.ts'), 'utf8')).toContain("import yarcl from '@yarcl/react/vite';");
     const tsconfig = parse(await readFile(join(root, 'tsconfig.app.json'), 'utf8'));
     expect(tsconfig.compilerOptions.paths['@yarcl/config'][0]).toBe('./src/theme.ts');
     expect(await readFile(join(root, 'src/theme.ts'), 'utf8')).toContain('defineConfig');
@@ -84,7 +85,39 @@ describe('yarcl init', () => {
     );
 
     expect(() => assertConfigMapping(root, 'src/yarcl.config.ts')).toThrow(
-      'yarcl: Config path mismatch. Vite uses "src/yarcl.config.ts", but ./tsconfig.app.json has "./src/other.ts"',
+      'yarcl: Config path mismatch. build tool uses "src/yarcl.config.ts", but ./tsconfig.app.json has "./src/other.ts"',
     );
+  });
+
+  it.each([
+    ['webpack', 'webpack.config.cjs', "module.exports = { plugins: [] };\n", "const yarcl = require('@yarcl/react/webpack');"],
+    ['rspack', 'rspack.config.ts', 'export default { plugins: [] };\n', "import yarcl from '@yarcl/react/rspack';"],
+    ['rollup', 'rollup.config.mjs', 'export default { plugins: [] };\n', "import yarcl from '@yarcl/react/rollup';"],
+    [
+      'esbuild',
+      'esbuild.config.js',
+      "import { build } from 'esbuild';\nbuild({ plugins: [] });\n",
+      "import yarcl from '@yarcl/react/esbuild';",
+    ],
+  ] satisfies [BuildTool, string, string, string][])('configures %s projects', async (tool, file, source, expectedImport) => {
+    const root = await project(source, '{"compilerOptions":{}}\n', file);
+
+    const result = await initProject({ root, install: false, version: '0.1.0' });
+
+    const updated = await readFile(join(root, file), 'utf8');
+    expect(result.buildTool).toBe(tool);
+    expect(updated).toContain(expectedImport);
+    expect(updated).toContain("yarcl({ config: 'src/yarcl.config.ts' })");
+  });
+
+  it('uses --bundler to select a build config when several exist', async () => {
+    const root = await project('export default { plugins: [] };\n', '{"compilerOptions":{}}\n');
+    await writeFile(join(root, 'webpack.config.mjs'), 'export default { plugins: [] };\n');
+
+    const result = await initProject({ root, buildTool: 'webpack', install: false, version: '0.1.0' });
+
+    expect(result.buildTool).toBe('webpack');
+    expect(await readFile(join(root, 'webpack.config.mjs'), 'utf8')).toContain('@yarcl/react/webpack');
+    expect(await readFile(join(root, 'vite.config.ts'), 'utf8')).not.toContain('yarcl');
   });
 });

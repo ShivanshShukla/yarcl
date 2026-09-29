@@ -17,7 +17,7 @@
     "design-system",
     "design-tokens",
     "theming",
-    "vite-plugin",
+    "build-plugin",
     "typescript"
   ],
   "type": "module",
@@ -44,13 +44,38 @@
       "types": "./dist/yarcl.config.d.ts",
       "default": "./dist/yarcl.config.js"
     },
-    "./plugin": {
-      "types": "./dist/plugin.d.ts",
-      "default": "./dist/plugin.js"
+    "./vite": {
+      "types": "./dist/vite.d.ts",
+      "import": "./dist/vite.js",
+      "require": "./dist/vite.cjs"
+    },
+    "./webpack": {
+      "types": "./dist/webpack.d.ts",
+      "import": "./dist/webpack.js",
+      "require": "./dist/webpack.cjs"
+    },
+    "./rspack": {
+      "types": "./dist/rspack.d.ts",
+      "import": "./dist/rspack.js",
+      "require": "./dist/rspack.cjs"
+    },
+    "./rollup": {
+      "types": "./dist/rollup.d.ts",
+      "import": "./dist/rollup.js",
+      "require": "./dist/rollup.cjs"
+    },
+    "./esbuild": {
+      "types": "./dist/esbuild.d.ts",
+      "import": "./dist/esbuild.js",
+      "require": "./dist/esbuild.cjs"
     },
     "./reference": {
       "types": "./dist/reference/index.d.ts",
       "default": "./dist/reference/index.js"
+    },
+    "./demo": {
+      "types": "./dist/demo.d.ts",
+      "default": "./dist/demo.js"
     },
     "./themes": {
       "types": "./dist/themes/index.d.ts",
@@ -72,13 +97,14 @@
   },
   "peerDependencies": {
     "react": ">=19",
-    "react-dom": ">=19",
-    "vite": ">=6.1"
+    "react-dom": ">=19"
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.20",
     "date-fns": "^4.4.0",
-    "jsonc-parser": "^3.3.1"
+    "jiti": "^2.7.0",
+    "jsonc-parser": "^3.3.1",
+    "unplugin": "^3.4.0"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",

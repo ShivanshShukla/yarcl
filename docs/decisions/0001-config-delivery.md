@@ -46,7 +46,7 @@ Use **A**. The thesis of the library is "the config file *is* the design system"
 
 ## Consequences
 
-- Consumers add a Vite plugin and a `paths` entry. The two must point at the same file; a future `yarcl init` could write both.
+- Consumers add the plugin for their build tool and a `paths` entry. The two must point at the same file; `yarcl init` writes both.
 - One design system per build. Multi-brand apps would add a Provider for runtime values (a hybrid of A and B).
 - The package ships compiled ESM and declarations. The declarations keep `@yarcl/config` unresolved so the consumer's `paths` entry supplies the config type.
 - Other bundlers need small adapters (webpack `resolve.alias`, Turbopack `resolveAlias`); unplugin could produce them from one implementation.
@@ -54,4 +54,4 @@ Use **A**. The thesis of the library is "the config file *is* the design system"
 ## When to revisit
 
 - A consumer needs several themes in one bundle → add B for runtime values, keep A for types.
-- Distribution to non-Vite toolchains becomes a priority → unplugin adapters, or B to remove the `paths` requirement.
+- The plugin uses unplugin adapters for Vite, webpack, Rspack, Rollup and esbuild.

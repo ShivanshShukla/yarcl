@@ -12,8 +12,13 @@ const entries = {
   '@yarcl/react': 'index.js',
   '@yarcl/react/define': 'define.js',
   '@yarcl/react/defaults': 'yarcl.config.js',
-  '@yarcl/react/plugin': 'plugin.js',
+  '@yarcl/react/vite': 'vite.js',
+  '@yarcl/react/webpack': 'webpack.js',
+  '@yarcl/react/rspack': 'rspack.js',
+  '@yarcl/react/rollup': 'rollup.js',
+  '@yarcl/react/esbuild': 'esbuild.js',
   '@yarcl/react/reference': 'reference/index.js',
+  '@yarcl/react/demo': 'demo.js',
   '@yarcl/react/themes': 'themes/index.js',
   '@yarcl/react/css': 'apply.js',
   'yarcl CLI': 'cli.js',
@@ -22,11 +27,16 @@ const budgets = {
   '@yarcl/react': { js: 23 * 1024, css: 7 * 1024 },
   '@yarcl/react/define': { js: 0.2 * 1024, css: 0 },
   '@yarcl/react/defaults': { js: 1.5 * 1024, css: 0 },
-  '@yarcl/react/plugin': { js: 3.75 * 1024, css: 0 },
+  '@yarcl/react/vite': { js: 6 * 1024, css: 0 },
+  '@yarcl/react/webpack': { js: 6 * 1024, css: 0 },
+  '@yarcl/react/rspack': { js: 6 * 1024, css: 0 },
+  '@yarcl/react/rollup': { js: 6 * 1024, css: 0 },
+  '@yarcl/react/esbuild': { js: 6 * 1024, css: 0 },
   '@yarcl/react/reference': { js: 5 * 1024, css: 0.6 * 1024 },
+  '@yarcl/react/demo': { js: 28 * 1024, css: 7 * 1024 },
   '@yarcl/react/themes': { js: 3.5 * 1024, css: 0 },
   '@yarcl/react/css': { js: 3 * 1024, css: 0 },
-  'yarcl CLI': { js: 3 * 1024, css: 0 },
+  'yarcl CLI': { js: 3.25 * 1024, css: 0 },
   Button: { js: 2.1 * 1024, css: 8.5 * 1024 },
   'Button + Input': { js: 2.25 * 1024, css: 8.5 * 1024 },
 };
@@ -37,8 +47,9 @@ const externalPackages = [
   'jsonc-parser',
   'react',
   'react-dom',
-  'virtual:yarcl.css',
-  'vite',
+  '@yarcl/react/styles.css',
+  'jiti',
+  'unplugin',
 ];
 
 function isEntryExternal(id) {
@@ -102,7 +113,7 @@ async function measureConsumer(temporary, name, imports) {
     input,
     `import { ${imports.join(', ')} } from '@yarcl/react';\nglobalThis.__yarclSize = [${imports.join(', ')}];\n`,
   );
-  const { yarcl } = await import(pathToFileURL(join(dist, 'plugin.js')).href);
+  const { default: yarcl } = await import(pathToFileURL(join(dist, 'vite.js')).href);
   const result = await build({
     configFile: false,
     logLevel: 'silent',

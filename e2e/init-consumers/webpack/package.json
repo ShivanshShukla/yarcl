@@ -1,0 +1,15 @@
+{
+  "name": "yarcl-init-webpack",
+  "private": true,
+  "scripts": {
+    "build": "webpack --config webpack.config.cjs"
+  },
+  "dependencies": {
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "webpack": "^5.101.3",
+    "webpack-cli": "^6.0.1"
+  }
+}
