@@ -108,6 +108,7 @@ function ToggleGroupRoot(props: ToggleGroupProps) {
     ...rest
   } = props;
 
+  const ref = useRef<HTMLDivElement>(null);
   const [selected, setSelected] = useControllable<string[]>(
     value === undefined ? undefined : toArray(value),
     toArray(defaultValue),
@@ -115,9 +116,9 @@ function ToggleGroupRoot(props: ToggleGroupProps) {
       type === 'multiple'
         ? (onValueChange as (v: string[]) => void)?.(next)
         : (onValueChange as (v: string | null) => void)?.(next[0] ?? null),
+    ref,
   );
 
-  const ref = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
     const items = [...(ref.current?.querySelectorAll<HTMLButtonElement>('.yarcl-toggle-item') ?? [])];
     const stop = items.find((item) => item.getAttribute('aria-pressed') === 'true' && !item.disabled) ?? items.find((item) => !item.disabled);

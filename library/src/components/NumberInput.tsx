@@ -1,4 +1,4 @@
-import { useId, useState, type ComponentProps, type KeyboardEvent, type FocusEvent } from 'react';
+import { useEffect, useId, useRef, useState, type ComponentProps, type KeyboardEvent, type FocusEvent } from 'react';
 import { colorClass, cx, radiusClass, sizeClass } from '../classes';
 import { useFieldProps } from '../field-context';
 import { ChevronIcon } from '../floating';
@@ -93,8 +93,18 @@ export function NumberInput(props: NumberInputProps) {
     onKeyDown,
     ...rest
   } = useFieldProps(props);
-  const [value, setValue] = useControllable(valueProp, defaultValue, onValueChange);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [value, setValue] = useControllable(valueProp, defaultValue, onValueChange, inputRef);
   const [draft, setDraft] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!inputRef.current) return;
+    const form = inputRef.current.closest('form');
+    if (!form) return;
+    const onReset = () => setDraft(null);
+    form.addEventListener('reset', onReset);
+    return () => form.removeEventListener('reset', onReset);
+  }, []);
 
   const clamp = (n: number) => Math.min(max ?? Infinity, Math.max(min ?? -Infinity, n));
   const locked = disabled || readOnly;
@@ -161,6 +171,12 @@ export function NumberInput(props: NumberInputProps) {
     >
       <input
         {...rest}
+        ref={(node) => {
+          inputRef.current = node;
+          const incomingRef = (rest as { ref?: React.Ref<HTMLInputElement> }).ref;
+          if (typeof incomingRef === 'function') incomingRef(node);
+          else if (incomingRef && 'current' in incomingRef) (incomingRef as React.MutableRefObject<HTMLInputElement | null>).current = node;
+        }}
         id={id}
         type="text"
         inputMode="decimal"

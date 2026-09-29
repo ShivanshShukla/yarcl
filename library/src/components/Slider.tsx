@@ -174,8 +174,8 @@ export function Slider<V extends SliderValue = number>(props: SliderProps<V>) {
     ...rest
   } = useFieldProps(props) as SliderProps<V> & { required?: boolean };
 
-  const [value, setValue] = useControllable<V>(valueProp, defaultValue ?? (min as V), onValueChange);
   const trackRef = useRef<HTMLDivElement>(null);
+  const [value, setValue] = useControllable<V>(valueProp, defaultValue ?? (min as V), onValueChange, trackRef);
   const thumbRefs = useRef<(HTMLDivElement | null)[]>([]);
   const dragging = useRef<number | null>(null);
 

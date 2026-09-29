@@ -1,75 +1,142 @@
 ---
 title: Form Libraries Integration
-description: Learn how to integrate yarcl form controls with React Hook Form and TanStack Form, including controlled and uncontrolled usage, validation error mapping, and accessibility.
+description: Learn how to integrate yarcl form controls with React Hook Form, TanStack Form, Zod schema validation, and form reset lifecycles.
 sidebar:
   order: 4
 ---
 
-`yarcl` form controls (`Select`, `Combobox`, `RadioGroup`, `Switch`, `Input`, `Textarea`, `Checkbox`, `NumberInput`, `Slider`, `DatePicker`) are built on native HTML element semantics. They work out of the box with popular React form libraries such as **React Hook Form** and **TanStack Form**.
+`yarcl` form controls (`Input`, `Textarea`, `Checkbox`, `Switch`, `Select`, `Combobox`, `RadioGroup`, `NumberInput`, `Slider`, `DatePicker`) are built on standard HTML element semantics. They work out of the box with popular React form libraries such as **React Hook Form** and **TanStack Form**, support schema validation through **Zod** and the **Standard Schema** specification, and participate in both programmatic and native HTML form reset lifecycles.
 
 ## How `Field` Handles Validation Errors
 
 The `<Field>` component acts as an accessibility and layout wrapper for form controls. When an `error` prop is passed to `<Field>`, it automatically:
-1. Renders an error message below the control with the designated error styling (`defaults.errorColor`).
+1. Renders an error message below the control styled with `defaults.errorColor`.
 2. Generates an `aria-describedby` reference pointing to the error message element ID.
 3. Passes `invalid: true` via context to child controls, setting `aria-invalid="true"` on the underlying `<input>` or `<button>`.
 
 ```tsx
-<Field label="Email" error={errors.email?.message}>
-  <Input type="email" />
+<Field label="Email" error={errors.email?.message} required>
+  <Input type="email" placeholder="you@example.com" />
 </Field>
+```
+
+---
+
+## Schema Validation with Zod & Standard Schema
+
+Both React Hook Form and TanStack Form support schema-based validation using Zod.
+
+### Shared Validation Schema
+
+Define a type-safe schema with Zod:
+
+```tsx title="src/schemas/settingsSchema.ts"
+import { z } from 'zod';
+
+export const settingsSchema = z.object({
+  organization: z.string().min(2, 'Organization must be at least 2 characters'),
+  plan: z.string().min(1, 'Please select a subscription plan'),
+  region: z.string().min(1, 'Please select a deployment region'),
+  billingCycle: z.enum(['monthly', 'annual'], {
+    message: 'Please choose a billing cycle',
+  }),
+  seats: z
+    .number({ invalid_type_error: 'Seats must be a number' })
+    .min(1, 'Must have at least 1 seat')
+    .max(50, 'Maximum 50 seats per organization'),
+  notifications: z.boolean(),
+  agreeToTerms: z.literal(true, {
+    message: 'You must accept the terms and conditions',
+  }),
+});
+
+export type SettingsFormValues = z.infer<typeof settingsSchema>;
 ```
 
 ---
 
 ## React Hook Form Integration
 
-### Controlled Controls (`Controller`)
+### Controlled Controls with `Controller` and `zodResolver`
 
-For custom components like `Select`, `Combobox`, `RadioGroup`, and `Switch`, use React Hook Form's `<Controller>`.
+Use React Hook Form's `<Controller>` for custom components like `Select`, `Combobox`, `RadioGroup`, `Switch`, and `NumberInput`. Pass `zodResolver(settingsSchema)` to `useForm` for automatic validation:
 
-```tsx title="src/MyForm.tsx"
+```tsx title="src/RHFSettingsForm.tsx"
 import { useForm, Controller } from 'react-hook-form';
-import { Field, Select, Combobox, RadioGroup, Radio, Switch, Button, Stack } from '@yarcl/react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  Button,
+  Combobox,
+  Field,
+  Input,
+  NumberInput,
+  Radio,
+  RadioGroup,
+  Select,
+  Stack,
+  Switch,
+} from '@yarcl/react';
+import { settingsSchema, type SettingsFormValues } from './schemas/settingsSchema';
 
-interface FormValues {
-  plan: string;
-  country: string;
-  frequency: string;
-  notifications: boolean;
-}
+const planOptions = [
+  { value: 'starter', label: 'Starter Plan' },
+  { value: 'pro', label: 'Pro Plan' },
+  { value: 'enterprise', label: 'Enterprise Plan' },
+];
 
-export function MyForm() {
-  const { control, handleSubmit } = useForm<FormValues>({
+const regionOptions = [
+  { value: 'us-east', label: 'US East (N. Virginia)' },
+  { value: 'eu-central', label: 'Europe (Frankfurt)' },
+  { value: 'ap-southeast', label: 'Asia Pacific (Tokyo)' },
+];
+
+export function RHFSettingsForm() {
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<SettingsFormValues>({
+    resolver: zodResolver(settingsSchema),
     defaultValues: {
-      plan: 'pro',
-      country: 'us',
-      frequency: 'monthly',
+      organization: '',
+      plan: '',
+      region: '',
+      billingCycle: 'monthly',
+      seats: 5,
       notifications: true,
+      agreeToTerms: false as unknown as true,
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log('Submitted values:', data);
+  const onSubmit = (data: SettingsFormValues) => {
+    console.log('Valid submission data:', data);
   };
 
   return (
     <Stack as="form" onSubmit={handleSubmit(onSubmit)}>
+      {/* Input */}
+      <Controller
+        name="organization"
+        control={control}
+        render={({ field, fieldState }) => (
+          <Field label="Organization" error={fieldState.error?.message} required>
+            <Input {...field} placeholder="Acme Inc." />
+          </Field>
+        )}
+      />
+
       {/* Select */}
       <Controller
         name="plan"
         control={control}
-        rules={{ required: 'Please choose a plan' }}
         render={({ field, fieldState }) => (
           <Field label="Plan" error={fieldState.error?.message} required>
             <Select
-              ref={field.ref}
-              options={[
-                { value: 'free', label: 'Free' },
-                { value: 'pro', label: 'Pro' },
-              ]}
-              value={field.value}
-              onValueChange={field.onChange}
+              placeholder="Choose a plan"
+              options={planOptions}
+              value={field.value || null}
+              onValueChange={(val) => field.onChange(val ?? '')}
             />
           </Field>
         )}
@@ -77,19 +144,15 @@ export function MyForm() {
 
       {/* Combobox */}
       <Controller
-        name="country"
+        name="region"
         control={control}
-        rules={{ required: 'Country is required' }}
         render={({ field, fieldState }) => (
-          <Field label="Country" error={fieldState.error?.message} required>
+          <Field label="Region" error={fieldState.error?.message} required>
             <Combobox
-              ref={field.ref}
-              options={[
-                { value: 'us', label: 'United States' },
-                { value: 'ca', label: 'Canada' },
-              ]}
-              value={field.value}
-              onValueChange={field.onChange}
+              placeholder="Search regions..."
+              options={regionOptions}
+              value={field.value || null}
+              onValueChange={(val) => field.onChange(val ?? '')}
             />
           </Field>
         )}
@@ -97,18 +160,34 @@ export function MyForm() {
 
       {/* RadioGroup */}
       <Controller
-        name="frequency"
+        name="billingCycle"
         control={control}
         render={({ field, fieldState }) => (
           <RadioGroup
-            label="Billing Frequency"
-            value={field.value}
+            label="Billing Cycle"
+            value={field.value ?? null}
             onValueChange={field.onChange}
             error={fieldState.error?.message}
           >
-            <Radio value="monthly">Monthly</Radio>
-            <Radio value="annual">Annual</Radio>
+            <Radio value="monthly">Monthly Billing</Radio>
+            <Radio value="annual">Annual Billing (Save 20%)</Radio>
           </RadioGroup>
+        )}
+      />
+
+      {/* NumberInput */}
+      <Controller
+        name="seats"
+        control={control}
+        render={({ field, fieldState }) => (
+          <Field label="Team Seats" error={fieldState.error?.message}>
+            <NumberInput
+              min={1}
+              max={50}
+              value={field.value}
+              onValueChange={(val) => field.onChange(val ?? 1)}
+            />
+          </Field>
         )}
       />
 
@@ -116,20 +195,42 @@ export function MyForm() {
       <Controller
         name="notifications"
         control={control}
-        render={({ field, fieldState }) => (
-          <Field label="Notifications" error={fieldState.error?.message}>
+        render={({ field }) => (
+          <Field label="Preferences">
             <Switch
-              ref={field.ref}
               checked={field.value}
               onChange={(e) => field.onChange(e.target.checked)}
             >
-              Enable email updates
+              Email deployment alerts
             </Switch>
           </Field>
         )}
       />
 
-      <Button type="submit">Save settings</Button>
+      {/* Terms Checkbox */}
+      <Controller
+        name="agreeToTerms"
+        control={control}
+        render={({ field, fieldState }) => (
+          <Field error={fieldState.error?.message}>
+            <Switch
+              checked={Boolean(field.value)}
+              onChange={(e) => field.onChange(e.target.checked)}
+            >
+              I agree to the Terms of Service
+            </Switch>
+          </Field>
+        )}
+      />
+
+      <Stack direction="row" gap={3}>
+        <Button type="submit" disabled={isSubmitting}>
+          Save Settings
+        </Button>
+        <Button type="button" variant="subtle" onClick={() => reset()}>
+          Reset
+        </Button>
+      </Stack>
     </Stack>
   );
 }
@@ -137,61 +238,77 @@ export function MyForm() {
 
 ### Uncontrolled Usage
 
-For native inputs or uncontrolled components, pass `name`, `defaultValue` (or `defaultChecked`), or use React Hook Form's `register()` method.
+For native inputs or uncontrolled components, pass `name`, `defaultValue` (or `defaultChecked`), or use React Hook Form's `register()`:
 
 ```tsx title="src/UncontrolledForm.tsx"
 import { useForm } from 'react-hook-form';
-import { Field, Select, Combobox, RadioGroup, Radio, Switch } from '@yarcl/react';
+import { Button, Combobox, Field, Radio, RadioGroup, Select, Stack, Switch } from '@yarcl/react';
 
 export function UncontrolledForm() {
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   return (
-    <form onSubmit={handleSubmit((data) => console.log(data))}>
-      {/* Native-compatible Switch with register */}
+    <Stack as="form" onSubmit={handleSubmit((data) => console.log(data))}>
       <Field label="Email Notifications" error={errors.notifications?.message as string}>
         <Switch {...register('notifications')}>
           Receive product updates
         </Switch>
       </Field>
 
-      {/* Uncontrolled Select with hidden form input */}
       <Field label="Plan">
         <Select name="plan" defaultValue="free" options={[{ value: 'free', label: 'Free' }]} />
       </Field>
 
-      {/* Uncontrolled RadioGroup */}
       <RadioGroup label="Frequency" name="frequency" defaultValue="monthly">
         <Radio value="monthly">Monthly</Radio>
         <Radio value="annual">Annual</Radio>
       </RadioGroup>
 
-      <button type="submit">Submit</button>
-    </form>
+      <Button type="submit">Submit</Button>
+    </Stack>
   );
 }
 ```
 
 ---
 
-## TanStack Form Integration (`@tanstack/react-form`)
+## TanStack Form Integration
 
-TanStack Form uses `form.Field` to render controls. Connect `field.state.value`, `field.handleChange`, and `field.state.meta.errors`.
+TanStack Form uses `form.Field` to bind individual components. It supports Standard Schema validation out of the box with Zod schemas passed to `validators.onChange` or `validators.onSubmit`.
 
-```tsx title="src/TanStackForm.tsx"
+```tsx title="src/TanStackSettingsForm.tsx"
 import { useForm } from '@tanstack/react-form';
-import { Field, Select, Combobox, RadioGroup, Radio, Switch, Button, Stack } from '@yarcl/react';
+import {
+  Button,
+  Combobox,
+  Field,
+  Input,
+  Radio,
+  RadioGroup,
+  Select,
+  Stack,
+  Switch,
+} from '@yarcl/react';
+import { z } from 'zod';
 
-export function TanStackFormExample() {
+const emailSchema = z.string().email('Please enter a valid email address');
+const planSchema = z.string().min(1, 'Please select a plan');
+
+const planOptions = [
+  { value: 'free', label: 'Free Tier' },
+  { value: 'pro', label: 'Pro Tier' },
+];
+
+export function TanStackSettingsForm() {
   const form = useForm({
     defaultValues: {
-      plan: 'pro',
-      country: 'us',
+      email: '',
+      plan: '',
       frequency: 'monthly',
-      notifications: true,
+      agree: false,
     },
     onSubmit: async ({ value }) => {
-      console.log('Submitted:', value);
+      console.log('Submitted values:', value);
     },
   });
 
@@ -204,46 +321,59 @@ export function TanStackFormExample() {
       }}
     >
       <Stack>
-        {/* Select */}
+        {/* Email Field with Standard Schema / Zod Validator */}
+        <form.Field
+          name="email"
+          validators={{
+            onChange: emailSchema,
+            onSubmit: emailSchema,
+          }}
+          children={(field) => {
+            const errorMsg = field.state.meta.errors
+              .map((err) => (typeof err === 'object' && err !== null && 'message' in err ? String((err as { message: unknown }).message) : String(err)))
+              .filter(Boolean)
+              .join(', ');
+            return (
+              <Field label="Email" error={errorMsg || undefined} required>
+                <Input
+                  name={field.name}
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  onBlur={field.handleBlur}
+                  placeholder="name@company.com"
+                />
+              </Field>
+            );
+          }}
+        />
+
+        {/* Plan Select Field */}
         <form.Field
           name="plan"
           validators={{
-            onChange: ({ value }) => (!value ? 'Plan is required' : undefined),
+            onChange: planSchema,
+            onSubmit: planSchema,
           }}
-          children={(field) => (
-            <Field label="Plan" error={field.state.meta.errors.join(', ')} required>
-              <Select
-                name={field.name}
-                options={[
-                  { value: 'free', label: 'Free' },
-                  { value: 'pro', label: 'Pro' },
-                ]}
-                value={field.state.value}
-                onValueChange={(val) => field.handleChange(val ?? '')}
-              />
-            </Field>
-          )}
+          children={(field) => {
+            const errorMsg = field.state.meta.errors
+              .map((err) => (typeof err === 'object' && err !== null && 'message' in err ? String((err as { message: unknown }).message) : String(err)))
+              .filter(Boolean)
+              .join(', ');
+            return (
+              <Field label="Plan" error={errorMsg || undefined} required>
+                <Select
+                  name={field.name}
+                  placeholder="Select a plan"
+                  options={planOptions}
+                  value={field.state.value || null}
+                  onValueChange={(val) => field.handleChange(val ?? '')}
+                />
+              </Field>
+            );
+          }}
         />
 
-        {/* Combobox */}
-        <form.Field
-          name="country"
-          children={(field) => (
-            <Field label="Country" error={field.state.meta.errors.join(', ')}>
-              <Combobox
-                name={field.name}
-                options={[
-                  { value: 'us', label: 'United States' },
-                  { value: 'ca', label: 'Canada' },
-                ]}
-                value={field.state.value}
-                onValueChange={(val) => field.handleChange(val ?? '')}
-              />
-            </Field>
-          )}
-        />
-
-        {/* RadioGroup */}
+        {/* RadioGroup Field */}
         <form.Field
           name="frequency"
           children={(field) => (
@@ -252,7 +382,6 @@ export function TanStackFormExample() {
               name={field.name}
               value={field.state.value}
               onValueChange={(val) => field.handleChange(val)}
-              error={field.state.meta.errors.join(', ')}
             >
               <Radio value="monthly">Monthly</Radio>
               <Radio value="annual">Annual</Radio>
@@ -260,26 +389,105 @@ export function TanStackFormExample() {
           )}
         />
 
-        {/* Switch */}
+        {/* Switch Field */}
         <form.Field
-          name="notifications"
+          name="agree"
           children={(field) => (
-            <Field label="Notifications" error={field.state.meta.errors.join(', ')}>
+            <Field label="Terms">
               <Switch
                 name={field.name}
                 checked={field.state.value}
                 onChange={(e) => field.handleChange(e.target.checked)}
                 onBlur={field.handleBlur}
               >
-                Enable Notifications
+                Accept terms and conditions
               </Switch>
             </Field>
           )}
         />
 
-        <Button type="submit">Save</Button>
+        <Stack direction="row" gap={3}>
+          <Button type="submit">Submit</Button>
+          <Button type="button" variant="subtle" onClick={() => form.reset()}>
+            Reset Form
+          </Button>
+        </Stack>
       </Stack>
     </form>
+  );
+}
+```
+
+---
+
+## Form Reset Integration Lifecycle
+
+`yarcl` controls seamlessly support both **programmatic form resets** and **native HTML form resets**.
+
+### Programmatic Reset (`form.reset()`)
+
+When using controlled bindings with React Hook Form or TanStack Form:
+1. Calling `form.reset()` restores the form state to the initial default values.
+2. Form libraries automatically clear validation errors and reset the `isDirty` / `isSubmitted` flags.
+3. Passing custom values, such as `form.reset({ plan: 'enterprise', ... })`, immediately updates all controlled `@yarcl/react` components to reflect the new state.
+
+```tsx
+// Reset to initial values and clear errors
+form.reset();
+
+// Populate form with newly fetched data
+form.reset({
+  organization: 'Acme Corp',
+  plan: 'pro',
+  seats: 12,
+});
+```
+
+### Native HTML Form Reset (`<button type="reset">`)
+
+Uncontrolled `@yarcl/react` components (`Select`, `Combobox`, `RadioGroup`, `NumberInput`, `Slider`, `Switch`, `Checkbox`, `DatePicker`) automatically listen for the native HTML form `'reset'` event.
+
+When a native form reset occurs:
+- The component reverts its internal state back to its initial `defaultValue` (or `defaultChecked`).
+- Hidden inputs rendered by `Select`, `Combobox`, or `RadioGroup` update accordingly.
+- No manual event handlers are required.
+
+```tsx title="src/NativeResetExample.tsx"
+import { Button, Combobox, Field, NumberInput, Radio, RadioGroup, Select, Slider, Stack, Switch } from '@yarcl/react';
+
+export function NativeResetExample() {
+  return (
+    <Stack as="form">
+      <Field label="Plan">
+        <Select
+          name="plan"
+          defaultValue="pro"
+          options={[
+            { value: 'free', label: 'Free' },
+            { value: 'pro', label: 'Pro' },
+          ]}
+        />
+      </Field>
+
+      <Field label="Seats">
+        <NumberInput name="seats" defaultValue={5} min={1} max={20} />
+      </Field>
+
+      <Field label="Volume">
+        <Slider name="volume" defaultValue={50} min={0} max={100} />
+      </Field>
+
+      <Field label="Notifications">
+        <Switch name="notifications" defaultChecked>
+          Enable notifications
+        </Switch>
+      </Field>
+
+      <Stack direction="row" gap={3}>
+        <Button type="submit">Submit</Button>
+        <Button type="reset" variant="subtle">Reset to Defaults</Button>
+      </Stack>
+    </Stack>
   );
 }
 ```
@@ -290,7 +498,13 @@ export function TanStackFormExample() {
 
 | Component | Controlled Props | Uncontrolled Props | Form Submit Behavior |
 | --- | --- | --- | --- |
-| `<Select>` | `value`, `onValueChange` | `defaultValue`, `name` | Renders `<input type="hidden" name={name} value={value} />` |
-| `<Combobox>` | `value`, `onValueChange` | `defaultValue`, `name` | Renders `<input type="hidden" name={name} value={v} />` (single or multiple) |
-| `<RadioGroup>` | `value`, `onValueChange` | `defaultValue`, `name` | Radios share `name`; native radio input submits value |
+| `<Input>` | `value`, `onChange` | `defaultValue`, `name` | Native `<input>` submits value |
+| `<Textarea>` | `value`, `onChange` | `defaultValue`, `name` | Native `<textarea>` submits text |
+| `<Checkbox>` | `checked`, `onChange` | `defaultChecked`, `name` | Native `<input type="checkbox">` submits value |
 | `<Switch>` | `checked`, `onChange` | `defaultChecked`, `name` | Native `<input type="checkbox" role="switch">` submits value |
+| `<Select>` | `value`, `onValueChange` | `defaultValue`, `name` | Renders `<input type="hidden" name={name} value={value} />` |
+| `<Combobox>` | `value`, `onValueChange` | `defaultValue`, `name` | Renders `<input type="hidden" name={name} value={value} />` (single or multiple) |
+| `<RadioGroup>` | `value`, `onValueChange` | `defaultValue`, `name` | Radios share `name`; native radio input submits value |
+| `<NumberInput>` | `value`, `onValueChange` | `defaultValue`, `name` | Native `<input type="text" inputMode="decimal">` submits value |
+| `<Slider>` | `value`, `onValueChange` | `defaultValue`, `name` | Hidden inputs submit single or range values |
+| `<DatePicker>` | `value`, `onValueChange` | `defaultValue`, `name` | Renders `<input type="hidden" name={name} value={isoDate} />` |
