@@ -9,7 +9,7 @@ import {
 import { colorClass, cx, radiusClass, sizeClass } from '../classes';
 import { ChevronIcon } from '../floating';
 import { useControllable } from '../hooks';
-import type { Color, Radius, Size } from '../types';
+import type { Color, ComponentSize, Radius } from '../types';
 import { useDefaults } from '../runtime';
 
 interface AccordionContextValue {
@@ -46,7 +46,7 @@ export interface AccordionBaseProps extends Omit<ComponentProps<'div'>, 'default
    * Trigger height, padding and font size, from the `sizes` config.
    * @default config.defaults.size
    */
-  size?: Size;
+  size?: ComponentSize<'Accordion'>;
   /**
    * Corner radius of the outer frame, from the `radii` config, or `'size'` to match the size.
    * @default config.defaults.radius
@@ -157,7 +157,7 @@ function AccordionRoot(props: AccordionProps) {
       <div
         className={cx(
           'yarcl-accordion',
-          sizeClass(resolvedSize),
+          sizeClass(resolvedSize, 'Accordion'),
           radiusClass(radius ?? own.radius, resolvedSize),
           colorClass(color ?? own.color),
           className,

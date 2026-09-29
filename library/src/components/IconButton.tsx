@@ -7,7 +7,7 @@ import { useDefaults } from '../runtime';
 
 
 /** Props for {@link IconButton}. `aria-label` is required because the button has no visible text. */
-export interface IconButtonProps extends Omit<ComponentProps<'button'>, 'color'>, TokenProps, VariantProps {
+export interface IconButtonProps extends Omit<ComponentProps<'button'>, 'color'>, TokenProps<'IconButton'>, VariantProps {
   /** Shows a {@link Spinner}, disables the button and sets `aria-busy`. */
   loading?: boolean;
   /** Accessible name, announced by screen readers in place of visible text. */
@@ -42,7 +42,7 @@ export function IconButton({
       type={type}
       className={cx(
         'yarcl-button yarcl-icon-button',
-        sizeClass(size ?? group?.size ?? own.size),
+        sizeClass(size ?? group?.size ?? own.size, 'IconButton'),
         radiusClass(radius ?? group?.radius ?? own.radius, size ?? group?.size ?? own.size),
         colorClass(color ?? group?.color ?? own.color),
         variantClass(variant ?? group?.variant ?? own.variant),

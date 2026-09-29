@@ -39,6 +39,7 @@ export default async function ({ page, check, focused, htmlOverflow, setTiming }
   await actions.click();
   const menu = page.getByRole('menu');
   check('menu opens on click', await menu.isVisible());
+  check('menu uses its sm size override', (await menu.evaluate((el) => getComputedStyle(el).getPropertyValue('--yarcl-px'))) === '0.625rem');
   check('menu trigger aria-expanded', (await actions.getAttribute('aria-expanded')) === 'true');
   await page.keyboard.press('Escape');
   await actions.focus();

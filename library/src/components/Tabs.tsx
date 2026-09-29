@@ -8,7 +8,7 @@ import {
 } from 'react';
 import { colorClass, cx, sizeClass } from '../classes';
 import { useControllable } from '../hooks';
-import type { Color, Size } from '../types';
+import type { Color, ComponentSize } from '../types';
 import { useDefaults } from '../runtime';
 
 
@@ -34,7 +34,7 @@ export interface TabsBaseProps extends Omit<ComponentProps<'div'>, 'defaultValue
    * Tab height and font size, from the `sizes` config.
    * @default config.defaults.size
    */
-  size?: Size;
+  size?: ComponentSize<'Tabs'>;
   /**
    * Color of the selected tab's indicator, from the `colors` config.
    * @default config.defaults.color
@@ -56,7 +56,7 @@ function TabsRoot({ value: valueProp, defaultValue, onValueChange, size, color, 
   const idFor = (kind: 'tab' | 'panel', v: string) => `${baseId}-${kind}-${v.replace(/[^\w-]/g, '_')}`;
   return (
     <TabsContext.Provider value={{ value, select, idFor }}>
-      <div className={cx('yarcl-tabs', sizeClass(size ?? own.size), colorClass(color ?? own.color), className)} {...props} />
+      <div className={cx('yarcl-tabs', sizeClass(size ?? own.size, 'Tabs'), colorClass(color ?? own.color), className)} {...props} />
     </TabsContext.Provider>
   );
 }

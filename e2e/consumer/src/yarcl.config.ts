@@ -78,7 +78,12 @@ export default defineConfig({
     AvatarGroup: { size: 'talla-s', radius: 'square', color: 'moss', variant: 'wash' },
     EmptyState: { color: 'clay', gap: '3', padding: '6', textStyle: 'fine' },
     Alert: { gap: '2', padding: '4', textStyle: 'copy' },
-    Button: { radius: 'square' },
+    Button: {
+      size: 'talla-s',
+      radius: 'square',
+      allowedSizes: ['talla-s', 'talla-l'],
+      sizeOverrides: { 'talla-l': { paddingX: '2rem' } },
+    },
     IconButton: { radius: 'square' },
     ToggleGroup: { radius: 'square' },
     Pagination: { size: 'talla-s', radius: 'square', variant: 'text', selectedVariant: 'line' },

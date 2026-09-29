@@ -107,6 +107,7 @@ export { EmptyState } from './components/EmptyState';
 export type { EmptyStateProps } from './components/EmptyState';
 export type {
   Size,
+  ComponentSize,
   Radius,
   Color,
   Variant,

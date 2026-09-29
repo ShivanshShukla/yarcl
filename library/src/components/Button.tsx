@@ -7,14 +7,14 @@ import { useDefaults } from '../runtime';
 
 
 /** Props for {@link Button}. Accepts all native `<button>` attributes except `color`. */
-export interface ButtonProps extends Omit<ComponentProps<'button'>, 'color'>, TokenProps, VariantProps {
+export interface ButtonProps extends Omit<ComponentProps<'button'>, 'color'>, TokenProps<'Button'>, VariantProps {
   /** Shows a {@link Spinner}, disables the button and sets `aria-busy`. */
   loading?: boolean;
 }
 
 /**
  * A button styled from the consumer's design tokens.
- * Shares the size scale with {@link Input}, so both have the same height at the same size.
+ * Shares the base size scale with {@link Input}; component size overrides can adjust either one.
  * Icons (`<svg>`) inside are sized from the size's `iconSize`.
  *
  * @example
@@ -41,7 +41,7 @@ export function Button({
       type={type}
       className={cx(
         'yarcl-button',
-        sizeClass(size ?? group?.size ?? own.size),
+        sizeClass(size ?? group?.size ?? own.size, 'Button'),
         radiusClass(radius ?? group?.radius ?? own.radius, size ?? group?.size ?? own.size),
         colorClass(color ?? group?.color ?? own.color),
         variantClass(variant ?? group?.variant ?? own.variant),

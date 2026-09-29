@@ -99,6 +99,7 @@ The library imports a placeholder module, `@yarcl/config`. Two pieces of wiring 
 - Open groups (any keys): `colors`, `sizes`, `radii`, `variants`, `spacing`, `shadows`, `density`, `modalSizes`, `typography.styles`. Groups with required keys: `neutrals`, `zIndex`, `motion`, `timing`, `borders`.
 - Colors are `{ light, dark }` pairs; dark mode follows `color-scheme`. Readable text colors are computed.
 - Global defaults go in `defaults`; per-component defaults in `components`, e.g. `components: { Button: { radius: 'square' }, Tooltip: { padding: 'sm', textStyle: 'caption' } }`. Props override both.
+- Sized components may set `allowedSizes` to a non-empty subset of global size keys; the component's `size` prop is narrowed to that list. Omit it to allow every global size. `sizeOverrides` partially overrides `height`, `paddingX`, `fontSize` or `iconSize` for a component without restricting its prop type.
 - Component spacing, typography and radii come from config tokens. `Alert`, `Tooltip` and `Toast` accept token-backed `gap`, `padding`, `textStyle` and `radius` where applicable; `Table` accepts `radius` for its frame.
 - Style with props and config, not inline styles. Custom CSS can use the generated variables, e.g. `var(--yarcl-color-brand)`, `var(--yarcl-space-md)`.
 - Imports: components and `toast` from `@yarcl/react`; config helpers from `/define` and `/defaults`; build plugins from `/vite`, `/webpack`, `/rspack`, `/rollup` or `/esbuild`; bundled themes from `@yarcl/react/themes`; `applyTheme` from `@yarcl/react/css`.
@@ -108,7 +109,7 @@ The library imports a placeholder module, `@yarcl/config`. Two pieces of wiring 
 
 - Start by reading `src/yarcl.config.ts` (or the file passed to the build plugin): it lists every valid size, color, variant, spacing step and text style.
 - Props and JSDoc for every component ship as declarations: `node_modules/@yarcl/react/dist/components/<Name>.d.ts`.
-- To type your own components with the same tokens: `import type { Size, Color, Variant, Radius, Spacing, TextStyle } from '@yarcl/react'`. They are the keys of the project's config.
+- To type your own components with the same tokens: `import type { Size, ComponentSize, Color, Variant, Radius, Spacing, TextStyle } from '@yarcl/react'`. `Size` is every global size; `ComponentSize<'Button'>` respects that component's `allowedSizes`.
 - Config values at runtime: `config` from `@yarcl/react`, or `useConfig()` inside components (follows runtime theme switches).
 - Icons are plain `<svg>` children, sized from the size's `iconSize`. `IconButton` requires `aria-label`.
 - The plugin warns at build time when a color's text fails WCAG AA contrast; adjust the color or set its `on` (text color) explicitly.

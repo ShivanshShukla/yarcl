@@ -18,7 +18,7 @@ export type SliderValue = number | [number, number];
 
 /** Props for {@link Slider}. Accepts all native `<div>` attributes except `color`, `defaultValue`, `onChange` and `children`. */
 export interface SliderProps<V extends SliderValue = number>
-  extends TokenProps,
+  extends TokenProps<'Slider'>,
     Omit<ComponentProps<'div'>, 'color' | 'defaultValue' | 'onChange' | 'children'> {
   /**
    * Controlled value. Pass a `[start, end]` pair for a range with two thumbs.
@@ -268,7 +268,7 @@ function SliderRoot<V extends SliderValue = number>(props: SliderProps<V>) {
     <div
       className={cx(
         'yarcl-slider',
-        sizeClass(size ?? own.size),
+        sizeClass(size ?? own.size, 'Slider'),
         radiusClass(radius ?? own.radius, size ?? own.size),
         colorClass(color ?? own.color),
         className,

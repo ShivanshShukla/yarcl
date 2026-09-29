@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react';
 import { colorClass, cx, radiusClass, sizeClass, softVariantClass } from '../classes';
-import type { Color, Radius, Size, Variant } from '../types';
+import type { Color, ComponentSize, Radius, Variant } from '../types';
 import { useDefaults } from '../runtime';
 
 
@@ -20,7 +20,7 @@ export interface BadgeProps extends Omit<ComponentProps<'span'>, 'color'> {
    * Scales with the size's font size, from the `sizes` config.
    * @default config.defaults.size
    */
-  size?: Size;
+  size?: ComponentSize<'Badge'>;
   /**
    * Corner radius, from the `radii` config.
    * @default config.defaults.radius
@@ -59,7 +59,7 @@ export function Badge({
   const own = useDefaults('Badge');
   return (
     <span
-      className={cx('yarcl-badge', colorClass(color ?? own.color), softVariantClass(variant ?? own.variant), sizeClass(size ?? own.size), radiusClass(radius ?? own.radius, size ?? own.size), className)}
+      className={cx('yarcl-badge', colorClass(color ?? own.color), softVariantClass(variant ?? own.variant), sizeClass(size ?? own.size, 'Badge'), radiusClass(radius ?? own.radius, size ?? own.size), className)}
       {...props}
     >
       {children}

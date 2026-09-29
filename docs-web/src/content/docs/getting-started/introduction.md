@@ -49,7 +49,7 @@ The result: adding a key to your config makes it a valid, rendered option everyw
 
 - **More than 30 components**: buttons, form controls, a combobox, menus, dialogs, drawers, toasts, tabs, tables and more. All are accessible and keyboard-friendly.
 - **Light and dark mode** from one file, with contrast checks at build time.
-- **One size scale** shared by every control, so a button and an input of the same size always line up.
+- **One base size scale** shared by every control, with optional per-component restrictions and overrides.
 - **Per-component defaults**, e.g. make every button square without touching call sites.
 - **A living design reference** generated from your config.
 
