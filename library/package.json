@@ -1,6 +1,6 @@
 {
   "name": "@yarcl/react",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Yet another react component library. Your config file is the design system: every key becomes a typed prop and a rendered style.",
   "license": "MIT",
   "author": "Eugene Yakhnenko",
