@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "paths": {
+      "@yarcl/config": [
+        "./src/yarcl.config.ts",
+        "./node_modules/@yarcl/react/dist/yarcl.config.d.ts"
+      ]
+    }
+  }
+}

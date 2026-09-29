@@ -1,0 +1,16 @@
+{
+  "name": "yarcl-init-rollup",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "rollup --config rollup.config.mjs"
+  },
+  "dependencies": {
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "rollup": "^4.52.3"
+  }
+}

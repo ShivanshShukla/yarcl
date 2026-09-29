@@ -2,6 +2,7 @@ packages:
   - library
   - consumer
   - e2e/consumer
+  - e2e/build-tools
   - docs-web
 
 allowBuilds:

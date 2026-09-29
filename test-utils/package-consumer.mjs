@@ -3,6 +3,7 @@ import { access, cp, mkdir, mkdtemp, readFile, readdir, realpath, rm, writeFile 
 import { platform, tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { createRequire } from 'node:module';
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const fixture = join(root, 'e2e/package-consumer');
@@ -35,13 +36,16 @@ try {
     access(join(installed, 'dist/index.js')),
     access(join(installed, 'dist/index.d.ts')),
     access(join(installed, 'dist/cli.js')),
+    access(join(installed, 'dist/vite.js')),
+    access(join(installed, 'dist/demo.js')),
+    access(join(installed, 'dist/webpack.cjs')),
     access(join(installed, 'dist/styles.css')),
     access(join(installed, 'dist/yarcl.config.js')),
     access(join(installed, 'dist/yarcl.config.d.ts')),
   ]);
 
   const installedReal = await realpath(installed);
-  const { yarcl } = await import(pathToFileURL(join(installedReal, 'dist/plugin.js')).href);
+  const { default: yarcl } = await import(pathToFileURL(join(installedReal, 'dist/vite.js')).href);
   const fallbackConsumer = join(temporary, 'fallback');
   await mkdir(fallbackConsumer);
   await writeFile(
@@ -50,11 +54,17 @@ try {
   );
   const plugin = yarcl({ config: 'src/missing.config.ts' });
   if (typeof plugin.config !== 'function') throw new Error('The packed plugin has no config hook');
-  const pluginConfig = plugin.config({ root: fallbackConsumer });
-  const fallback = pluginConfig?.resolve?.alias?.['@yarcl/config'];
+  plugin.config({ root: fallbackConsumer });
+  await plugin.buildStart.call({ addWatchFile() {}, emitFile() {}, getWatchFiles() { return []; }, parse() {} });
+  const resolveId = typeof plugin.resolveId === 'function' ? plugin.resolveId : plugin.resolveId.handler;
+  const fallback = await resolveId.call({}, '@yarcl/config', undefined, { isEntry: false });
   if (fallback !== join(installedReal, 'dist/yarcl.config.js')) {
     throw new Error('The packed plugin did not resolve its compiled default config');
   }
+
+  const require = createRequire(import.meta.url);
+  const webpackPlugin = require(join(installedReal, 'dist/webpack.cjs'));
+  if (typeof webpackPlugin !== 'function') throw new Error('The CommonJS webpack adapter is not callable');
 
   const initialized = join(temporary, 'initialized');
   await mkdir(initialized);

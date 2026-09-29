@@ -14,7 +14,11 @@ The complete API reference, generated from the library's JSDoc with TypeDoc, is 
 | `@yarcl/react` | components, `toast`, token types, the resolved `config` |
 | `@yarcl/react/define` | `defineConfig` and the config types |
 | `@yarcl/react/defaults` | the library's default config, for spreading |
-| `@yarcl/react/plugin` | the Vite plugin |
+| `@yarcl/react/vite` | Vite plugin |
+| `@yarcl/react/webpack` | webpack plugin |
+| `@yarcl/react/rspack` | Rspack plugin |
+| `@yarcl/react/rollup` | Rollup plugin |
+| `@yarcl/react/esbuild` | esbuild plugin |
 | `@yarcl/react/reference` | `DesignReference` |
 
 ## Components

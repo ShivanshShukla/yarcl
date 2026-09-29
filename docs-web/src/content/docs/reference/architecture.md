@@ -32,7 +32,7 @@ The alias, because it's the only option where one file is literally both the typ
 
 ## Consequences
 
-- You add a Vite plugin and a `paths` entry, and they must point at the same file.
+- You add the plugin for your build tool and a `paths` entry, and they must point at the same file.
 - One design system per build. A multi-brand app would add a Provider for runtime values.
 - The package ships compiled ESM and declarations. The declarations keep `@yarcl/config` unresolved so your `paths` entry supplies the config type.
 - Other bundlers need small adapters.

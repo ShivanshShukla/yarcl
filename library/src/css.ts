@@ -99,7 +99,7 @@ function rule(selector: string, declarations: [string, string | number][]): stri
 
 /**
  * Generates the stylesheet for a config: CSS variables on `:root`, one class per key and
- * `@font-face` rules. The Vite plugin calls this at build time; call it yourself to preview
+ * `@font-face` rules. The build plugin calls this at build time; call it yourself to preview
  * or switch themes at runtime (inject the result into a `<style>` element).
  *
  * @param config A config from `defineConfig`, e.g. one of `@yarcl/react/themes`.
