@@ -28,8 +28,8 @@ type ConfiguredComponents = Config extends { components?: infer C } ? NonNullabl
 export type ComponentSize<C extends ComponentName> = C extends keyof ConfiguredComponents
   ? ConfiguredComponents[C] extends { allowedSizes: readonly (infer S)[] }
     ? Extract<S, Size>
-    : Size
-  : Size;
+    : Extract<keyof Config['sizes'], string>
+  : Extract<keyof Config['sizes'], string>;
 
 /** Design token props shared by every sized, colored component. */
 export interface TokenProps<C extends ComponentName | undefined = undefined> {
