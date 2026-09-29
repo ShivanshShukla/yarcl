@@ -32,7 +32,7 @@ export interface SelectOption<V extends string = string> {
 
 /** Props for {@link Select}. */
 export interface SelectProps<V extends string = string>
-  extends TokenProps,
+  extends TokenProps<'Select'>,
     Omit<ComponentProps<'button'>, 'color' | 'value' | 'defaultValue' | 'onChange' | 'children'> {
   /** The options to choose from. */
   options: readonly SelectOption<V>[];
@@ -143,7 +143,7 @@ export function Select<V extends string = string>(props: SelectProps<V>) {
         ref={buttonRef}
         type="button"
         disabled={disabled}
-        className={cx('yarcl-input yarcl-select', sizeClass(size ?? own.size), radiusClass(radius ?? own.radius, size ?? own.size), colorClass(color ?? own.color), className)}
+        className={cx('yarcl-input yarcl-select', sizeClass(size ?? own.size, 'Select'), radiusClass(radius ?? own.radius, size ?? own.size), colorClass(color ?? own.color), className)}
         {...getReferenceProps(rest)}
       >
         <span className={cx('yarcl-select-value', !selected && 'yarcl-select-placeholder')}>
@@ -158,7 +158,7 @@ export function Select<V extends string = string>(props: SelectProps<V>) {
             <div
               ref={refs.setFloating}
               style={floatingStyles}
-              className={cx('yarcl-floating yarcl-panel yarcl-listbox', sizeClass(size ?? own.size), colorClass(color ?? own.color))}
+              className={cx('yarcl-floating yarcl-panel yarcl-listbox', sizeClass(size ?? own.size, 'Select'), colorClass(color ?? own.color))}
               {...getFloatingProps()}
             >
               {options.map((option, i) => {

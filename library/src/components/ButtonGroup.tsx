@@ -2,14 +2,14 @@ import { createContext, useContext, type ComponentProps } from 'react';
 import { cx } from '../classes';
 import type { TokenProps, VariantProps } from '../types';
 
-const ButtonGroupContext = createContext<(TokenProps & VariantProps) | null>(null);
+const ButtonGroupContext = createContext<(TokenProps<'Button'> & VariantProps) | null>(null);
 
 export function useButtonGroup() {
   return useContext(ButtonGroupContext);
 }
 
 /** Props for {@link ButtonGroup}. Token props are passed down to every button inside. */
-export interface ButtonGroupProps extends Omit<ComponentProps<'div'>, 'color'>, TokenProps, VariantProps {
+export interface ButtonGroupProps extends Omit<ComponentProps<'div'>, 'color'>, TokenProps<'Button'>, VariantProps {
   /**
    * Joins the buttons into one control with shared borders.
    * @default true

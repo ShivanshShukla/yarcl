@@ -196,6 +196,81 @@ defineConfig({ ...defaults, components: { CommandPalette: { size: 'lg', radius: 
 defineConfig({
   ...defaults,
   components: {
+    Button: {
+      allowedSizes: ['sm', 'md'],
+      sizeOverrides: { sm: { paddingX: '0.875rem' }, md: {} },
+    },
+    Input: { allowedSizes: ['md'] },
+  },
+});
+
+defineConfig({
+  ...defaults,
+  components: {
+    // @ts-expect-error
+    Button: { allowedSizes: [] },
+  },
+});
+
+defineConfig({
+  ...defaults,
+  components: {
+    // @ts-expect-error
+    Button: { allowedSizes: ['huge'] },
+  },
+});
+
+defineConfig({
+  ...defaults,
+  components: {
+    // @ts-expect-error
+    Button: { allowedSizes: ['sm'], size: 'md' },
+  },
+});
+
+defineConfig({
+  ...defaults,
+  components: {
+    // @ts-expect-error
+    Button: { allowedSizes: ['sm'] },
+  },
+});
+
+defineConfig({
+  ...defaults,
+  components: {
+    Button: {
+      // @ts-expect-error
+      sizeOverrides: { huge: { height: '4rem' } },
+    },
+  },
+});
+
+defineConfig({
+  ...defaults,
+  components: {
+    Button: {
+      // @ts-expect-error
+      sizeOverrides: { md: { paddingY: '1rem' } },
+    },
+  },
+});
+
+defineConfig({
+  ...defaults,
+  components: {
+    Button: {
+      allowedSizes: ['sm'],
+      size: 'sm',
+      // @ts-expect-error
+      sizeOverrides: { md: { height: '3rem' } },
+    },
+  },
+});
+
+defineConfig({
+  ...defaults,
+  components: {
     // @ts-expect-error
     CommandPalette: { variant: 'solid' },
   },

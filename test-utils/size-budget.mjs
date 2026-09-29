@@ -22,7 +22,7 @@ const budgets = {
   '@yarcl/react': { js: 23 * 1024, css: 7 * 1024 },
   '@yarcl/react/define': { js: 0.2 * 1024, css: 0 },
   '@yarcl/react/defaults': { js: 1.5 * 1024, css: 0 },
-  '@yarcl/react/plugin': { js: 3.5 * 1024, css: 0 },
+  '@yarcl/react/plugin': { js: 3.75 * 1024, css: 0 },
   '@yarcl/react/reference': { js: 5 * 1024, css: 0.6 * 1024 },
   '@yarcl/react/themes': { js: 3.5 * 1024, css: 0 },
   '@yarcl/react/css': { js: 3 * 1024, css: 0 },

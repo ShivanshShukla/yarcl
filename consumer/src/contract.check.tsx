@@ -119,6 +119,8 @@ export const contract = (
         <Menu.Item color="danger" />
       </Menu.Content>
     </Menu>
+    {/* @ts-expect-error Menu only allows sm and md */}
+    <Menu size="lg" />
     <Select options={[{ value: 'a', label: 'A' }]} size="lg" radius="rounded" color="success" />
     <Combobox options={[]} filter={false} allowCustomValue size="xs" />
     <DatePicker

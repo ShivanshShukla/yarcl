@@ -1,7 +1,7 @@
 import { Children, cloneElement, isValidElement, useState, type ComponentProps, type ReactElement, type ReactNode } from 'react';
 import { colorClass, cx, radiusClass, sizeClass, softVariantClass } from '../classes';
 import { useDefaults } from '../runtime';
-import type { Color, Radius, Size, Variant } from '../types';
+import type { Color, ComponentSize, Radius, Variant } from '../types';
 
 function initials(name: string | undefined): string {
   return name
@@ -35,7 +35,7 @@ export interface AvatarProps extends Omit<ComponentProps<'span'>, 'children' | '
    * Diameter from the `sizes` config.
    * @default config.defaults.size
    */
-  size?: Size;
+  size?: ComponentSize<'Avatar'>;
   /**
    * Corner radius from the `radii` config.
    * @default 'rounded'
@@ -92,7 +92,7 @@ export function Avatar({
       aria-labelledby={ariaLabelledBy}
       className={cx(
         'yarcl-avatar',
-        sizeClass(size ?? own.size),
+        sizeClass(size ?? own.size, 'Avatar'),
         radiusClass(radius ?? own.radius, size ?? own.size),
         colorClass(color ?? own.color),
         softVariantClass(variant ?? own.variant),
@@ -139,7 +139,7 @@ export interface AvatarGroupProps extends Omit<ComponentProps<'div'>, 'color'> {
    * Avatar diameter from the `sizes` config.
    * @default config.defaults.size
    */
-  size?: Size;
+  size?: ComponentSize<'AvatarGroup'>;
   /**
    * Avatar corner radius from the `radii` config.
    * @default config.defaults.radius
@@ -205,7 +205,7 @@ export function AvatarGroup({
       aria-labelledby={ariaLabelledBy}
       className={cx(
         'yarcl-avatar-group',
-        sizeClass(groupSize),
+        sizeClass(groupSize, 'AvatarGroup'),
         radiusClass(groupRadius, groupSize),
         colorClass(groupColor),
         softVariantClass(groupVariant),

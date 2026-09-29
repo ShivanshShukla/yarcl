@@ -19,16 +19,18 @@ export type Color = keyof (typeof config)['colors'];
 
 Because `@yarcl/config` resolves to your file (through `paths` in your `tsconfig.json`), `Size` is your sizes.
 
+`ComponentSize<'Button'>` narrows that global union when `components.Button.allowedSizes` is present. Component props use this type internally, so completion and validation only offer that component's allowed values.
+
 ## Exported types
 
 Use them to type your own components:
 
 ```ts
-import type { Color, Density, ModalSize, Radius, Shadow, Size, Spacing, TextStyle, Variant } from '@yarcl/react';
+import type { Color, ComponentSize, Density, ModalSize, Radius, Shadow, Size, Spacing, TextStyle, Variant } from '@yarcl/react';
 
 interface PriceTagProps {
   tone?: Color;
-  size?: Size;
+  size?: ComponentSize<'Button'>;
 }
 ```
 

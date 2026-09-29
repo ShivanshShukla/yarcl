@@ -34,6 +34,7 @@ The complete API reference, generated from the library's JSDoc with TypeDoc, is 
 | Type | Meaning |
 |---|---|
 | `Size`, `Radius`, `Color`, `Variant` | keys of `sizes`, `radii`, `colors`, `variants` in your config |
+| `ComponentSize<'Button'>` | allowed size keys for one component, or every global size when unrestricted |
 | `Spacing`, `Shadow`, `Density`, `TextStyle` | keys of `spacing`, `shadows`, `density`, `typography.styles` |
 | `ModalSize` | keys of `modalSizes` |
 | `TokenProps`, `VariantProps` | the shared `size` / `radius` / `color` and `variant` props |

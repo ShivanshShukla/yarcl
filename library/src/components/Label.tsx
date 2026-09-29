@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react';
 import { colorClass, cx, radiusClass, sizeClass, softVariantClass, typeClass } from '../classes';
-import type { Color, Radius, Size, TextStyle, Variant } from '../types';
+import type { Color, ComponentSize, Radius, TextStyle, Variant } from '../types';
 import { useConfig, useDefaults } from '../runtime';
 
 /** Props for {@link Label}. */
@@ -21,7 +21,7 @@ export interface LabelProps extends Omit<ComponentProps<'label'>, 'color'> {
   /**
    * Font size scale, from the `sizes` config. Uses the text style's size when omitted.
    */
-  size?: Size;
+  size?: ComponentSize<'Label'>;
   /**
    * Corner radius, from the `radii` config.
    * @default config.defaults.radius
@@ -71,7 +71,7 @@ export function Label({
         typeClass(textStyle ?? own.textStyle ?? config.defaults.labelStyle),
         resolvedColor && cx('yarcl-label-colored', colorClass(resolvedColor)),
         resolvedVariant && cx('yarcl-label-variant', softVariantClass(resolvedVariant)),
-        resolvedSize && cx('yarcl-label-sized', sizeClass(resolvedSize)),
+        resolvedSize && cx('yarcl-label-sized', sizeClass(resolvedSize, 'Label')),
         radiusClass(radius ?? own.radius, resolvedSize),
         disabled && 'yarcl-label-disabled',
         className,

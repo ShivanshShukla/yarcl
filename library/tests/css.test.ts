@@ -29,6 +29,28 @@ describe('generateCss', () => {
     expect(css).toContain('--yarcl-r: var(--yarcl-radius-md, 0);');
   });
 
+  it('emits component-scoped size overrides without changing the global size class', () => {
+    const css = generateCss(
+      withConfig({
+        components: {
+          Button: { sizeOverrides: { sm: { paddingX: '0.875rem' } } },
+          Input: { sizeOverrides: { md: { height: '2.75rem', fontSize: '1rem' } } },
+        },
+      }),
+    );
+
+    expect(css).toContain(`.yarcl-sized-Button.yarcl-size-sm,
+.yarcl-sized-Button.yarcl-sized-Button .yarcl-size-sm {
+  --yarcl-px: 0.875rem;
+}`);
+    expect(css).toContain(`.yarcl-sized-Input.yarcl-size-md,
+.yarcl-sized-Input.yarcl-sized-Input .yarcl-size-md {
+  --yarcl-h: 2.75rem;
+  --yarcl-fs: 1rem;
+}`);
+    expect(css.match(/^\.yarcl-size-sm \{/gm)).toHaveLength(1);
+  });
+
   it('escapes unusual config keys in variables, selectors, and references', () => {
     const css = generateCss(
       withConfig({

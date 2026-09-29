@@ -1,6 +1,6 @@
 import type { ComponentProps, CSSProperties } from 'react';
 import { cx, radiusClass, sizeClass, typeClass } from '../classes';
-import type { Radius, Size, TextStyle } from '../types';
+import type { ComponentSize, Radius, TextStyle } from '../types';
 import { useDefaults } from '../runtime';
 
 
@@ -23,7 +23,7 @@ export interface SkeletonProps extends Omit<ComponentProps<'span'>, 'children'> 
    * Control size, from the `sizes` config. Sets the height for `shape="control"` and the diameter for `shape="circle"`.
    * @default config.defaults.size
    */
-  size?: Size;
+  size?: ComponentSize<'Skeleton'>;
   /**
    * Corner radius for `control` and `rect`, from the `radii` config.
    * @default config.defaults.radius
@@ -84,7 +84,7 @@ export function Skeleton({
       className={cx(
         'yarcl-skeleton',
         `yarcl-skeleton-${shape}`,
-        shape !== 'rect' && sizeClass(size ?? own.size),
+        shape !== 'rect' && sizeClass(size ?? own.size, 'Skeleton'),
         shape !== 'circle' && radiusClass(radius ?? own.radius, size ?? own.size),
         className,
       )}

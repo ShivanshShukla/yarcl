@@ -1,7 +1,7 @@
 import type { ComponentProps, KeyboardEvent } from 'react';
 import { colorClass, cx, radiusClass, sizeClass, variantClass } from '../classes';
 import { useControllable } from '../hooks';
-import type { Color, Radius, Size, Variant } from '../types';
+import type { Color, ComponentSize, Radius, Variant } from '../types';
 import { Button } from './Button';
 import { IconButton } from './IconButton';
 import { useConfig, useDefaults } from '../runtime';
@@ -36,7 +36,7 @@ export interface PaginationProps extends Omit<ComponentProps<'nav'>, 'color' | '
    */
   boundaries?: number;
   /** Size of every button, from the `sizes` config. */
-  size?: Size;
+  size?: ComponentSize<'Pagination'>;
   /** Color of every button, from the `colors` config. */
   color?: Color;
   /** Radius of every button, from the `radii` config, or `'size'` to match the button size. */
@@ -188,7 +188,7 @@ export function Pagination({
   };
 
   return (
-    <nav aria-label={ariaLabel} className={cx('yarcl-pagination', className)} onKeyDown={handleKeyDown} {...props}>
+    <nav aria-label={ariaLabel} className={cx('yarcl-pagination', sizeClass(resolvedSize, 'Pagination'), className)} onKeyDown={handleKeyDown} {...props}>
       <div className={cx('yarcl-button-group yarcl-button-group-horizontal', attached && 'yarcl-button-group-attached')}>
         {edge(previousLabel, active - 1, 'm15 18-6-6 6-6')}
         {items.map((item) =>
@@ -210,7 +210,7 @@ export function Pagination({
               aria-hidden="true"
               className={cx(
                 'yarcl-button yarcl-pagination-ellipsis',
-                sizeClass(resolvedSize),
+                sizeClass(resolvedSize, 'Pagination'),
                 radiusClass(resolvedRadius, resolvedSize),
                 colorClass(resolvedColor),
                 variantClass(resolvedVariant),

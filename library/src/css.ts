@@ -1,5 +1,5 @@
 import { contrast, mix, parseHex, readableOn, readableText, toHex } from './color';
-import type { ColorPair, ColorToken, FontFaceToken, VariantToken, YarclShape } from './define';
+import type { ColorPair, ColorToken, ComponentName, FontFaceToken, SizeToken, VariantToken, YarclShape } from './define';
 
 const MIN_CONTRAST = 4.5;
 
@@ -97,6 +97,15 @@ function rule(selector: string, declarations: [string, string | number][]): stri
   return `${selector} {\n${declarations.map(([p, v]) => `  ${p}: ${v};`).join('\n')}\n}`;
 }
 
+const sizeProperties: Record<keyof SizeToken, string> = {
+  height: 'h',
+  paddingX: 'px',
+  fontSize: 'fs',
+  iconSize: 'icon',
+};
+
+type ComponentSizing = { sizeOverrides?: Record<string, Partial<SizeToken>> };
+
 /**
  * Generates the stylesheet for a config: CSS variables on `:root`, one class per key and
  * `@font-face` rules. The Vite plugin calls this at build time; call it yourself to preview
@@ -143,6 +152,18 @@ export function generateCss(config: YarclShape, warn: (message: string) => void 
         ['--yarcl-icon', `var(--yarcl-size-${k}-icon-size)`],
       ]),
     );
+  }
+
+  for (const [component, { sizeOverrides }] of Object.entries(config.components ?? {}) as [ComponentName, ComponentSizing][]) {
+    for (const [key, overrides] of Object.entries(sizeOverrides ?? {})) {
+      const declarations = Object.entries(overrides).map(([property, value]) => [
+        `--yarcl-${sizeProperties[property as keyof SizeToken]}`,
+        value,
+      ]) as [string, string][];
+      const marker = `.yarcl-sized-${ident(component)}`;
+      const sized = `.yarcl-size-${ident(key)}`;
+      if (declarations.length) rules.push(rule(`${marker}${sized},\n${marker}${marker} ${sized}`, declarations));
+    }
   }
 
   for (const [key, value] of Object.entries(config.radii)) {

@@ -22,7 +22,7 @@ sizes: {
 },
 ```
 
-Buttons, icon buttons, inputs, selects, comboboxes, tabs, menus, checkboxes, radios, switches and badges all read the same entry, so controls of the same size always line up:
+Buttons, icon buttons, inputs, selects, comboboxes, tabs, menus, checkboxes, radios, switches and badges all read the same base entry, so controls of the same size line up unless a component overrides that size:
 
 <Preview column>
   <SizeScaleDemo client:visible />
@@ -38,6 +38,40 @@ Buttons, icon buttons, inputs, selects, comboboxes, tabs, menus, checkboxes, rad
 Use `rem`, so controls scale with the user's browser font size. Keep `px` for borders and focus rings.
 
 `defaults.size` is the size every control uses when `size` is omitted. Set it to `sm` and the whole app becomes compact.
+
+### Per-component sizes
+
+Use `allowedSizes` to expose only part of the global scale on a component. Its `size` prop accepts exactly those keys:
+
+```ts
+components: {
+  Button: { allowedSizes: ['sm', 'md'] },
+  Input: { allowedSizes: ['md'] },
+},
+```
+
+Omit `allowedSizes` to accept every global size, including sizes added later. The list cannot be empty. The component's resolved default, `components.<Name>.size` or `defaults.size`, must be in the list.
+
+Use `sizeOverrides` separately when a component needs different measurements at a global size:
+
+```ts
+components: {
+  Button: {
+    allowedSizes: ['sm', 'md'],
+    sizeOverrides: {
+      sm: { paddingX: '0.875rem' },
+      md: { paddingX: '1.25rem' },
+    },
+  },
+  Input: {
+    allowedSizes: ['md'],
+  },
+},
+```
+
+Each override is partial. Unset fields still come from the global size, and an override alone does not restrict the component's prop type. Override keys must be allowed when `allowedSizes` is present.
+
+Keep `height` shared when controls should line up in the same row. Overriding it is an explicit choice to opt that component out of shared height alignment.
 
 ### Sizes and spacing are different scales
 

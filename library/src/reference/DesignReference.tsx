@@ -142,7 +142,7 @@ export function DesignReference({ title = 'Design reference' }: DesignReferenceP
         </div>
       </Section>
 
-      <Section title="Sizes" description="One scale shared by every control, so controls of the same size line up.">
+      <Section title="Sizes" description="The base scale shared by every control, before per-component overrides.">
         <Table caption="Control sizes" density={config.defaults.density}>
           <Table.Head>
             <Table.Row>

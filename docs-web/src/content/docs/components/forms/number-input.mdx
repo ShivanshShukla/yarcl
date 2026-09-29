@@ -29,7 +29,7 @@ import { NumberInput } from '@yarcl/react';
 
 - The value is a `number`, or `null` when the input is empty. Use `value` and `onValueChange` to control it, or `defaultValue` to leave it uncontrolled.
 - Typed text is committed on blur or `Enter`: it's clamped to `min` and `max`, and text that isn't a number reverts to the last value.
-- `size`, `radius` and `color` work like [Input](/components/forms/input/): a number input and an input of the same size have the same height, and `color` sets the focus border and ring. Defaults come from `components.NumberInput`, then `defaults`.
+- `size`, `radius` and `color` work like [Input](/components/forms/input/). They share a base height unless either component overrides it, and `color` sets the focus border and ring. Defaults come from `components.NumberInput`, then `defaults`.
 - Inside a [Field](/components/forms/field/) it's labelled, described and marked invalid automatically.
 
 ## Accessibility

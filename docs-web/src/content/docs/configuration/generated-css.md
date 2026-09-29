@@ -57,7 +57,15 @@ A button renders like this:
 <button class="yarcl-button yarcl-size-md yarcl-radius-md yarcl-color-primary yarcl-variant-solid">
 ```
 
-The generated file grows with the number of keys, not with the number of components.
+The generated file grows with the number of token keys and configured component size overrides.
+
+`components.<Name>.sizeOverrides` emits scoped rules after the shared size classes. Only the overridden variables are repeated, so the remaining fields continue to inherit from the global size:
+
+```css
+.yarcl-sized-Button.yarcl-size-md {
+  --yarcl-px: 1.25rem;
+}
+```
 
 ## Using tokens in your own CSS
 

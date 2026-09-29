@@ -40,11 +40,15 @@ components: {
 },
 ```
 
+Sized components can also use `allowedSizes` to restrict their `size` prop and `sizeOverrides` to adjust individual fields from the global size scale. These are sizing options, not defaults. See [sizes and radii](/configuration/sizes-and-radii/#per-component-sizes).
+
 Everything is checked:
 
 - component names must be real (`Buton` is an error)
 - each component only accepts the props it has (`Card: { variant }` is an error)
 - values must be keys of your config (`radius: 'pill'` is an error when there's no `pill`)
+- `allowedSizes` must contain at least one global size and include the resolved component default
+- `sizeOverrides` can only use global sizes allowed for that component and fields from a size token
 
 ## Resolution order
 

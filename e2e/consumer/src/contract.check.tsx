@@ -3,6 +3,8 @@ import { Accordion, Alert, Avatar, AvatarGroup, Badge, Breadcrumb, Button, Combo
 export const contract = (
   <>
     <Button size="talla-l" color="clay" variant="wash" radius="hairline" />
+    {/* @ts-expect-error Button excludes the global talla-m size */}
+    <Button size="talla-m" />
     <Stack gap="12" />
     <VisuallyHidden lang="es">Descripción adicional</VisuallyHidden>
     <Text textStyle="price" />

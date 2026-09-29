@@ -1,6 +1,6 @@
 import { useId, type ComponentProps, type CSSProperties, type ReactNode } from 'react';
 import { colorClass, cx, radiusClass, sizeClass } from '../classes';
-import type { Color, Radius, Size } from '../types';
+import type { Color, ComponentSize, Radius } from '../types';
 import { useDefaults } from '../runtime';
 
 /** Props for {@link Progress}. */
@@ -37,7 +37,7 @@ export interface ProgressProps extends Omit<ComponentProps<'div'>, 'color' | 'ch
    * Track height, scaled from the size's `iconSize` in the `sizes` config. Also sets the label's font size.
    * @default config.defaults.size
    */
-  size?: Size;
+  size?: ComponentSize<'Progress'>;
   /**
    * Bar color, from the `colors` config.
    * @default config.defaults.color
@@ -96,7 +96,7 @@ export function Progress({
       data-indeterminate={indeterminate || undefined}
       className={cx(
         'yarcl-progress',
-        sizeClass(size ?? own.size),
+        sizeClass(size ?? own.size, 'Progress'),
         colorClass(color ?? own.color),
         radiusClass(radius ?? own.radius, size ?? own.size),
         className,

@@ -67,6 +67,7 @@ export default async function ({ page, check }) {
   const add = page.getByRole('button', { name: 'Add to bag' });
   const save = page.getByRole('button', { name: 'Save' });
   check('talla-l buttons share height', (await add.boundingBox()).height === (await save.boundingBox()).height);
+  check('talla-l buttons use their component padding override', (await add.evaluate((el) => getComputedStyle(el).paddingLeft)) === '32px');
   check('component default: buttons square', (await add.evaluate((el) => getComputedStyle(el).borderRadius)) === '0px');
   const shade = page.getByRole('combobox', { name: 'Shade' });
   const quantity = page.getByRole('spinbutton', { name: 'Quantity' });
