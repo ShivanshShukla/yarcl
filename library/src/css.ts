@@ -215,9 +215,13 @@ export function generateCss(config: YarclShape, warn: (message: string) => void 
     );
   }
 
-  for (const [key, value] of Object.entries(config.typography.families)) {
+  const fontFamilies = Object.entries(config.typography.families);
+  const familyVariables = new Set(fontFamilies.map(([key]) => `--yarcl-font-family-${ident(key)}`));
+  for (const [key, value] of fontFamilies) {
     const family = ident(key);
-    root.push([`--yarcl-font-family-${family}`, value], [`--yarcl-font-${family}`, value]);
+    root.push([`--yarcl-font-family-${family}`, value]);
+    const alias = `--yarcl-font-${family}`;
+    if (!familyVariables.has(alias)) root.push([alias, value]);
   }
   for (const [role, family] of Object.entries(config.typography.fonts)) {
     root.push([`--yarcl-font-${role}`, `var(--yarcl-font-family-${ident(family)})`]);

@@ -113,6 +113,25 @@ describe('generateCss', () => {
     expect(css).toContain('--yarcl-error: var(--yarcl-color-failure);');
   });
 
+  it('does not let legacy font aliases overwrite canonical family variables', () => {
+    const css = generateCss(
+      withConfig({
+        typography: {
+          ...defaults.typography,
+          families: {
+            sans: 'Arial, sans-serif',
+            'family-sans': 'Georgia, serif',
+            mono: 'Menlo, monospace',
+          },
+        },
+      }),
+    );
+
+    expect(css).toContain('--yarcl-font-family-sans: Arial, sans-serif;');
+    expect(css).toContain('--yarcl-font-family-family-sans: Georgia, serif;');
+    expect(css.match(/--yarcl-font-family-sans:/g)).toHaveLength(1);
+  });
+
   it('emits font faces with inferred formats and optional descriptors', () => {
     const css = generateCss(
       withConfig({
