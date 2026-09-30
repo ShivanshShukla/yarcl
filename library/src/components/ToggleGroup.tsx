@@ -7,9 +7,9 @@ import {
   type KeyboardEvent,
   type ReactNode,
 } from 'react';
-import { cx } from '../classes';
+import { cx, sizeClass } from '../classes';
 import { useControllable } from '../hooks';
-import type { Color, Radius, Size, Variant } from '../types';
+import type { Color, ComponentSize, Radius, Size, Variant } from '../types';
 import { Button } from './Button';
 import { useConfig, useDefaults } from '../runtime';
 
@@ -30,7 +30,7 @@ const ToggleGroupContext = createContext<ToggleGroupContextValue | null>(null);
 /** Props shared by both forms of {@link ToggleGroupProps}. */
 export interface ToggleGroupBaseProps extends Omit<ComponentProps<'div'>, 'defaultValue' | 'onChange' | 'color'> {
   /** Size of every item, from the `sizes` config. */
-  size?: Size;
+  size?: ComponentSize<'ToggleGroup'>;
   /** Color of every item, from the `colors` config. */
   color?: Color;
   /** Radius of every item, from the `radii` config, or `'size'` to match the item size. */
@@ -169,6 +169,7 @@ function ToggleGroupRoot(props: ToggleGroupProps) {
         role="group"
         className={cx(
           'yarcl-button-group yarcl-button-group-horizontal yarcl-toggle-group',
+          sizeClass(size, 'ToggleGroup'),
           attached && 'yarcl-button-group-attached',
           className,
         )}

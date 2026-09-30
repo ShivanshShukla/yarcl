@@ -14,7 +14,11 @@ The complete API reference, generated from the library's JSDoc with TypeDoc, is 
 | `@yarcl/react` | components, `toast`, token types, the resolved `config` |
 | `@yarcl/react/define` | `defineConfig` and the config types |
 | `@yarcl/react/defaults` | the library's default config, for spreading |
-| `@yarcl/react/plugin` | the Vite plugin |
+| `@yarcl/react/vite` | Vite plugin |
+| `@yarcl/react/webpack` | webpack plugin |
+| `@yarcl/react/rspack` | Rspack plugin |
+| `@yarcl/react/rollup` | Rollup plugin |
+| `@yarcl/react/esbuild` | esbuild plugin |
 | `@yarcl/react/reference` | `DesignReference` |
 
 ## Components
@@ -24,16 +28,17 @@ The complete API reference, generated from the library's JSDoc with TypeDoc, is 
 | Buttons | `Button`, `IconButton`, `ButtonGroup`, `ToggleGroup` |
 | Forms | `Field`, `Label`, `Input`, `NumberInput`, `Textarea`, `Select`, `Combobox`, `DatePicker`, `Checkbox`, `Radio`, `RadioGroup`, `Switch`, `Slider` |
 | Typography | `Text`, `Heading`, `Link` |
-| Layout | `Stack`, `Inline`, `Card`, `Divider` |
+| Layout | `Stack`, `Inline`, `Card`, `Divider`, `VisuallyHidden` |
 | Overlays | `Dialog`, `Drawer`, `Popover`, `Tooltip`, `HoverCard`, `Menu`, `CommandPalette`, `Toaster`, `toast` |
-| Data display | `Tabs`, `Accordion`, `Table`, `Pagination`, `Breadcrumb` |
-| Feedback | `Badge`, `Alert`, `Spinner`, `Skeleton`, `Progress` |
+| Data display | `Avatar`, `AvatarGroup`, `Tabs`, `Accordion`, `Table`, `Pagination`, `Breadcrumb` |
+| Feedback | `Badge`, `Alert`, `Spinner`, `Skeleton`, `Progress`, `EmptyState` |
 
 ## Types
 
 | Type | Meaning |
 |---|---|
 | `Size`, `Radius`, `Color`, `Variant` | keys of `sizes`, `radii`, `colors`, `variants` in your config |
+| `ComponentSize<'Button'>` | allowed size keys for one component, or every global size when unrestricted |
 | `Spacing`, `Shadow`, `Density`, `TextStyle` | keys of `spacing`, `shadows`, `density`, `typography.styles` |
 | `ModalSize` | keys of `modalSizes` |
 | `TokenProps`, `VariantProps` | the shared `size` / `radius` / `color` and `variant` props |

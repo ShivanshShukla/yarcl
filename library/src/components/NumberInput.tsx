@@ -11,7 +11,7 @@ import { useDefaults } from '../runtime';
  * `className` and `style` go to the outer box.
  */
 export interface NumberInputProps
-  extends TokenProps,
+  extends TokenProps<'NumberInput'>,
     Omit<ComponentProps<'input'>, 'color' | 'size' | 'type' | 'value' | 'defaultValue' | 'onChange' | 'min' | 'max' | 'step'> {
   /** Controlled value. `null` means the input is empty. */
   value?: number | null;
@@ -60,7 +60,7 @@ function parse(text: string): number | null | undefined {
 /**
  * A numeric input with increment and decrement buttons, exposed as a `spinbutton`.
  * Arrow keys step by `step`, `PageUp` and `PageDown` by ten steps, `Home` and `End` jump to `min` and `max`.
- * Shares the size scale with {@link Input}, so both have the same height at the same size. Works inside a {@link Field}.
+ * Shares the base size scale with {@link Input}; component size overrides can adjust either one. Works inside a {@link Field}.
  *
  * @example
  * ```tsx
@@ -162,7 +162,7 @@ export function NumberInput(props: NumberInputProps) {
     <div
       className={cx(
         'yarcl-number-input',
-        sizeClass(size ?? own.size),
+        sizeClass(size ?? own.size, 'NumberInput'),
         radiusClass(radius ?? own.radius, size ?? own.size),
         colorClass(color ?? own.color),
         className,

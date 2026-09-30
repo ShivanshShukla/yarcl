@@ -20,6 +20,9 @@ import { Alert } from '@yarcl/react';
 ```tsx
 <Alert
   color="warning"
+  gap="sm"
+  padding="md"
+  textStyle="label"
   title="Trial ends in 3 days"
   icon={<InfoIcon />}
   action={<Button size="sm" color="warning">Upgrade</Button>}
@@ -30,6 +33,8 @@ import { Alert } from '@yarcl/react';
 ```
 
 For messages that come and go, use [Toast](/components/overlays/toast/).
+
+`radius`, `gap`, `padding` and `textStyle` use keys from your config and can be set in `components.Alert`.
 
 ## Accessibility
 

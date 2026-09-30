@@ -1,0 +1,53 @@
+---
+title: "Avatar"
+description: "A person image with initials fallback, plus overlapping avatar groups."
+sidebar:
+  order: 1
+---
+
+import Preview from '@/components/Preview.astro';
+import Props from '@/components/Props.astro';
+import { AvatarDemo } from '@/demos/data';
+
+```tsx
+import { Avatar, AvatarGroup } from '@yarcl/react';
+```
+
+<Preview>
+  <AvatarDemo client:visible />
+</Preview>
+
+```tsx
+<Avatar name="Ada Lovelace" src="/ada.jpg" />
+<Avatar name="Grace Hopper" color="success" />
+```
+
+`name` supplies the accessible name and turns into initials when no image is available. Use `fallback` for custom fallback content, and `alt=""` for a decorative avatar. If an image fails to load, the fallback appears automatically.
+
+## Groups
+
+`AvatarGroup` overlaps direct `Avatar` children. Its token props become defaults for any child that does not set its own value. Set `max` to limit the visible avatars and `total` when more people exist than the rendered children.
+
+```tsx
+<AvatarGroup max={3} total={5} aria-label="Project members">
+  <Avatar name="Ada Lovelace" />
+  <Avatar name="Grace Hopper" />
+  <Avatar name="Alan Turing" />
+</AvatarGroup>
+```
+
+## Tokens and accessibility
+
+`size` sets the diameter from `sizes`; `radius`, `color` and `variant` style the fallback from their matching config groups. Configure defaults under `components.Avatar` or `components.AvatarGroup`.
+
+An avatar with a `name` or `alt` renders as an image with that accessible name. Avatar is presentational and has no keyboard interaction. Use an accessible `Button` or link around it when it triggers an action, and label each group when its membership needs context.
+
+## Props
+
+### Avatar
+
+<Props of="AvatarProps" />
+
+### AvatarGroup
+
+<Props of="AvatarGroupProps" />

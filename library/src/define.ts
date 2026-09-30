@@ -23,8 +23,8 @@ export interface ColorToken extends ColorPair {
 }
 
 /**
- * A single step of the shared control size scale.
- * Every sized control reads the same entry, so controls of the same size share the same height.
+ * A single step of the base control size scale. Sized controls share it unless their component
+ * config overrides individual fields.
  */
 export interface SizeToken {
   /** Control height, e.g. `'2.5rem'`. */
@@ -113,7 +113,9 @@ export interface ComponentTokenProps {
   Switch: 'size' | 'color';
   Slider: 'size' | 'radius' | 'color';
   Badge: 'size' | 'radius' | 'color' | 'variant';
-  Alert: 'radius' | 'color' | 'variant';
+  Avatar: 'size' | 'radius' | 'color' | 'variant';
+  AvatarGroup: 'size' | 'radius' | 'color' | 'variant';
+  Alert: 'radius' | 'color' | 'variant' | 'gap' | 'padding' | 'textStyle';
   Card: 'radius' | 'padding' | 'shadow';
   Popover: 'radius' | 'padding';
   HoverCard: 'radius' | 'padding';
@@ -124,21 +126,41 @@ export interface ComponentTokenProps {
   Tabs: 'size' | 'color';
   Pagination: 'size' | 'radius' | 'color' | 'variant' | 'selectedVariant';
   Accordion: 'size' | 'radius' | 'color';
-  Table: 'density';
+  Table: 'density' | 'radius';
   Stack: 'gap';
   Inline: 'gap';
   Text: 'textStyle' | 'color';
-  Label: 'textStyle' | 'color';
+  Label: 'textStyle' | 'color' | 'variant' | 'size' | 'radius';
   Link: 'color';
   Breadcrumb: 'textStyle' | 'color';
   Spinner: 'size' | 'color';
   Skeleton: 'size' | 'radius';
   Progress: 'size' | 'color' | 'radius';
-  Toast: 'color';
+  EmptyState: 'color' | 'gap' | 'padding' | 'textStyle';
+  Tooltip: 'radius' | 'padding' | 'textStyle';
+  Toast: 'radius' | 'color' | 'gap' | 'padding' | 'textStyle';
 }
 
 /** Names of components that accept defaults in `components`. */
 export type ComponentName = keyof ComponentTokenProps;
+
+type ControlSizeComponentName = Exclude<
+  {
+    [C in ComponentName]: 'size' extends ComponentTokenProps[C] ? C : never;
+  }[ComponentName],
+  'Dialog' | 'Drawer'
+>;
+
+type ComponentConfig<C extends ComponentName> = {
+  [P in ComponentTokenProps[C]]?: string;
+} & (C extends ControlSizeComponentName
+  ? {
+      /** Global size keys this component accepts. All global sizes are accepted when omitted. */
+      allowedSizes?: readonly string[];
+      /** Partial overrides of global size tokens, scoped to this component. */
+      sizeOverrides?: Record<string, Partial<SizeToken>>;
+    }
+  : object);
 
 /**
  * The structure every yarcl config must satisfy.
@@ -164,7 +186,7 @@ export interface YarclShape {
     /** Default border. */
     border: ColorPair;
   };
-  /** Control size scale. Keys become the valid values of the `size` prop. */
+  /** Base control size scale. Keys become valid `size` values unless a component restricts them. */
   sizes: Record<string, SizeToken>;
   /**
    * Border radii. Keys become the valid values of the `radius` prop. Name them after your
@@ -235,10 +257,10 @@ export interface YarclShape {
     style?: 'solid' | 'dashed' | 'dotted' | 'double';
   };
   /**
-   * Per-component defaults, e.g. `{ Button: { radius: 'square' } }`. Applied when a prop is omitted,
-   * before the global `defaults`. Each value must be a key of its group.
+   * Per-component defaults and sizing, e.g. `{ Button: { radius: 'square', allowedSizes: ['sm', 'md'] } }`.
+   * Defaults apply when a prop is omitted, before the global `defaults`.
    */
-  components?: { [C in ComponentName]?: { [P in ComponentTokenProps[C]]?: string } };
+  components?: { [C in ComponentName]?: ComponentConfig<C> };
   /** Values used when a component prop is omitted. Each must be a key of its group. */
   defaults: {
     size: string;
@@ -301,9 +323,37 @@ type ComponentChecks<T extends YarclShape> = {
             ? P extends 'size'
               ? keyof T['modalSizes']
               : TokenKeys<T>[P]
-            : TokenKeys<T>[P]
+            : P extends 'size'
+              ? T['components'][C] extends { allowedSizes: readonly (infer S)[] }
+                ? S
+                : keyof T['sizes']
+              : TokenKeys<T>[P]
+          : P extends 'allowedSizes'
+            ? C extends ControlSizeComponentName
+              ? readonly [keyof T['sizes'], ...(keyof T['sizes'])[]]
+              : never
+            : P extends 'sizeOverrides'
+              ? C extends ControlSizeComponentName
+                ? {
+                    [K in keyof T['components'][C][P]]: K extends keyof T['sizes']
+                      ? T['components'][C] extends { allowedSizes: readonly (infer S)[] }
+                        ? K extends S
+                          ? Partial<SizeToken>
+                          : never
+                        : Partial<SizeToken>
+                      : never;
+                  }
+                : never
           : never;
-      }
+      } & (C extends ControlSizeComponentName
+        ? T['components'][C] extends { allowedSizes: readonly (infer S)[] }
+          ? T['components'][C] extends { size: unknown }
+            ? object
+            : T['defaults']['size'] extends S
+              ? object
+              : { size: S }
+          : object
+        : object)
     : { error: `Unknown component "${C & string}"` };
 };
 
@@ -355,7 +405,7 @@ type Checks<T extends YarclShape> = {
  * - every color has a `light` and `dark` value
  * - `defaults`, `focusRing.color`, `typography.headings` and each text style's `family` reference existing keys
  * - no key contains whitespace
- * - `components` only names known components, only sets props they have, and only uses existing keys
+ * - `components` only names known components, only sets supported options, and only uses existing keys
  *
  * Returns the config unchanged with literal types preserved, so the library can derive
  * its prop types from it. Spread `@yarcl/react/defaults` to extend the library defaults instead

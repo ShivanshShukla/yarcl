@@ -2,6 +2,8 @@ import type { ReactNode } from 'react';
 import {
   Accordion,
   Alert,
+  Avatar,
+  AvatarGroup,
   Badge,
   Breadcrumb,
   Button,
@@ -10,6 +12,7 @@ import {
   Checkbox,
   DatePicker,
   Divider,
+  EmptyState,
   Field,
   Heading,
   IconButton,
@@ -33,6 +36,7 @@ import {
   Text,
   Textarea,
   ToggleGroup,
+  VisuallyHidden,
 } from '@yarcl/react';
 import { InfoIcon, PlusIcon, SearchIcon, TrashIcon } from './icons';
 
@@ -152,13 +156,18 @@ const groups: Record<string, Item[]> = {
     {
       name: 'Label',
       href: '/components/forms/label/',
-      description: 'A standalone form label, for controls beside it or grouped.',
+      description: 'A form label in your label text style, or a filled label with a variant.',
       preview: (
-        <Inline gap="sm" wrap={false} className="gallery-fill">
-          <Label htmlFor="gallery-label-city" required>
-            City
+        <Inline gap="xs">
+          <Label size="sm" required>
+            Email
           </Label>
-          <Input id="gallery-label-city" size="sm" placeholder="Zurich" required className="demo-grow" />
+          <Label size="sm" variant="soft" color="success">
+            Active
+          </Label>
+          <Label size="sm" variant="solid" color="primary">
+            New
+          </Label>
         </Inline>
       ),
     },
@@ -263,7 +272,7 @@ const groups: Record<string, Item[]> = {
       preview: (
         <Stack gap="sm" className="gallery-fill">
           <Slider size="sm" defaultValue={60} aria-label="Volume" />
-          <Slider size="sm" defaultValue={[25, 75]} aria-label="Price" />
+          <Slider.Range size="sm" defaultValue={[25, 75]} aria-label="Price" />
         </Stack>
       ),
     },
@@ -361,6 +370,17 @@ const groups: Record<string, Item[]> = {
             <Text textStyle="caption">Right</Text>
           </Inline>
         </Stack>
+      ),
+    },
+    {
+      name: 'Visually hidden',
+      href: '/components/layout/visually-hidden/',
+      description: 'Provides accessible names and descriptions without visual content.',
+      preview: (
+        <Button size="sm" variant="outline">
+          <SearchIcon />
+          <VisuallyHidden>Search projects</VisuallyHidden>
+        </Button>
       ),
     },
   ],
@@ -505,6 +525,18 @@ const groups: Record<string, Item[]> = {
   ],
   data: [
     {
+      name: 'Avatar',
+      href: '/components/data/avatar/',
+      description: 'Person images with initials fallback and overlapping groups.',
+      preview: (
+        <AvatarGroup max={3} total={5} aria-label="Project members">
+          <Avatar name="Ada Lovelace" size="sm" />
+          <Avatar name="Grace Hopper" size="sm" color="success" />
+          <Avatar name="Alan Turing" size="sm" color="warning" />
+        </AvatarGroup>
+      ),
+    },
+    {
       name: 'Tabs',
       href: '/components/data/tabs/',
       description: 'Switches between panels, with arrow key navigation.',
@@ -588,6 +620,21 @@ const groups: Record<string, Item[]> = {
     },
   ],
   feedback: [
+    {
+      name: 'Empty state',
+      href: '/components/feedback/empty-state/',
+      description: 'A centered message and actions when a view has no content.',
+      preview: (
+        <EmptyState
+          headingLevel={3}
+          icon={<SearchIcon />}
+          title="No results"
+          description="Try another search."
+          padding="sm"
+          gap="xs"
+        />
+      ),
+    },
     {
       name: 'Badge',
       href: '/components/feedback/badge/',

@@ -3,14 +3,13 @@
   "compilerOptions": {
     "noEmit": false,
     "declaration": true,
-    "rewriteRelativeImportExtensions": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "emitDeclarationOnly": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "rootDir": "src",
     "outDir": "dist",
-    "types": ["node"],
-    "paths": {}
+    "types": ["vite/client", "node", "react", "react-dom"]
   },
-  "include": [],
-  "files": ["src/plugin.ts"]
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["src/**/*.check.ts"]
 }

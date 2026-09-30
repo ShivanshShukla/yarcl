@@ -80,7 +80,7 @@ The full story behind this pattern: [Type-Level Library Dependency Injection. Le
     Every color is a `light-dark()` pair. Text colors are computed for contrast, and the build warns when a color fails WCAG AA.
   </Card>
   <Card title="Controls that line up" icon="setting">
-    Buttons, inputs, selects, checkboxes and tabs share one size scale, so controls of the same size always have the same height.
+    Buttons, inputs, selects, checkboxes and tabs share one base size scale. Components can restrict its keys or override individual measurements.
   </Card>
   <Card title="Opinions per component" icon="pencil">
     `components: { Button: { radius: 'square' } }` makes every button sharp without touching a single call site.

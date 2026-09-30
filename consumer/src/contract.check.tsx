@@ -4,10 +4,12 @@ import {
   Card,
   Checkbox,
   Divider,
+  EmptyState,
   Field,
-  Label,
   Alert,
   Badge,
+  Avatar,
+  AvatarGroup,
   ButtonGroup,
   RadioGroup,
   ToggleGroup,
@@ -33,6 +35,7 @@ import {
   IconButton,
   Inline,
   Input,
+  Label,
   Link,
   Breadcrumb,
   NumberInput,
@@ -42,6 +45,7 @@ import {
   Switch,
   Text,
   Textarea,
+  VisuallyHidden,
 } from '@yarcl/react';
 
 export const contract = (
@@ -58,9 +62,11 @@ export const contract = (
     <Checkbox size="sm" color="success" indeterminate />
     <Radio size="lg" color="neutral" />
     <Switch size="xl" color="brand" />
+    <Slider.Range aria-label="Price" size="sm" color="success" radius="rounded" defaultValue={[10, 90]} />
     <Field label="Name">
       <Input />
     </Field>
+    <Label htmlFor="name" required variant="subtle" color="brand" size="sm" radius="rounded" textStyle="label" />
     <Text textStyle="caption" color="danger" truncate={2} />
     <Label htmlFor="name" textStyle="caption" color="neutral" required disabled>
       Name
@@ -84,7 +90,19 @@ export const contract = (
     <Inline gap="tight" justify="between" wrap={false} />
     <Card padding="tight" radius="rounded" shadow="lg" as="article" />
     <Divider orientation="vertical" />
-    <Tooltip content="Hi">
+    <EmptyState
+      title="No projects"
+      description="Create your first project."
+      icon={<span />}
+      actions={<Button>Create project</Button>}
+      headingLevel={3}
+      color="neutral"
+      gap="tight"
+      padding="loose"
+      textStyle="caption"
+    />
+    <VisuallyHidden id="hidden-description">Additional context</VisuallyHidden>
+    <Tooltip content="Hi" radius="rounded" padding="tight" textStyle="caption">
       <Button />
     </Tooltip>
     <HoverCard content="Hi" padding="tight" radius="xl">
@@ -101,6 +119,8 @@ export const contract = (
         <Menu.Item color="danger" />
       </Menu.Content>
     </Menu>
+    {/* @ts-expect-error Menu only allows sm and md */}
+    <Menu size="lg" />
     <Select options={[{ value: 'a', label: 'A' }]} size="lg" radius="rounded" color="success" />
     <Combobox options={[]} filter={false} allowCustomValue size="xs" />
     <DatePicker
@@ -165,9 +185,14 @@ export const contract = (
     </Accordion>
     <Accordion type="single" value={null} onValueChange={(v: string | null) => v} />
     <Accordion type="multiple" value={['a']} onValueChange={(v: string[]) => v} />
-    <Table density="dense" striped interactive />
+    <Table density="dense" radius="rounded" striped interactive />
     <Badge color="success" variant="outline" size="sm" radius="rounded" onRemove={() => {}} />
-    <Alert color="warning" variant="solid" radius="md" live="polite" onDismiss={() => {}} />
+    <Avatar name="Ada Lovelace" alt="Ada" fallback="AL" size="lg" radius="rounded" color="success" variant="outline" onImageError={() => {}} />
+    <AvatarGroup max={2} total={4} overflowLabel={(count) => `${count} more teammates`} size="sm" radius="rounded" color="neutral" variant="quiet">
+      <Avatar name="Ada Lovelace" />
+      <Avatar name="Grace Hopper" />
+    </AvatarGroup>
+    <Alert color="warning" variant="solid" radius="md" gap="tight" padding="normal" textStyle="caption" live="polite" onDismiss={() => {}} />
     <Spinner size="xl" color="danger" />
     <Skeleton shape="control" size="lg" radius="lg" />
     <Skeleton textStyle="display" lines={3} />
@@ -225,6 +250,12 @@ export const contract = (
     {/* @ts-expect-error */}
     <Input radius="full" />
     {/* @ts-expect-error */}
+    <Tooltip content="Hi" padding="compact"><Button /></Tooltip>
+    {/* @ts-expect-error */}
+    <Table radius="full" />
+    {/* @ts-expect-error */}
+    <Alert textStyle="heading" />
+    {/* @ts-expect-error */}
     <Button variant="ghost" />
     {/* @ts-expect-error */}
     <IconButton />
@@ -245,6 +276,8 @@ export const contract = (
     {/* @ts-expect-error */}
     <Slider defaultValue={[1, 2, 3]} />
     {/* @ts-expect-error */}
+    <Slider.Range aria-label="Price" defaultValue={50} />
+    {/* @ts-expect-error */}
     <Checkbox color="primary" />
     {/* @ts-expect-error */}
     <Field>
@@ -256,6 +289,10 @@ export const contract = (
     <Label textStyle="heading" />
     {/* @ts-expect-error */}
     <Label color="primary" />
+    {/* @ts-expect-error */}
+    <Label size="gigantic" />
+    {/* @ts-expect-error */}
+    <Label variant="ghost" />
     {/* @ts-expect-error */}
     <Heading textStyle="title" />
     {/* @ts-expect-error */}
@@ -357,6 +394,22 @@ export const contract = (
     {/* @ts-expect-error */}
     <Badge variant="soft" />
     {/* @ts-expect-error */}
+    <Avatar size="huge" />
+    {/* @ts-expect-error */}
+    <Avatar color="primary" />
+    {/* @ts-expect-error */}
+    <AvatarGroup radius="full" />
+    {/* @ts-expect-error */}
+    <AvatarGroup variant="ghost" />
+    {/* @ts-expect-error */}
+    <EmptyState title="Empty" color="primary" />
+    {/* @ts-expect-error */}
+    <EmptyState title="Empty" gap="md" />
+    {/* @ts-expect-error */}
+    <EmptyState title="Empty" padding="lg" />
+    {/* @ts-expect-error */}
+    <EmptyState title="Empty" textStyle="body-sm" />
+    {/* @ts-expect-error */}
     <Alert live="rude" />
     {/* @ts-expect-error */}
     <Spinner size="huge" />
@@ -399,6 +452,8 @@ export const contract = (
   </>
 );
 
-toast({ title: 'ok', color: 'success' });
+toast({ title: 'ok', color: 'success', radius: 'rounded', gap: 'tight', padding: 'normal', textStyle: 'caption' });
 // @ts-expect-error
 toast({ title: 'bad', color: 'primary' });
+// @ts-expect-error
+toast({ title: 'bad', gap: 'compact' });

@@ -1,4 +1,5 @@
 import type config from '@yarcl/config';
+import type { ComponentName } from './define';
 
 type Config = typeof config;
 
@@ -21,13 +22,22 @@ export type ModalSize = keyof Config['modalSizes'] & string;
 /** A key of the consumer's `typography.styles` config. */
 export type TextStyle = keyof Config['typography']['styles'] & string;
 
+type ConfiguredComponents = Config extends { components?: infer C } ? NonNullable<C> : Record<never, never>;
+
+/** A component's allowed size keys, or every global size when it has no restriction. */
+export type ComponentSize<C extends ComponentName> = C extends keyof ConfiguredComponents
+  ? ConfiguredComponents[C] extends { allowedSizes: readonly (infer S)[] }
+    ? Extract<S, Size>
+    : Extract<keyof Config['sizes'], string>
+  : Extract<keyof Config['sizes'], string>;
+
 /** Design token props shared by every sized, colored component. */
-export interface TokenProps {
+export interface TokenProps<C extends ComponentName | undefined = undefined> {
   /**
    * Control size, from the `sizes` config.
    * @default config.defaults.size
    */
-  size?: Size;
+  size?: C extends ComponentName ? ComponentSize<C> : Size;
   /**
    * Border radius, from the `radii` config, or `'size'` for the radius named like the control's size.
    * @default config.defaults.radius

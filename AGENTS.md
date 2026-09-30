@@ -8,7 +8,7 @@ The library source never imports a concrete config. It imports a placeholder mod
 
 The consumer wires it twice, pointing at the same file:
 
-In `vite.config.ts`, for runtime values:
+In the build-tool config, for runtime values (Vite shown):
 
 ```ts
 plugins: [react(), yarcl({ config: 'src/yarcl.config.ts' })]
@@ -18,13 +18,13 @@ In `tsconfig.json`, for types:
 
 ```json
 "paths": {
-  "@yarcl/config": ["./src/yarcl.config.ts", "./node_modules/@yarcl/react/src/yarcl.config.ts"]
+  "@yarcl/config": ["./src/yarcl.config.ts", "./node_modules/@yarcl/react/dist/yarcl.config.d.ts"]
 }
 ```
 
 What each side does:
 
-- **Vite plugin** (`library/src/plugin.ts`): sets a `resolve.alias` from `@yarcl/config` to the consumer's file. If that file doesn't exist, it points to the library's own `library/src/yarcl.config.ts`. It also loads the config in Node and serves the generated CSS as `virtual:yarcl.css`, and invalidates that CSS when the config or its imports change.
+- **Build plugin** (`library/src/plugin.ts`): uses unplugin to resolve `@yarcl/config` to the consumer's file for Vite, webpack, Rspack, Rollup and esbuild. If that file doesn't exist, it points to the compiled library default in `library/dist/yarcl.config.js`. It also loads the config in Node and serves the generated CSS as `@yarcl/react/styles.css`, and invalidates that CSS when the config or its imports change. Tool-specific entry points live in `library/src/vite.ts`, `webpack.ts`, `rspack.ts`, `rollup.ts` and `esbuild.ts`.
 - **tsconfig `paths`**: TypeScript resolves `@yarcl/config` to the same file, so `typeof config` is the consumer's literal config. The second entry falls back to the library defaults.
 - **Library side**:
   - `library/src/types.ts` does `import type config from '@yarcl/config'` and derives prop types from its keys (`keyof Config['sizes']`, and so on). Adding a key to the config makes it a valid prop value with no other changes.
@@ -61,6 +61,7 @@ Run from the root with pnpm:
 pnpm typecheck
 pnpm lint
 pnpm build
+pnpm size
 pnpm test
 pnpm test <suite>
 pnpm docs:dev
@@ -76,10 +77,10 @@ pnpm docs:build
 - Minimal to no comments, unless they are JSDoc. Public exports always get JSDoc, which feeds the docs.
 - No em dashes anywhere: code, JSDoc, docs, UI copy, commits, PRs.
 - Demo and docs UI use plain human-readable labels; config keys appear only in code samples.
-- The package is unpublished: change APIs freely, no deprecation paths or compat notes.
+- The package is published as `@yarcl/react`. Pre-1.0 APIs may change without deprecation paths or compatibility shims.
 - React 19 only: `ref` is a regular prop that components spread onto their element. Don't use `forwardRef`.
 - Accessibility is required: roles, keyboard support, focus management, and a clean axe audit.
-- The plugin runs from compiled JS (`library/dist`), built by `pnpm install` (`prepare`). After changing plugin code (`plugin.ts`, `css.ts`, `color.ts`, `define.ts`), run `pnpm -C library build`. Relative imports there keep `.ts` extensions; the build rewrites them.
+- The package runs from compiled JS (`library/dist`), built by `pnpm install` (`prepare`). After changing library source, run `pnpm -C library build`. Vite bundles the JavaScript and TypeScript emits declarations.
 - Releases: bump `library/package.json` `version`, then push a matching tag (`v0.2.0`); `.github/workflows/publish.yml` publishes to npm.
 - Don't commit, push, or open PRs unless asked.
 

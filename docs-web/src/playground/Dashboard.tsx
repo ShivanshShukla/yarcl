@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {
   Alert,
+  Avatar,
   Badge,
   Breadcrumb,
   Button,
@@ -410,12 +411,15 @@ export function Dashboard() {
                   <Stack>
                     {customers.map((customer) => (
                       <Inline key={customer.email} justify="between">
-                        <Stack gap="xs">
-                          <Text textStyle="label">{customer.name}</Text>
-                          <Text textStyle="caption" muted>
-                            {customer.email}
-                          </Text>
-                        </Stack>
+                        <Inline gap="sm" align="center">
+                          <Avatar name={customer.name} size="sm" />
+                          <Stack gap="xs">
+                            <Text textStyle="label">{customer.name}</Text>
+                            <Text textStyle="caption" muted>
+                              {customer.email}
+                            </Text>
+                          </Stack>
+                        </Inline>
                         <Badge variant="outline" color="neutral">
                           {customer.seats} seats
                         </Badge>

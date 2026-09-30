@@ -9,7 +9,7 @@
     "types": ["vite/client", "node"],
     "paths": {
       "@/*": ["./src/*"],
-      "@yarcl/config": ["./src/yarcl.config.ts", "./node_modules/@yarcl/react/src/yarcl.config.ts"]
+      "@yarcl/config": ["./src/yarcl.config.ts", "./node_modules/@yarcl/react/dist/yarcl.config.d.ts"]
     }
   }
 }

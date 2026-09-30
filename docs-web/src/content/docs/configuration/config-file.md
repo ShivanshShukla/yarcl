@@ -39,7 +39,7 @@ export default defineConfig({
 | `motion` | `fast`, `base`, `easing` + any | transitions | [Motion, layers and focus](/configuration/motion-layers-focus/) |
 | `borders` | `width` + any | border width | [Motion, layers and focus](/configuration/motion-layers-focus/) |
 | `focusRing` | `width`, `offset`, `color` | keyboard focus outline | [Motion, layers and focus](/configuration/motion-layers-focus/) |
-| `components` | component names | per-component defaults | [Defaults](/configuration/component-defaults/) |
+| `components` | component names | per-component defaults and sizing | [Defaults](/configuration/component-defaults/) |
 | `defaults` | fixed | values used when a prop is omitted | [Defaults](/configuration/component-defaults/) |
 
 **Open groups** take any keys you like. Those keys become the only valid values of the matching prop.
@@ -66,7 +66,7 @@ At compile time:
 
 - every color has both a `light` and a `dark` value
 - every `defaults` entry, `focusRing.color`, each `typography.headings` level and each text style's `family` points at a key that exists
-- `components` only names known components, only sets props those components have, and only uses existing keys
+- `components` only names known components, sets supported options, and uses existing keys; size restrictions are non-empty and contain the resolved default
 - required keys are present
 - no key contains whitespace
 

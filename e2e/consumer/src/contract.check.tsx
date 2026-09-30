@@ -1,14 +1,21 @@
-import { Accordion, Badge, Breadcrumb, Button, Combobox, CommandPalette, DatePicker, Dialog, Heading, Inline, Input, Label, NumberInput, Pagination, Progress, Slider, Stack, Table, Text } from '@yarcl/react';
+import { Accordion, Alert, Avatar, AvatarGroup, Badge, Breadcrumb, Button, Combobox, CommandPalette, DatePicker, Dialog, EmptyState, Heading, Inline, Input, Label, NumberInput, Pagination, Progress, Slider, Stack, Table, Text, Tooltip, VisuallyHidden, toast } from '@yarcl/react';
 
 export const contract = (
   <>
     <Button size="talla-l" color="clay" variant="wash" radius="hairline" />
+    {/* @ts-expect-error Button excludes the global talla-m size */}
+    <Button size="talla-m" />
     <Stack gap="12" />
+    <VisuallyHidden lang="es">Descripción adicional</VisuallyHidden>
     <Text textStyle="price" />
     <Label htmlFor="size" textStyle="fine" color="clay" required disabled />
     <Heading level={1} />
-    <Table density="cozy" />
+    <Label htmlFor="x" required variant="wash" color="clay" size="talla-s" radius="hairline" textStyle="label" />
+    <Table density="cozy" radius="hairline" />
+    <Tooltip content="Ayuda" radius="hairline" padding="2" textStyle="fine"><Button /></Tooltip>
+    <Alert gap="2" padding="4" textStyle="copy" />
     <Slider size="talla-s" color="moss" radius="hairline" defaultValue={[10, 90]} />
+    <Slider.Range aria-label="Price" size="talla-s" color="clay" radius="hairline" defaultValue={[10, 90]} />
     <Progress value={1} max={2} label="L" showValue formatValue={(v) => String(v)} size="talla-s" color="moss" radius="hairline" />
     <Pagination count={8} size="talla-s" color="clay" radius="square" variant="text" selectedVariant="filled" />
     <DatePicker size="talla-s" color="clay" variant="wash" radius="hairline" />
@@ -19,6 +26,11 @@ export const contract = (
     <Accordion type="multiple" size="talla-s" radius="hairline" color="moss" />
     <Combobox multiple options={[]} size="talla-s" color="clay" radius="square" maxSelected={2} onValueChange={(v: string[]) => v} />
     <NumberInput size="talla-s" color="moss" radius="square" min={1} />
+    <Avatar name="Ada Lovelace" size="talla-l" radius="hairline" color="moss" variant="text" />
+    <AvatarGroup max={2} total={3} size="talla-s" radius="square" color="clay" variant="wash">
+      <Avatar name="Ada Lovelace" />
+    </AvatarGroup>
+    <EmptyState title="No reviews" description="Be the first." icon={<span />} actions={<Button>Review</Button>} headingLevel={2} color="moss" gap="2" padding="6" textStyle="fine" />
 
     {/* consumer A's keys are not valid here */}
     {/* @ts-expect-error */}
@@ -42,9 +54,39 @@ export const contract = (
     {/* @ts-expect-error */}
     <Label color="danger" />
     {/* @ts-expect-error */}
+    <Label size="md" />
+    {/* @ts-expect-error */}
+    <Label variant="solid" />
+    {/* @ts-expect-error */}
+    <Label color="brand" />
+    {/* @ts-expect-error */}
+    <Label textStyle="body" />
+    {/* @ts-expect-error */}
     <Badge variant="subtle" />
     {/* @ts-expect-error */}
+    <Avatar size="md" />
+    {/* @ts-expect-error */}
+    <Avatar color="brand" />
+    {/* @ts-expect-error */}
+    <AvatarGroup radius="md" />
+    {/* @ts-expect-error */}
+    <AvatarGroup variant="solid" />
+    {/* @ts-expect-error */}
+    <EmptyState title="Empty" color="brand" />
+    {/* @ts-expect-error */}
+    <EmptyState title="Empty" gap="normal" />
+    {/* @ts-expect-error */}
+    <EmptyState title="Empty" padding="loose" />
+    {/* @ts-expect-error */}
+    <EmptyState title="Empty" textStyle="body" />
+    {/* @ts-expect-error */}
     <Table density="regular" />
+    {/* @ts-expect-error */}
+    <Table radius="md" />
+    {/* @ts-expect-error */}
+    <Tooltip content="Ayuda" padding="normal"><Button /></Tooltip>
+    {/* @ts-expect-error */}
+    <Alert textStyle="body" />
     {/* @ts-expect-error */}
     <Progress size="md" />
     {/* @ts-expect-error */}
@@ -57,6 +99,8 @@ export const contract = (
     <Slider size="md" />
     {/* @ts-expect-error */}
     <Slider color="brand" />
+    {/* @ts-expect-error */}
+    <Slider.Range aria-label="Price" size="md" defaultValue={[10, 90]} />
     {/* @ts-expect-error */}
     <Pagination count={8} size="sm" />
     {/* @ts-expect-error */}
@@ -89,3 +133,7 @@ export const contract = (
     <Combobox multiple options={[]} value="natural" />
   </>
 );
+
+toast({ title: 'Guardado', radius: 'hairline', gap: '2', padding: '4', textStyle: 'fine' });
+// @ts-expect-error
+toast({ title: 'Guardado', gap: 'normal' });

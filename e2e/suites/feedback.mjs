@@ -51,7 +51,49 @@ export default async function (ctx) {
   const tags = await section.locator('.yarcl-badge:has(.yarcl-badge-remove)').allInnerTexts();
   check('tag removed', JSON.stringify(tags.map((t) => t.trim())) === JSON.stringify(['react', 'typescript', 'css']), JSON.stringify(tags));
 
+  const avatars = section.getByTestId('avatar-demo');
+  const ada = avatars.locator('.yarcl-avatar').nth(0);
+  check('avatar image is named by the person', (await ada.getAttribute('aria-label')) === 'Ada Lovelace' && (await ada.locator('.yarcl-avatar-image').count()) === 1);
+  await ada.locator('.yarcl-avatar-image').evaluate((image) => image.dispatchEvent(new Event('error')));
+  check('avatar falls back to initials after image error', await poll(() => ada.textContent().then((text) => text === 'AL')));
+  const grace = avatars.locator('.yarcl-avatar').nth(1);
+  const avatarStyle = await grace.evaluate((el) => ({
+    height: el.getBoundingClientRect().height,
+    radius: getComputedStyle(el).borderRadius,
+    color: getComputedStyle(el).color,
+  }));
+  check('avatar uses the size scale and rounded component default', avatarStyle.height === 40 && avatarStyle.radius === '9999px', JSON.stringify(avatarStyle));
+  const group = avatars.getByRole('group', { name: 'Project members' });
+  check(
+    'avatar group limits children and names the overflow count',
+    (await group.getByRole('img').count()) === 4 && (await group.getByRole('img', { name: '2 more' }).count()) === 1,
+  );
+
+  const emptyState = section.getByTestId('empty-state-demo');
+  const emptyStateStyle = await emptyState.evaluate((el) => {
+    const style = getComputedStyle(el);
+    const description = getComputedStyle(el.querySelector('.yarcl-empty-state-description'));
+    return { gap: style.gap, padding: style.padding, fontSize: description.fontSize };
+  });
+  check(
+    'empty state uses component spacing and typography defaults',
+    emptyStateStyle.gap === '8px' && emptyStateStyle.padding === '16px' && emptyStateStyle.fontSize === '13px',
+    JSON.stringify(emptyStateStyle),
+  );
+  check('empty state uses a contextual heading', (await emptyState.getByRole('heading', { name: 'No matching projects' }).evaluate((el) => el.tagName)) === 'H3');
+  check('empty state icon is decorative', (await emptyState.locator('.yarcl-empty-state-icon').getAttribute('aria-hidden')) === 'true');
+  check('empty state renders its action', (await emptyState.getByRole('button', { name: 'Clear filters' }).count()) === 1);
+
   const trial = section.getByText('Trial ends in 3 days');
+  const alertStyle = await trial.locator('xpath=..').locator('xpath=..').evaluate((el) => {
+    const style = getComputedStyle(el);
+    return { radius: style.borderRadius, gap: style.gap, padding: style.padding, fontSize: style.fontSize };
+  });
+  check(
+    'alert uses component radius, spacing and text defaults',
+    alertStyle.radius === '6px' && alertStyle.gap === '12px' && alertStyle.padding === '14px 16px' && alertStyle.fontSize === '14px',
+    JSON.stringify(alertStyle),
+  );
   await section.getByRole('button', { name: 'Dismiss' }).click();
   check('alert dismissed', !(await trial.isVisible()));
   check('static alerts have no live role', (await section.locator('.yarcl-alert[role]').count()) === 0);

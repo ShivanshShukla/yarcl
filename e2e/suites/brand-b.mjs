@@ -8,14 +8,66 @@ export default async function ({ page, check }) {
   const h1 = page.getByRole('heading', { level: 1 });
   check('h1 uses the serif family', (await h1.evaluate((el) => getComputedStyle(el).fontFamily)).startsWith('Fraunces'));
 
+  const team = page.getByRole('group', { name: 'Design team' });
+  const groupAvatar = team.getByRole('img', { name: 'Ada Lovelace' });
+  const groupAvatarStyle = await groupAvatar.evaluate((el) => ({
+    height: el.getBoundingClientRect().height,
+    radius: getComputedStyle(el).borderRadius,
+    color: getComputedStyle(el).color,
+  }));
+  check(
+    'avatar group uses Maison Talla component defaults',
+    groupAvatarStyle.height === 36 && groupAvatarStyle.radius === '0px' && groupAvatarStyle.color === (await resolveColor(page, 'var(--yarcl-color-moss-text)')),
+    JSON.stringify(groupAvatarStyle),
+  );
+  check('avatar group shows the omitted member count', (await team.getByRole('img', { name: '2 more' }).count()) === 1);
+  const curator = page.getByRole('img', { name: 'Lena Ortiz' });
+  const curatorStyle = await curator.evaluate((el) => ({
+    height: el.getBoundingClientRect().height,
+    radius: getComputedStyle(el).borderRadius,
+    color: getComputedStyle(el).color,
+  }));
+  check(
+    'avatar uses Maison Talla component defaults',
+    curatorStyle.height === 36 && curatorStyle.radius === '2px' && curatorStyle.color === (await resolveColor(page, 'var(--yarcl-color-clay-text)')),
+    JSON.stringify(curatorStyle),
+  );
+
+  const emptyState = page.getByTestId('brand-b-empty-state');
+  const emptyStateStyle = await emptyState.evaluate((el) => {
+    const style = getComputedStyle(el);
+    const description = getComputedStyle(el.querySelector('.yarcl-empty-state-description'));
+    const icon = getComputedStyle(el.querySelector('.yarcl-empty-state-icon'));
+    return { gap: style.gap, padding: style.padding, fontSize: description.fontSize, iconColor: icon.color };
+  });
+  check(
+    'empty state uses Maison Talla component defaults',
+    emptyStateStyle.gap === '12px' &&
+      emptyStateStyle.padding === '24px' &&
+      emptyStateStyle.fontSize === '12px' &&
+      emptyStateStyle.iconColor === (await resolveColor(page, 'var(--yarcl-color-clay)')),
+    JSON.stringify(emptyStateStyle),
+  );
+  check('empty state keeps its heading in the page outline', (await emptyState.getByRole('heading', { name: 'No reviews yet' }).evaluate((el) => el.tagName)) === 'H2');
+
   const trail = page.getByRole('navigation', { name: 'Breadcrumb' });
   check('component default: breadcrumb uses fine text (12px)', (await trail.evaluate((el) => getComputedStyle(el).fontSize)) === '12px');
   check('breadcrumb collapses to first and last two', (await trail.locator('> ol > li').count()) === 4 && (await trail.getByRole('link', { name: 'Women' }).count()) === 0);
   check('breadcrumb marks the current page', (await trail.locator('[aria-current="page"]').textContent()) === 'Linen overshirt');
 
+  const labelEl = page.locator('.yarcl-label').first();
+  check('label renders a <label> element', (await labelEl.evaluate((el) => el.tagName)) === 'LABEL');
+  const linen = page.getByText('Linen', { exact: true });
+  check('label uses talla-s font (12px)', (await linen.evaluate((el) => getComputedStyle(el).fontSize)) === '12px');
+  check('label uses hairline radius', (await linen.evaluate((el) => getComputedStyle(el).borderTopLeftRadius)) === '2px');
+  check('label wash variant fills the background', (await linen.evaluate((el) => getComputedStyle(el).backgroundColor)) !== 'rgba(0, 0, 0, 0)');
+  const required = page.locator('.yarcl-label-required');
+  check('label required marker hidden from screen readers', (await required.count()) === 1 && (await required.getAttribute('aria-hidden')) === 'true');
+
   const add = page.getByRole('button', { name: 'Add to bag' });
   const save = page.getByRole('button', { name: 'Save' });
   check('talla-l buttons share height', (await add.boundingBox()).height === (await save.boundingBox()).height);
+  check('talla-l buttons use their component padding override', (await add.evaluate((el) => getComputedStyle(el).paddingLeft)) === '32px');
   check('component default: buttons square', (await add.evaluate((el) => getComputedStyle(el).borderRadius)) === '0px');
   const shade = page.getByRole('combobox', { name: 'Shade' });
   const quantity = page.getByRole('spinbutton', { name: 'Quantity' });
@@ -58,6 +110,9 @@ export default async function ({ page, check }) {
     return [getComputedStyle(document.querySelector('.yarcl-slider-range')).backgroundColor, ink];
   });
   check('slider: default color ink', fill === ink, `${fill} vs ${ink}`);
+  const fitThumb = page.getByRole('slider', { name: 'Fit range Minimum' });
+  check('Slider.Range renders two thumbs', (await fitThumb.count()) === 1 && (await page.getByRole('slider', { name: 'Fit range Maximum' }).count()) === 1);
+  check('Slider.Range uses its color', (await fitThumb.evaluate((el) => getComputedStyle(el).getPropertyValue('--yarcl-c'))) === 'light-dark(#a4441f, #f0a07a)');
   const delivery = page.getByRole('button', { name: 'Delivery date', includeHidden: true });
   check('date picker matches Select height', (await delivery.boundingBox()).height === (await shade.boundingBox()).height);
   check('component default: date picker square', (await delivery.evaluate((el) => getComputedStyle(el).borderRadius)) === '0px');
@@ -88,6 +143,24 @@ export default async function ({ page, check }) {
   check('size error clears', (await page.getByRole('alert').filter({ hasText: 'Choose a size first.' }).count()) === 0);
   await add.click();
   check('toast confirms', await page.getByRole('status').filter({ hasText: 'Added to bag' }).isVisible());
+  const noticeStyles = await page.locator('.yarcl-alert').first().evaluate((el) => {
+    const style = getComputedStyle(el);
+    return { radius: style.borderRadius, gap: style.gap, padding: style.padding, fontSize: style.fontSize };
+  });
+  check(
+    'alert uses Maison Talla component tokens',
+    noticeStyles.radius === '2px' && noticeStyles.gap === '12px' && noticeStyles.padding === '14px 16px' && noticeStyles.fontSize === '15px',
+    JSON.stringify(noticeStyles),
+  );
+  const toastStyles = await page.getByRole('status').filter({ hasText: 'Added to bag' }).evaluate((el) => {
+    const style = getComputedStyle(el);
+    return { radius: style.borderRadius, gap: style.gap, padding: style.padding, fontSize: style.fontSize };
+  });
+  check(
+    'toast uses Maison Talla component tokens',
+    toastStyles.radius === '2px' && toastStyles.gap === '12px' && toastStyles.padding === '12px 8px 12px 16px' && toastStyles.fontSize === '15px',
+    JSON.stringify(toastStyles),
+  );
 
   const shipping = page.getByRole('progressbar', { name: '€ 15 away from free express shipping' });
   const progress = await shipping.evaluate((el) => {

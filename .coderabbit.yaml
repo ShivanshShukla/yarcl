@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
+language: en-US
+tone_instructions: >-
+  Be concise and direct. Only raise actionable findings that could affect
+  correctness, accessibility, public API behavior, type safety, or test coverage.
+early_access: false
+
+reviews:
+  profile: chill
+  request_changes_workflow: false
+  high_level_summary: true
+  high_level_summary_in_walkthrough: true
+  review_status: true
+  review_details: false
+  collapse_walkthrough: true
+  changed_files_summary: true
+  sequence_diagrams: false
+  estimate_code_review_effort: false
+  related_issues: false
+  related_prs: false
+  suggested_labels: false
+  suggested_reviewers: false
+  in_progress_fortune: false
+  poem: false
+  path_filters:
+    - "!pnpm-lock.yaml"
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    drafts: false
+
+chat:
+  art: false
+  auto_reply: true
+
+knowledge_base:
+  code_guidelines:
+    enabled: true

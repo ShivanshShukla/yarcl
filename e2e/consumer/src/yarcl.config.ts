@@ -74,7 +74,16 @@ export default defineConfig({
   borders: { width: '1px' },
   focusRing: { width: '2px', offset: '3px', color: 'clay' },
   components: {
-    Button: { radius: 'square' },
+    Avatar: { size: 'talla-s', radius: 'hairline', color: 'clay', variant: 'wash' },
+    AvatarGroup: { size: 'talla-s', radius: 'square', color: 'moss', variant: 'wash' },
+    EmptyState: { color: 'clay', gap: '3', padding: '6', textStyle: 'fine' },
+    Alert: { gap: '2', padding: '4', textStyle: 'copy' },
+    Button: {
+      size: 'talla-s',
+      radius: 'square',
+      allowedSizes: ['talla-s', 'talla-l'],
+      sizeOverrides: { 'talla-l': { paddingX: '2rem' } },
+    },
     IconButton: { radius: 'square' },
     ToggleGroup: { radius: 'square' },
     Pagination: { size: 'talla-s', radius: 'square', variant: 'text', selectedVariant: 'line' },
@@ -86,6 +95,8 @@ export default defineConfig({
     Breadcrumb: { textStyle: 'fine' },
     Accordion: { size: 'talla-s', radius: 'square' },
     NumberInput: { radius: 'square' },
+    Tooltip: { radius: 'hairline', padding: '2', textStyle: 'fine' },
+    Toast: { radius: 'hairline', gap: '2', padding: '4', textStyle: 'copy' },
   },
   defaults: {
     size: 'talla-m',

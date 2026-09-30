@@ -1,6 +1,6 @@
 ---
 title: "Label"
-description: "A standalone form label for layouts Field doesn't cover."
+description: "A standalone form label, or a filled label with a variant."
 sidebar:
   order: 1.5
 ---
@@ -13,7 +13,7 @@ import { LabelCustomDemo, LabelDemo, LabelGroupDemo } from '@/demos/forms';
 import { Label } from '@yarcl/react';
 ```
 
-`Label` is the label [Field](/components/forms/field/) renders, available on its own for layouts `Field` doesn't cover: a label beside its control, one label for several controls, or a custom control.
+`Label` is the label [Field](/components/forms/field/) renders, available on its own for layouts `Field` doesn't cover. Add a variant to render a filled label like a tag.
 
 <Preview>
   <LabelDemo client:visible />
@@ -29,6 +29,9 @@ import { Label } from '@yarcl/react';
   <Label htmlFor="nickname" disabled>Nickname</Label>
   <Input id="nickname" disabled />
 </Inline>
+
+<Label variant="soft" color="success" radius="rounded">Active</Label>
+<Label variant="solid" color="primary" size="lg">New</Label>
 ```
 
 ## One label for several controls
@@ -68,9 +71,11 @@ Controls that aren't native form elements, like [ToggleGroup](/components/button
 ## Styling
 
 - The text style is `defaults.labelStyle`; `textStyle` picks another from `typography.styles`.
-- The color is the neutral text color; `color` uses a semantic color's text shade, and `disabled` uses the muted color.
+- `color` colors the text. A `variant` adds a background and border from the same [variant recipes](/configuration/variants/) as buttons.
+- `size` scales the font size from your size scale, and `radius` rounds a filled label.
+- `disabled` uses the muted color.
 - The required marker uses `defaults.errorColor`.
-- `textStyle` and `color` can be set for every label in `components.Label`.
+- Every styling prop can be set for all labels in `components.Label`.
 
 ## Accessibility
 
@@ -81,5 +86,4 @@ Controls that aren't native form elements, like [ToggleGroup](/components/button
 ## Props
 
 Accepts every native `<label>` attribute except `color`.
-
 <Props of="LabelProps" />

@@ -1,0 +1,37 @@
+---
+title: "Empty state"
+description: "A message and actions for a view with no content or matching results."
+sidebar:
+  order: 6
+---
+
+import Preview from '@/components/Preview.astro';
+import Props from '@/components/Props.astro';
+import { EmptyStateDemo } from '@/demos/feedback';
+
+```tsx
+import { EmptyState } from '@yarcl/react';
+```
+
+<Preview>
+  <EmptyStateDemo />
+</Preview>
+
+```tsx
+<EmptyState
+  icon={<SearchIcon />}
+  title="No matching projects"
+  description="Try changing or clearing your filters."
+  actions={<Button variant="outline">Clear filters</Button>}
+/>
+```
+
+`gap`, `padding`, `color` and `textStyle` use keys from your config and can be set in `components.EmptyState`. The icon is decorative and receives `color`; the description receives `textStyle`.
+
+## Accessibility
+
+The title is a semantic heading. Set `headingLevel` to fit the surrounding page outline. Empty states are static content and do not announce themselves as live regions. Add a live region separately when an empty state appears in response to an asynchronous action and needs an announcement.
+
+## Props
+
+<Props of="EmptyStateProps" />

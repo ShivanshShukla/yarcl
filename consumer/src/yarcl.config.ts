@@ -61,9 +61,19 @@ export default defineConfig({
   zIndex: { ...defaults.zIndex, banner: 900 },
   focusRing: { ...defaults.focusRing, color: 'brand' },
   components: {
+    Avatar: { radius: 'rounded' },
+    EmptyState: { color: 'neutral', gap: 'tight', padding: 'normal', textStyle: 'caption' },
+    Alert: { gap: 'tight', padding: 'normal', textStyle: 'label' },
     Badge: { radius: 'rounded' },
+    Menu: {
+      size: 'sm',
+      allowedSizes: ['sm', 'md'],
+      sizeOverrides: { sm: { paddingX: '0.625rem' } },
+    },
     Drawer: { size: 'sm' },
     Breadcrumb: { textStyle: 'label' },
+    Tooltip: { radius: 'md', padding: 'tight', textStyle: 'caption' },
+    Toast: { radius: 'lg', gap: 'tight', padding: 'normal', textStyle: 'label' },
   },
   defaults: {
     size: 'md',

@@ -24,6 +24,7 @@ import {
   Textarea,
   Toaster,
   ToggleGroup,
+  VisuallyHidden,
   config,
   type Color,
   type Radius,
@@ -187,7 +188,7 @@ export function App() {
               {sizes.map((size) => (
                 <Slider key={size} size={size} defaultValue={40} aria-label={`Volume ${size}`} />
               ))}
-              <Slider defaultValue={[20, 80]} step={5} aria-label="Price" formatValue={(v) => `$${v}`} />
+              <Slider.Range defaultValue={[20, 80]} step={5} aria-label="Price" formatValue={(v) => `$${v}`} />
               <Slider color="success" radius="rounded" defaultValue={60} aria-label="Brightness" />
               <Slider disabled defaultValue={30} aria-label="Disabled volume" />
             </Stack>
@@ -248,7 +249,7 @@ export function App() {
                 </Inline>
               </Stack>
               <Stack gap="tight">
-                <Label id="label-frequency" color="brand">
+                <Label id="label-frequency" color="brand" variant="subtle" size="lg" radius="rounded">
                   Digest frequency
                 </Label>
                 <ToggleGroup type="single" defaultValue="weekly" aria-labelledby="label-frequency">
@@ -426,6 +427,10 @@ export function App() {
           </Section>
 
           <Section title="Layout">
+            <Button variant="outline" data-testid="visually-hidden-demo">
+              <SearchIcon />
+              <VisuallyHidden>Search projects</VisuallyHidden>
+            </Button>
             {spacings.map((gap) => (
               <Row key={gap} label={`gap ${gap}`}>
                 <Inline gap={gap}>

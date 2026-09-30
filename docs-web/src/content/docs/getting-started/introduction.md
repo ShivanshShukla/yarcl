@@ -40,7 +40,7 @@ The same happens with colors, variants and spacing. Each is a **configuration co
 yarcl lets the consumer own the contract. The library derives its API from your config, using three things you already have:
 
 1. **`as const` generics.** `defineConfig` keeps your config's literal types, so `keyof` your `sizes` is `"talla-s" | "talla-m"`, not `string`.
-2. **A module alias.** The library imports `@yarcl/config`. A Vite plugin points that import at your config file at runtime, and a `paths` entry in your `tsconfig.json` does the same for types. There's no codegen and no module augmentation.
+2. **A module alias.** The library imports `@yarcl/config`. A build plugin points that import at your config file at runtime, and a `paths` entry in your `tsconfig.json` does the same for types. There's no codegen and no module augmentation.
 3. **Build-time CSS.** The plugin reads your config and generates CSS variables and one class per key. Components only set class names; nothing is computed at runtime.
 
 The result: adding a key to your config makes it a valid, rendered option everywhere, and removing one turns every stale usage into a compile error.
@@ -49,7 +49,7 @@ The result: adding a key to your config makes it a valid, rendered option everyw
 
 - **More than 30 components**: buttons, form controls, a combobox, menus, dialogs, drawers, toasts, tabs, tables and more. All are accessible and keyboard-friendly.
 - **Light and dark mode** from one file, with contrast checks at build time.
-- **One size scale** shared by every control, so a button and an input of the same size always line up.
+- **One base size scale** shared by every control, with optional per-component restrictions and overrides.
 - **Per-component defaults**, e.g. make every button square without touching call sites.
 - **A living design reference** generated from your config.
 

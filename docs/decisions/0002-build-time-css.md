@@ -16,7 +16,7 @@ Every config value (a size's height, a color pair, a radius) has to reach the br
 
 ## Decision
 
-Generate plain CSS. The Vite plugin loads the config and serves `generateCss(config)` as `virtual:yarcl.css`: `:root` variables plus one modifier class per key. Static component styles live in `styles.css` and only read those variables.
+Generate plain CSS. The build plugin loads the config and serves `generateCss(config)` as `@yarcl/react/styles.css`: `:root` variables plus one modifier class per key. Static component styles live in `styles.css` and only read those variables.
 
 - No inline styles, so it's CSP-safe and components carry no style logic.
 - SSR-safe with no flash, since the CSS exists before any JS runs.

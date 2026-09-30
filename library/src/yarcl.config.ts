@@ -99,6 +99,11 @@ export default defineConfig({
     modalSize: 'md',
   },
   components: {
+    Avatar: { radius: 'rounded' },
+    EmptyState: { color: 'neutral', gap: 'sm', padding: 'lg', textStyle: 'body' },
+    Alert: { gap: 'sm', padding: 'md', textStyle: 'label' },
     Drawer: { size: 'sm' },
+    Tooltip: { radius: 'md', padding: 'sm', textStyle: 'caption' },
+    Toast: { radius: 'lg', gap: 'sm', padding: 'md', textStyle: 'label' },
   },
 });

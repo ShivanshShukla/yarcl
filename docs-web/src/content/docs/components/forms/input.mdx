@@ -2,7 +2,7 @@
 title: "Input"
 description: "A single-line text input on the shared size scale."
 sidebar:
-  order: 2
+  order: 3
 ---
 
 import Preview from '@/components/Preview.astro';
@@ -23,7 +23,7 @@ import { Input } from '@yarcl/react';
 <Input disabled />
 ```
 
-- `size` sets the height, padding and font size. An input and a [Button](/components/buttons/button/) of the same size have the same height.
+- `size` sets the height, padding and font size. An input and a [Button](/components/buttons/button/) of the same base size have the same height unless either component overrides it.
 - `color` sets the focus border and ring.
 - Inside a [Field](/components/forms/field/) it's labelled, described and marked invalid automatically.
 

@@ -40,4 +40,11 @@ export default async function ({ page, check, focused }) {
   check('uses defaults.labelStyle (label: 14px 500)', (await font(cityLabel)) === '14px 500', await font(cityLabel));
   check('Field renders the same Label', (await font(fieldLabel)) === '14px 500' && (await fieldLabel.getAttribute('class')).includes('yarcl-label'));
   check('Field label names its control', (await page.getByRole('textbox', { name: 'Name', exact: true }).count()) === 1);
+
+  check('size scales font size', (await brand.evaluate((el) => getComputedStyle(el).fontSize)) === '16px');
+  check('variant fills the background', (await brand.evaluate((el) => getComputedStyle(el).backgroundColor)) !== 'rgba(0, 0, 0, 0)');
+  check(
+    'radius rounds the filled label',
+    (await brand.evaluate((el) => parseFloat(getComputedStyle(el).borderTopLeftRadius))) > 100,
+  );
 }

@@ -1,7 +1,7 @@
 import { useEffect, useImperativeHandle, useRef, type ComponentProps, type ReactNode } from 'react';
 import { colorClass, cx, sizeClass } from '../classes';
 import { useFieldProps } from '../field-context';
-import type { Color, Size } from '../types';
+import type { Color, ComponentSize } from '../types';
 import { useDefaults } from '../runtime';
 
 
@@ -13,7 +13,7 @@ export interface CheckboxProps extends Omit<ComponentProps<'input'>, 'type' | 'c
    * Box size, from the `sizes` config (uses the size's `iconSize`).
    * @default config.defaults.size
    */
-  size?: Size;
+  size?: ComponentSize<'Checkbox'>;
   /**
    * Color of the checked box, from the `colors` config.
    * @default config.defaults.color
@@ -41,7 +41,7 @@ export function Checkbox(props: CheckboxProps) {
   }, [indeterminate]);
 
   return (
-    <label className={cx('yarcl-checkbox', sizeClass(size ?? own.size), colorClass(color ?? own.color), className)} style={style}>
+    <label className={cx('yarcl-checkbox', sizeClass(size ?? own.size, 'Checkbox'), colorClass(color ?? own.color), className)} style={style}>
       <input ref={inner} type="checkbox" className="yarcl-checkbox-input" {...rest} />
       {children != null && <span className="yarcl-checkbox-label">{children}</span>}
     </label>

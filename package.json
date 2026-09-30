@@ -4,14 +4,17 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm -C consumer dev",
-    "build": "pnpm -C consumer build && pnpm -C e2e/consumer build",
+    "build": "pnpm -C library build && pnpm -C consumer build && pnpm -C e2e/consumer build && pnpm -C e2e/build-tools build",
+    "size": "pnpm -C library build && node test-utils/size-budget.mjs",
     "typecheck": "tsc -p library && tsc -p consumer && tsc -p e2e/consumer",
     "test": "vitest run",
+    "test:package": "node test-utils/package-consumer.mjs",
+    "test:init": "pnpm -C library build && node test-utils/init-consumers.mjs",
     "test:watch": "vitest",
     "docs:api": "typedoc",
     "docs:dev": "pnpm -C docs-web dev",
     "docs:build": "pnpm -C docs-web build",
-    "lint": "eslint library/src consumer/src e2e/consumer/src"
+    "lint": "eslint library/src library/scripts/build.mjs library/tests library/vite.config.ts library/vitest.config.ts consumer/src e2e/consumer/src e2e/package-consumer/src e2e/package-consumer/vite.config.ts e2e/build-tools/*.mjs e2e/build-tools/src e2e/init-consumers/*/*.mjs e2e/init-consumers/*/src test-utils/package-consumer.mjs test-utils/init-consumers.mjs test-utils/size-budget.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

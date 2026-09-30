@@ -7,7 +7,40 @@ sidebar:
 
 import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
 
-yarcl needs **React 19 or newer** and **Vite 6.1 or newer**.
+yarcl needs **React 19 or newer**. Its build plugin supports Vite, webpack, Rspack, Rollup and esbuild.
+
+## Automatic setup
+
+Run the setup command from an existing React project:
+
+<Tabs>
+  <TabItem label="pnpm">
+  ```sh
+  pnpm dlx @yarcl/react init
+  ```
+  </TabItem>
+  <TabItem label="npm">
+  ```sh
+  npx @yarcl/react init
+  ```
+  </TabItem>
+  <TabItem label="yarn">
+  ```sh
+  yarn dlx @yarcl/react init
+  ```
+  </TabItem>
+  <TabItem label="bun">
+  ```sh
+  bunx @yarcl/react init
+  ```
+  </TabItem>
+</Tabs>
+
+This installs `@yarcl/react`, detects and adds the matching build plugin, updates `tsconfig.app.json` or `tsconfig.json`, and creates `src/yarcl.config.ts`. Existing JSON comments and unrelated settings are preserved. Run the command again to verify or repair the setup.
+
+Use `--config <path>` to choose a different config file, `--bundler <name>` when a project has more than one build config, or `--skip-install` to update the project without running its package manager.
+
+## Manual setup
 
 <Steps>
 
@@ -29,19 +62,65 @@ yarcl needs **React 19 or newer** and **Vite 6.1 or newer**.
      yarn add @yarcl/react
      ```
      </TabItem>
+     <TabItem label="bun">
+     ```sh
+     bun add @yarcl/react
+     ```
+     </TabItem>
    </Tabs>
 
-2. Add the Vite plugin. It points the library at your config and generates the CSS.
+2. Add the plugin for your build tool. It points the library at your config and generates the CSS.
 
+   <Tabs>
+     <TabItem label="Vite">
    ```ts title="vite.config.ts"
    import react from '@vitejs/plugin-react';
    import { defineConfig } from 'vite';
-   import { yarcl } from '@yarcl/react/plugin';
+   import yarcl from '@yarcl/react/vite';
 
    export default defineConfig({
      plugins: [react(), yarcl({ config: 'src/yarcl.config.ts' })],
    });
    ```
+     </TabItem>
+     <TabItem label="webpack">
+   ```js title="webpack.config.js"
+   const yarcl = require('@yarcl/react/webpack');
+
+   module.exports = {
+     plugins: [yarcl({ config: 'src/yarcl.config.ts' })],
+   };
+   ```
+     </TabItem>
+     <TabItem label="Rspack">
+   ```ts title="rspack.config.ts"
+   import yarcl from '@yarcl/react/rspack';
+
+   export default {
+     plugins: [yarcl({ config: 'src/yarcl.config.ts' })],
+   };
+   ```
+     </TabItem>
+     <TabItem label="Rollup">
+   ```ts title="rollup.config.ts"
+   import yarcl from '@yarcl/react/rollup';
+
+   export default {
+     plugins: [yarcl({ config: 'src/yarcl.config.ts' })],
+   };
+   ```
+     </TabItem>
+     <TabItem label="esbuild">
+   ```ts title="esbuild.config.ts"
+   import { build } from 'esbuild';
+   import yarcl from '@yarcl/react/esbuild';
+
+   await build({
+     plugins: [yarcl({ config: 'src/yarcl.config.ts' })],
+   });
+   ```
+     </TabItem>
+   </Tabs>
 
 3. Point TypeScript at the same file, so the prop types come from your config.
 
@@ -52,7 +131,7 @@ yarcl needs **React 19 or newer** and **Vite 6.1 or newer**.
        "paths": {
          "@yarcl/config": [
            "./src/yarcl.config.ts",
-           "./node_modules/@yarcl/react/src/yarcl.config.ts"
+           "./node_modules/@yarcl/react/dist/yarcl.config.d.ts"
          ]
        }
      }
@@ -104,4 +183,4 @@ body {
 
 ## Keep both mappings in sync
 
-The Vite plugin and the `tsconfig.json` `paths` entry must point at the same file. If they don't, the types and the rendered styles come from different configs. See [the Vite plugin](/configuration/vite-plugin/) for details.
+The build plugin and the TypeScript `paths` entry must point at the same file. The plugin stops with a clear error if they differ. Re-run the setup command to repair the mapping, or see [Build plugins](/configuration/build-plugins/) for details.

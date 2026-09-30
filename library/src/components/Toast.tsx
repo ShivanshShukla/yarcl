@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import { colorClass, cx } from '../classes';
-import type { Color } from '../types';
+import { colorClass, cx, gapClass, paddingClass, radiusClass, typeClass } from '../classes';
+import type { Color, Radius, Spacing, TextStyle } from '../types';
 import { useConfig, useDefaults } from '../runtime';
 
 
@@ -16,6 +16,26 @@ export interface ToastOptions {
    * @default config.defaults.color
    */
   color?: Color;
+  /**
+   * Corner radius, from the `radii` config.
+   * @default config.components.Toast.radius ?? config.defaults.radius
+   */
+  radius?: Radius;
+  /**
+   * Space between the message, action and dismiss button, from the `spacing` config.
+   * @default config.components.Toast.gap ?? config.defaults.gap
+   */
+  gap?: Spacing;
+  /**
+   * Inner spacing, from the `spacing` config.
+   * @default config.components.Toast.padding ?? config.defaults.padding
+   */
+  padding?: Spacing;
+  /**
+   * Typography style, from the `typography.styles` config.
+   * @default config.components.Toast.textStyle ?? config.defaults.labelStyle
+   */
+  textStyle?: TextStyle;
   /**
    * Time before it dismisses itself, in ms. Paused while hovered or focused. `0` keeps it until dismissed.
    * @default config.timing.toastDuration
@@ -145,7 +165,7 @@ export function Toaster({ placement = 'bottom-right', limit = 4, label = 'Notifi
 function ToastItem({ entry }: { entry: ToastEntry }) {
   const own = useDefaults('Toast');
   const config = useConfig();
-  const { id, title, description, color, action, urgent } = entry;
+  const { id, title, description, color, radius, gap, padding, textStyle, action, urgent } = entry;
   const duration = entry.duration ?? config.timing.toastDuration;
   const [paused, setPaused] = useState(false);
 
@@ -158,7 +178,14 @@ function ToastItem({ entry }: { entry: ToastEntry }) {
   return (
     <div
       role={urgent ? 'alert' : 'status'}
-      className={cx('yarcl-toast', colorClass(color ?? own.color))}
+      className={cx(
+        'yarcl-toast',
+        colorClass(color ?? own.color),
+        radiusClass(radius ?? own.radius),
+        gapClass(gap ?? own.gap),
+        paddingClass(padding ?? own.padding),
+        typeClass(textStyle ?? own.textStyle ?? config.defaults.labelStyle),
+      )}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}

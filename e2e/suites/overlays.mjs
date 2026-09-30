@@ -86,6 +86,15 @@ export default async function ({ page, check, focused, htmlOverflow }) {
   await page.getByRole('button', { name: 'Toast success' }).click();
   const ok = page.getByRole('status').filter({ hasText: 'success toast' });
   check('toast appears', await ok.isVisible());
+  const toastStyle = await ok.evaluate((el) => {
+    const style = getComputedStyle(el);
+    return { radius: style.borderRadius, gap: style.gap, padding: style.padding, fontSize: style.fontSize };
+  });
+  check(
+    'toast uses component radius, spacing and text defaults',
+    toastStyle.radius === '8px' && toastStyle.gap === '12px' && toastStyle.padding === '12px 8px 12px 16px' && toastStyle.fontSize === '14px',
+    JSON.stringify(toastStyle),
+  );
   for (const c of ['brand', 'neutral', 'warning', 'danger']) await page.getByRole('button', { name: `Toast ${c}` }).click();
   check('toast limit 4, oldest dismissed', (await page.locator('.yarcl-toast').count()) === 4 && !(await ok.isVisible()));
   await page.clock.runFor(5400);

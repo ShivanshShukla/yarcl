@@ -38,7 +38,7 @@ A CLI reads the config and writes a `.d.ts` (and possibly CSS) that the library 
 | Runtime cost | none: a static import | React context | none |
 | Bundler coupling | yes: alias per bundler | none | a CLI in the toolchain |
 | Multiple themes in one app | no | yes (nested Providers) | no |
-| Library ships compiled `.d.ts` | no: types resolve through the consumer's program | yes | yes |
+| Library ships compiled `.d.ts` | yes: the declarations keep `@yarcl/config` unresolved | yes | yes |
 
 ## Decision
 
@@ -46,12 +46,12 @@ Use **A**. The thesis of the library is "the config file *is* the design system"
 
 ## Consequences
 
-- Consumers add a Vite plugin and a `paths` entry. The two must point at the same file; a future `yarcl init` could write both.
+- Consumers add the plugin for their build tool and a `paths` entry. The two must point at the same file; `yarcl init` writes both.
 - One design system per build. Multi-brand apps would add a Provider for runtime values (a hybrid of A and B).
-- The package ships TypeScript source so the consumer's compiler resolves `@yarcl/config` inside it. Publishing requires compiling the plugin.
+- The package ships compiled ESM and declarations. The declarations keep `@yarcl/config` unresolved so the consumer's `paths` entry supplies the config type.
 - Other bundlers need small adapters (webpack `resolve.alias`, Turbopack `resolveAlias`); unplugin could produce them from one implementation.
 
 ## When to revisit
 
 - A consumer needs several themes in one bundle → add B for runtime values, keep A for types.
-- Distribution to non-Vite toolchains becomes a priority → unplugin adapters, or B for types so compiled `.d.ts` can ship.
+- The plugin uses unplugin adapters for Vite, webpack, Rspack, Rollup and esbuild.

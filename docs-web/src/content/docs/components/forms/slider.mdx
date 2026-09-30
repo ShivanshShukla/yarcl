@@ -23,11 +23,11 @@ import { Slider } from '@yarcl/react';
 </Field>
 
 <Field label="Price">
-  <Slider defaultValue={[200, 800]} min={0} max={1000} step={50} formatValue={(v) => `$${v}`} />
+  <Slider.Range defaultValue={[200, 800]} min={0} max={1000} step={50} formatValue={(v) => `$${v}`} />
 </Field>
 ```
 
-Pass a number for one thumb, or a `[start, end]` pair for a range with two thumbs. The type of `onValueChange` follows: a number, or a pair. Values snap to `step`, counted from `min`, and the two thumbs of a range can't cross.
+`Slider.Range` provides an explicitly range-only API. You can also pass a `[start, end]` pair directly to `Slider`. The type of `onValueChange` follows the value: a number, or a pair. Values snap to `step`, counted from `min`, and the two thumbs of a range can't cross.
 
 ## Tokens
 

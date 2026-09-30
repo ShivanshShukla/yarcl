@@ -18,7 +18,7 @@ import { Table } from '@yarcl/react';
 </Preview>
 
 ```tsx
-<Table density="compact" striped interactive caption="Invoices">
+<Table density="compact" radius="md" striped interactive caption="Invoices">
   <Table.Head>
     <Table.Row>
       <Table.HeaderCell>Customer</Table.HeaderCell>
@@ -35,6 +35,7 @@ import { Table } from '@yarcl/react';
 ```
 
 - `density` accepts the keys of your [density](/configuration/spacing-shadows-density/#density) group.
+- `radius` accepts the keys of your [radii](/configuration/sizes-and-radii/#radii) group and styles the table frame.
 - `align="end"` also uses tabular numbers, so amounts line up.
 - `caption` is visible and names the table for screen readers.
 - The table scrolls horizontally when it doesn't fit.

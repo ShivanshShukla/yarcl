@@ -1,5 +1,5 @@
-import { contrast, mix, parseHex, readableOn, readableText, toHex } from './color.ts';
-import type { ColorPair, ColorToken, FontFaceToken, VariantToken, YarclShape } from './define.ts';
+import { contrast, mix, parseHex, readableOn, readableText, toHex } from './color';
+import type { ColorPair, ColorToken, ComponentName, FontFaceToken, SizeToken, VariantToken, YarclShape } from './define';
 
 const MIN_CONTRAST = 4.5;
 
@@ -97,9 +97,18 @@ function rule(selector: string, declarations: [string, string | number][]): stri
   return `${selector} {\n${declarations.map(([p, v]) => `  ${p}: ${v};`).join('\n')}\n}`;
 }
 
+const sizeProperties: Record<keyof SizeToken, string> = {
+  height: 'h',
+  paddingX: 'px',
+  fontSize: 'fs',
+  iconSize: 'icon',
+};
+
+type ComponentSizing = { sizeOverrides?: Record<string, Partial<SizeToken>> };
+
 /**
  * Generates the stylesheet for a config: CSS variables on `:root`, one class per key and
- * `@font-face` rules. The Vite plugin calls this at build time; call it yourself to preview
+ * `@font-face` rules. The build plugin calls this at build time; call it yourself to preview
  * or switch themes at runtime (inject the result into a `<style>` element).
  *
  * @param config A config from `defineConfig`, e.g. one of `@yarcl/react/themes`.
@@ -145,6 +154,18 @@ export function generateCss(config: YarclShape, warn: (message: string) => void 
     );
   }
 
+  for (const [component, { sizeOverrides }] of Object.entries(config.components ?? {}) as [ComponentName, ComponentSizing][]) {
+    for (const [key, overrides] of Object.entries(sizeOverrides ?? {})) {
+      const declarations = Object.entries(overrides).map(([property, value]) => [
+        `--yarcl-${sizeProperties[property as keyof SizeToken]}`,
+        value,
+      ]) as [string, string][];
+      const marker = `.yarcl-sized-${ident(component)}`;
+      const sized = `.yarcl-size-${ident(key)}`;
+      if (declarations.length) rules.push(rule(`${marker}${sized},\n${marker}${marker} ${sized}`, declarations));
+    }
+  }
+
   for (const [key, value] of Object.entries(config.radii)) {
     const k = ident(key);
     root.push([`--yarcl-radius-${k}`, value]);
@@ -168,8 +189,8 @@ export function generateCss(config: YarclShape, warn: (message: string) => void 
     const k = ident(key);
     root.push([`--yarcl-space-${k}`, value]);
     rules.push(
-      rule(`.yarcl-gap-${k}`, [['gap', `var(--yarcl-space-${k})`]]),
-      rule(`.yarcl-padding-${k}`, [['padding', `var(--yarcl-space-${k})`]]),
+      rule(`.yarcl-gap-${k}`, [['--yarcl-component-gap', `var(--yarcl-space-${k})`]]),
+      rule(`.yarcl-padding-${k}`, [['--yarcl-component-padding', `var(--yarcl-space-${k})`]]),
     );
   }
 
@@ -212,6 +233,8 @@ export function generateCss(config: YarclShape, warn: (message: string) => void 
   for (const [key, value] of Object.entries(config.motion)) root.push([`--yarcl-motion-${ident(key)}`, value]);
   for (const [key, value] of Object.entries(config.borders)) root.push([`--yarcl-border-${ident(key)}`, value]);
 
+  const defaultSize = ident(config.defaults.size);
+  const defaultRadius = config.defaults.radius === 'size' ? defaultSize : ident(config.defaults.radius);
   root.push(
     ['--yarcl-focus-width', config.focusRing.width],
     ['--yarcl-focus-offset', config.focusRing.offset],
@@ -221,6 +244,11 @@ export function generateCss(config: YarclShape, warn: (message: string) => void 
     ['--yarcl-floating-shadow', `var(--yarcl-shadow-${ident(config.defaults.floatingShadow)})`],
     ['--yarcl-padding', `var(--yarcl-space-${ident(config.defaults.padding)})`],
     ['--yarcl-gap', `var(--yarcl-space-${ident(config.defaults.gap)})`],
+    ['--yarcl-h', `var(--yarcl-size-${defaultSize}-height)`],
+    ['--yarcl-px', `var(--yarcl-size-${defaultSize}-padding-x)`],
+    ['--yarcl-fs', `var(--yarcl-size-${defaultSize}-font-size)`],
+    ['--yarcl-icon', `var(--yarcl-size-${defaultSize}-icon-size)`],
+    ['--yarcl-r', `var(--yarcl-radius-${defaultRadius}, 0)`],
   );
 
   const faces = (config.typography.fontFaces ?? []).map(fontFace);

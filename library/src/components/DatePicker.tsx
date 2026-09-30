@@ -45,7 +45,7 @@ export interface DatePickerLabels {
 
 /** Props shared by both modes of {@link DatePicker}. */
 export interface DatePickerBaseProps
-  extends TokenProps,
+  extends TokenProps<'DatePicker'>,
     VariantProps,
     Omit<ComponentProps<'button'>, 'color' | 'value' | 'defaultValue' | 'onChange' | 'children' | 'type' | 'name'> {
   /**
@@ -338,7 +338,7 @@ export function DatePicker(props: DatePickerProps) {
               else if (incomingRef && 'current' in incomingRef) (incomingRef as React.MutableRefObject<HTMLButtonElement | null>).current = node;
             }}
             type="button"
-            className={cx('yarcl-input yarcl-select yarcl-date-picker', sizeClass(s), radiusClass(radius ?? own.radius, s), colorClass(color ?? own.color), className)}
+            className={cx('yarcl-input yarcl-select yarcl-date-picker', sizeClass(s, 'DatePicker'), radiusClass(radius ?? own.radius, s), colorClass(color ?? own.color), className)}
             {...rest}
             aria-describedby={cx(labelled && display && valueId, rest['aria-describedby']) || undefined}
           >
@@ -351,7 +351,7 @@ export function DatePicker(props: DatePickerProps) {
         <Popover.Content
           aria-label={labels.dialog}
           initialFocus={cellRef}
-          className={cx('yarcl-date-picker-panel', sizeClass(s), colorClass(color ?? own.color))}
+          className={cx('yarcl-date-picker-panel', sizeClass(s, 'DatePicker'), colorClass(color ?? own.color))}
         >
           <div className="yarcl-date-picker-header">
             <button

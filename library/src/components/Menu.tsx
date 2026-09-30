@@ -25,7 +25,7 @@ import {
 import { colorClass, cx, sizeClass } from '../classes';
 import { floatingMiddleware, useTrigger } from '../floating';
 import { useControllable } from '../hooks';
-import type { Color, Size } from '../types';
+import type { Color, ComponentSize } from '../types';
 import { useDefaults } from '../runtime';
 
 
@@ -95,7 +95,7 @@ export interface MenuProps {
    * Item size, from the `sizes` config.
    * @default config.defaults.size
    */
-  size?: Size;
+  size?: ComponentSize<'Menu'>;
 }
 
 function MenuRoot(props: MenuProps) {
@@ -128,7 +128,7 @@ function MenuContent({ className, style, children, ...props }: MenuContentProps)
         <div
           ref={refs.setFloating}
           style={{ ...floatingStyles, ...style }}
-          className={cx('yarcl-floating yarcl-panel yarcl-listbox', sizeClass(size ?? own.size), colorClass(), className)}
+          className={cx('yarcl-floating yarcl-panel yarcl-listbox', sizeClass(size ?? own.size, 'Menu'), colorClass(), className)}
           {...getFloatingProps(props)}
         >
           <FloatingList elementsRef={elementsRef} labelsRef={labelsRef}>

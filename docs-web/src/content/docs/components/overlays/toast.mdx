@@ -25,7 +25,7 @@ import { Toaster, toast } from '@yarcl/react';
 <App />
 <Toaster placement="bottom-right" />
 
-toast({ title: 'Saved', color: 'success' });
+toast({ title: 'Saved', color: 'success', radius: 'lg', padding: 'md' });
 toast({ title: 'Message deleted', action: { label: 'Undo', onClick: restore } });
 toast({ title: 'Upload failed', color: 'danger', urgent: true, duration: 0 });
 ```
@@ -37,6 +37,7 @@ toast({ title: 'Upload failed', color: 'danger', urgent: true, duration: 0 });
 - The toaster lives in the browser's top layer, above everything. While a modal [Dialog](/components/overlays/dialog/) is open, toasts render inside it so they stay clickable.
 - Toasts are announced politely (`role="status"`); `urgent` uses `role="alert"`.
 - `toast()` returns an id; `toast.dismiss(id)` removes one, `toast.dismiss()` removes all.
+- `radius`, `gap`, `padding` and `textStyle` use keys from your config and can be set in `components.Toast`.
 
 ## Props
 

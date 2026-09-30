@@ -1,6 +1,6 @@
 import type { ComponentProps, ReactNode } from 'react';
-import { cx, densityClass } from '../classes';
-import type { Density } from '../types';
+import { cx, densityClass, radiusClass } from '../classes';
+import type { Density, Radius } from '../types';
 import { useDefaults } from '../runtime';
 
 
@@ -11,6 +11,11 @@ export interface TableProps extends ComponentProps<'table'> {
    * @default config.defaults.density
    */
   density?: Density;
+  /**
+   * Corner radius of the table frame, from the `radii` config.
+   * @default config.components.Table.radius ?? config.defaults.radius
+   */
+  radius?: Radius;
   /** Shades every other row. */
   striped?: boolean;
   /** Highlights the row under the pointer. Use when rows are clickable. */
@@ -19,10 +24,10 @@ export interface TableProps extends ComponentProps<'table'> {
   caption?: ReactNode;
 }
 
-function TableRoot({ density, striped, interactive, caption, className, children, ...props }: TableProps) {
+function TableRoot({ density, radius, striped, interactive, caption, className, children, ...props }: TableProps) {
   const own = useDefaults('Table');
   return (
-    <div className="yarcl-table-wrap">
+    <div className={cx('yarcl-table-wrap', radiusClass(radius ?? own.radius))}>
       <table
         className={cx(
           'yarcl-table',

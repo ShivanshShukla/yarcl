@@ -1,6 +1,6 @@
 {
   "name": "@yarcl/react",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Yet another react component library. Your config file is the design system: every key becomes a typed prop and a rendered style.",
   "license": "MIT",
   "author": "Eugene Yakhnenko",
@@ -17,29 +17,79 @@
     "design-system",
     "design-tokens",
     "theming",
-    "vite-plugin",
+    "build-plugin",
     "typescript"
   ],
   "type": "module",
+  "bin": {
+    "yarcl": "./dist/cli.js"
+  },
+  "sideEffects": [
+    "./dist/index.js",
+    "**/*.css"
+  ],
   "files": [
-    "src",
     "dist"
   ],
   "exports": {
-    ".": "./src/index.ts",
-    "./define": "./src/define.ts",
-    "./defaults": "./src/yarcl.config.ts",
-    "./plugin": {
-      "types": "./dist/plugin.d.ts",
-      "default": "./dist/plugin.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     },
-    "./reference": "./src/reference/index.ts",
-    "./themes": "./src/themes/index.ts",
-    "./css": "./src/apply.ts"
+    "./define": {
+      "types": "./dist/define.d.ts",
+      "default": "./dist/define.js"
+    },
+    "./defaults": {
+      "types": "./dist/yarcl.config.d.ts",
+      "default": "./dist/yarcl.config.js"
+    },
+    "./vite": {
+      "types": "./dist/vite.d.ts",
+      "import": "./dist/vite.js",
+      "require": "./dist/vite.cjs"
+    },
+    "./webpack": {
+      "types": "./dist/webpack.d.ts",
+      "import": "./dist/webpack.js",
+      "require": "./dist/webpack.cjs"
+    },
+    "./rspack": {
+      "types": "./dist/rspack.d.ts",
+      "import": "./dist/rspack.js",
+      "require": "./dist/rspack.cjs"
+    },
+    "./rollup": {
+      "types": "./dist/rollup.d.ts",
+      "import": "./dist/rollup.js",
+      "require": "./dist/rollup.cjs"
+    },
+    "./esbuild": {
+      "types": "./dist/esbuild.d.ts",
+      "import": "./dist/esbuild.js",
+      "require": "./dist/esbuild.cjs"
+    },
+    "./reference": {
+      "types": "./dist/reference/index.d.ts",
+      "default": "./dist/reference/index.js"
+    },
+    "./demo": {
+      "types": "./dist/demo.d.ts",
+      "default": "./dist/demo.js"
+    },
+    "./themes": {
+      "types": "./dist/themes/index.d.ts",
+      "default": "./dist/themes/index.js"
+    },
+    "./css": {
+      "types": "./dist/apply.d.ts",
+      "default": "./dist/apply.js"
+    }
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "prepare": "tsc -p tsconfig.build.json"
+    "build": "node scripts/build.mjs",
+    "prepare": "node scripts/build.mjs",
+    "test": "vitest run --config vitest.config.ts"
   },
   "publishConfig": {
     "access": "public",
@@ -47,12 +97,14 @@
   },
   "peerDependencies": {
     "react": ">=19",
-    "react-dom": ">=19",
-    "vite": ">=6.1"
+    "react-dom": ">=19"
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.20",
-    "date-fns": "^4.4.0"
+    "date-fns": "^4.4.0",
+    "jiti": "^2.7.0",
+    "jsonc-parser": "^3.3.1",
+    "unplugin": "^3.4.0"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",

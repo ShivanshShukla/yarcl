@@ -1,7 +1,7 @@
 import { createContext, useContext, useId, useRef, type ComponentProps, type ReactNode } from 'react';
 import { cx, typeClass } from '../classes';
 import { useControllable } from '../hooks';
-import type { Color, Size } from '../types';
+import type { Color, ComponentSize, Size } from '../types';
 import { useConfig } from '../runtime';
 
 interface RadioGroupContextValue {
@@ -40,7 +40,7 @@ export interface RadioGroupProps extends Omit<ComponentProps<'fieldset'>, 'defau
   /** Called with the selected radio's `value`. */
   onValueChange?: (value: string) => void;
   /** Size of every radio, from the `sizes` config. */
-  size?: Size;
+  size?: ComponentSize<'Radio'>;
   /** Color of every radio, from the `colors` config. */
   color?: Color;
   /**

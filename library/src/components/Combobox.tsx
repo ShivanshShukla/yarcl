@@ -32,7 +32,7 @@ import { useDefaults } from '../runtime';
 
 /** Props shared by both forms of {@link ComboboxProps}. */
 export interface ComboboxBaseProps<V extends string = string>
-  extends TokenProps,
+  extends TokenProps<'Combobox'>,
     Omit<ComponentProps<'input'>, 'color' | 'size' | 'value' | 'defaultValue' | 'onChange' | 'children' | 'multiple'> {
   /** The options to suggest. For async search, update this as results arrive and set `filter={false}`. */
   options: readonly SelectOption<V>[];
@@ -183,7 +183,7 @@ function useComboboxList<V extends string>(opts: ListOptions<V>) {
       <div
         ref={refs.setFloating}
         style={floatingStyles}
-        className={cx('yarcl-floating yarcl-panel yarcl-listbox', sizeClass(opts.size), colorClass(opts.color))}
+        className={cx('yarcl-floating yarcl-panel yarcl-listbox', sizeClass(opts.size, 'Combobox'), colorClass(opts.color))}
         {...getFloatingProps({
           'aria-multiselectable': opts.multiple || undefined,
           onMouseDown: (event: MouseEvent) => event.preventDefault(),
@@ -304,7 +304,7 @@ function SingleCombobox<V extends string>(props: SingleProps<V>) {
     <>
       <input
         ref={referenceRef}
-        className={cx('yarcl-input yarcl-combobox', sizeClass(size ?? own.size), radiusClass(radius ?? own.radius, size ?? own.size), colorClass(color ?? own.color), className)}
+        className={cx('yarcl-input yarcl-combobox', sizeClass(size ?? own.size, 'Combobox'), radiusClass(radius ?? own.radius, size ?? own.size), colorClass(color ?? own.color), className)}
         autoComplete="off"
         aria-autocomplete="list"
         {...getReferenceProps({
@@ -476,7 +476,7 @@ function MultipleCombobox<V extends string>(props: MultipleProps<V>) {
     <>
       <div
         ref={controlRefs}
-        className={cx('yarcl-input yarcl-combobox-control', sizeClass(s), radiusClass(radius ?? own.radius, s), colorClass(color ?? own.color), className)}
+        className={cx('yarcl-input yarcl-combobox-control', sizeClass(s, 'Combobox'), radiusClass(radius ?? own.radius, s), colorClass(color ?? own.color), className)}
         style={style}
         onMouseDown={onControlMouseDown}
       >

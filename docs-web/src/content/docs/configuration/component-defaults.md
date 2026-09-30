@@ -35,14 +35,20 @@ components: {
   IconButton: { radius: 'rounded' },     // icon buttons are circles
   Card: { radius: 'lg', padding: 'lg' },
   Stack: { gap: 'sm' },
+  Tooltip: { radius: 'md', padding: 'sm', textStyle: 'caption' },
+  Toast: { radius: 'lg', gap: 'sm', padding: 'md', textStyle: 'label' },
 },
 ```
+
+Sized components can also use `allowedSizes` to restrict their `size` prop and `sizeOverrides` to adjust individual fields from the global size scale. These are sizing options, not defaults. See [sizes and radii](/configuration/sizes-and-radii/#per-component-sizes).
 
 Everything is checked:
 
 - component names must be real (`Buton` is an error)
 - each component only accepts the props it has (`Card: { variant }` is an error)
 - values must be keys of your config (`radius: 'pill'` is an error when there's no `pill`)
+- `allowedSizes` must contain at least one global size and include the resolved component default
+- `sizeOverrides` can only use global sizes allowed for that component and fields from a size token
 
 ## Resolution order
 
@@ -63,19 +69,24 @@ For any token prop, the first value found wins:
 | `DatePicker` | `size`, `radius`, `color`, `variant` |
 | `Checkbox`, `Radio`, `Switch` | `size`, `color` |
 | `Badge` | `size`, `radius`, `color`, `variant` |
-| `Alert` | `radius`, `color`, `variant` |
+| `Avatar`, `AvatarGroup` | `size`, `radius`, `color`, `variant` |
+| `EmptyState` | `color`, `gap`, `padding`, `textStyle` |
+| `Label` | `textStyle`, `color`, `variant`, `size`, `radius` |
+| `Alert` | `radius`, `color`, `variant`, `gap`, `padding`, `textStyle` |
 | `Card` | `radius`, `padding`, `shadow` |
 | `Popover`, `HoverCard` | `radius`, `padding` |
+| `Tooltip` | `radius`, `padding`, `textStyle` |
 | `Dialog` | `radius`, `size` (from `modalSizes`) |
 | `Drawer` | `size` (from `modalSizes`) |
 | `Menu` | `size` |
 | `CommandPalette` | `size`, `radius`, `color` |
 | `Tabs` | `size`, `color` |
 | `Accordion` | `size`, `radius`, `color` |
-| `Table` | `density` |
+| `Table` | `density`, `radius` |
 | `Stack`, `Inline` | `gap` |
 | `Text`, `Label`, `Breadcrumb` | `textStyle`, `color` |
-| `Link`, `Toast` | `color` |
+| `Link` | `color` |
+| `Toast` | `radius`, `color`, `gap`, `padding`, `textStyle` |
 | `Spinner` | `size`, `color` |
 | `Skeleton` | `size`, `radius` |
 | `Progress` | `size`, `color`, `radius` |

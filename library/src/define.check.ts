@@ -125,6 +125,7 @@ defineConfig({
     Pagination: { size: 'sm', variant: 'outline', selectedVariant: 'solid' },
     Breadcrumb: { textStyle: 'caption', color: 'neutral' },
     Accordion: { size: 'sm', radius: 'size', color: 'success' },
+    Label: { textStyle: 'label', color: 'success', variant: 'soft', size: 'sm', radius: 'rounded' },
   },
 });
 
@@ -195,6 +196,81 @@ defineConfig({ ...defaults, components: { CommandPalette: { size: 'lg', radius: 
 defineConfig({
   ...defaults,
   components: {
+    Button: {
+      allowedSizes: ['sm', 'md'],
+      sizeOverrides: { sm: { paddingX: '0.875rem' }, md: {} },
+    },
+    Input: { allowedSizes: ['md'] },
+  },
+});
+
+defineConfig({
+  ...defaults,
+  components: {
+    // @ts-expect-error
+    Button: { allowedSizes: [] },
+  },
+});
+
+defineConfig({
+  ...defaults,
+  components: {
+    // @ts-expect-error
+    Button: { allowedSizes: ['huge'] },
+  },
+});
+
+defineConfig({
+  ...defaults,
+  components: {
+    // @ts-expect-error
+    Button: { allowedSizes: ['sm'], size: 'md' },
+  },
+});
+
+defineConfig({
+  ...defaults,
+  components: {
+    // @ts-expect-error
+    Button: { allowedSizes: ['sm'] },
+  },
+});
+
+defineConfig({
+  ...defaults,
+  components: {
+    Button: {
+      // @ts-expect-error
+      sizeOverrides: { huge: { height: '4rem' } },
+    },
+  },
+});
+
+defineConfig({
+  ...defaults,
+  components: {
+    Button: {
+      // @ts-expect-error
+      sizeOverrides: { md: { paddingY: '1rem' } },
+    },
+  },
+});
+
+defineConfig({
+  ...defaults,
+  components: {
+    Button: {
+      allowedSizes: ['sm'],
+      size: 'sm',
+      // @ts-expect-error
+      sizeOverrides: { md: { height: '3rem' } },
+    },
+  },
+});
+
+defineConfig({
+  ...defaults,
+  components: {
     // @ts-expect-error
     CommandPalette: { variant: 'solid' },
   },
@@ -230,7 +306,7 @@ defineConfig({
   ...defaults,
   components: {
     // @ts-expect-error
-    Label: { size: 'sm' },
+    Label: { size: 'gigantic' },
   },
 });
 
@@ -248,6 +324,31 @@ defineConfig({
 defineConfig({
   ...defaults,
   components: { Progress: { size: 'lg', color: 'success', radius: 'rounded' } },
+});
+
+defineConfig({
+  ...defaults,
+  components: {
+    Avatar: { size: 'lg', radius: 'rounded', color: 'success', variant: 'outline' },
+    AvatarGroup: { size: 'sm', radius: 'size', color: 'neutral', variant: 'soft' },
+    EmptyState: { color: 'neutral', gap: 'sm', padding: 'lg', textStyle: 'body' },
+  },
+});
+
+defineConfig({
+  ...defaults,
+  components: {
+    // @ts-expect-error
+    Avatar: { padding: 'md' },
+  },
+});
+
+defineConfig({
+  ...defaults,
+  components: {
+    // @ts-expect-error
+    EmptyState: { radius: 'md' },
+  },
 });
 
 defineConfig({

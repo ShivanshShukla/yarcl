@@ -28,6 +28,7 @@ sidebar:
 | [Tabs](/components/data/tabs/) | <kbd>←</kbd> <kbd>→</kbd>, <kbd>Home</kbd>, <kbd>End</kbd> |
 | [Accordion](/components/data/accordion/) | <kbd>Enter</kbd> <kbd>Space</kbd>, <kbd>↑</kbd> <kbd>↓</kbd>, <kbd>Home</kbd>, <kbd>End</kbd> |
 | [ToggleGroup](/components/buttons/toggle-group/) | arrow keys, <kbd>Home</kbd>, <kbd>End</kbd>, <kbd>Space</kbd> |
+| [Slider](/components/forms/slider/) | <kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd>, <kbd>Home</kbd>, <kbd>End</kbd> |
 | [Dialog](/components/overlays/dialog/), [Drawer](/components/overlays/drawer/), [Popover](/components/overlays/popover/), [Tooltip](/components/overlays/tooltip/) | <kbd>Esc</kbd> |
 
 ## Up to you

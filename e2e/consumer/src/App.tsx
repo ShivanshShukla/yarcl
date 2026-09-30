@@ -2,6 +2,8 @@ import { useState } from 'react';
 import {
   Accordion,
   Alert,
+  Avatar,
+  AvatarGroup,
   Badge,
   Breadcrumb,
   Button,
@@ -11,6 +13,7 @@ import {
   Combobox,
   Dialog,
   Divider,
+  EmptyState,
   Heading,
   Inline,
   Label,
@@ -77,6 +80,11 @@ export function App() {
           <Link href="?page=reference" underline="hover" color="ink">
             Design reference
           </Link>
+          <AvatarGroup aria-label="Design team" max={2} total={4}>
+            <Avatar name="Ada Lovelace" />
+            <Avatar name="Grace Hopper" />
+            <Avatar name="Alan Turing" />
+          </AvatarGroup>
           <CommandPalette
             trigger={
               <Button variant="text" size="talla-s">
@@ -127,8 +135,25 @@ export function App() {
                   Organic linen
                 </Badge>
               </Inline>
+              <Inline gap="2" align="center">
+                <Avatar name="Lena Ortiz" />
+                <Text textStyle="fine" muted>
+                  Curated by Lena Ortiz
+                </Text>
+              </Inline>
               <Heading level={1}>Linen overshirt</Heading>
               <Text textStyle="price">€ 185</Text>
+              <Inline gap="2">
+                <Label variant="wash" color="clay" size="talla-s" radius="hairline">
+                  Linen
+                </Label>
+                <Label variant="line" color="moss">
+                  Free returns
+                </Label>
+                <Label color="alert" required>
+                  Low stock
+                </Label>
+              </Inline>
             </Stack>
             <Text as="p" textStyle="lead" muted>
               Cut from heavyweight Portuguese linen that softens with every wash. Relaxed through the body, with a
@@ -210,6 +235,16 @@ export function App() {
             </Stack>
             <DatePicker aria-label="Delivery date" defaultValue={new Date(2026, 9, 5)} min={new Date(2026, 9, 1)} />
 
+            <Stack gap="2">
+              <Text textStyle="label">Hem length</Text>
+              <Slider aria-label="Hem length" size="talla-m" defaultValue={50} />
+            </Stack>
+
+            <Stack gap="2">
+              <Text textStyle="label">Fit range</Text>
+              <Slider.Range aria-label="Fit range" size="talla-m" defaultValue={[30, 70]} step={10} color="clay" />
+            </Stack>
+
             <ButtonGroup attached={false} size="talla-l">
               <Button onClick={addToBag} className="grow">
                 Add to bag
@@ -226,6 +261,15 @@ export function App() {
             <Progress value={185} max={200} label="€ 15 away from free express shipping" />
 
             <Divider />
+
+            <EmptyState
+              data-testid="brand-b-empty-state"
+              headingLevel={2}
+              icon={<span>★</span>}
+              title="No reviews yet"
+              description="Be the first to review this piece."
+              actions={<Button variant="line">Write a review</Button>}
+            />
 
             <Tabs defaultValue="details">
               <Tabs.List aria-label="Product information">

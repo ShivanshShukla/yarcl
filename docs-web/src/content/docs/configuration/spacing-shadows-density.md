@@ -7,7 +7,7 @@ sidebar:
 
 ## Spacing
 
-`spacing` is an open group used by `gap` on [`Stack`](/components/layout/stack/) and [`Inline`](/components/layout/inline/), and by `padding` on [`Card`](/components/layout/card/), [`Popover`](/components/overlays/popover/) and [`HoverCard`](/components/overlays/hover-card/).
+`spacing` is an open group used by `gap` on [`Stack`](/components/layout/stack/) and [`Inline`](/components/layout/inline/), and by `padding` on [`Card`](/components/layout/card/), [`Popover`](/components/overlays/popover/) and [`HoverCard`](/components/overlays/hover-card/). [`Alert`](/components/feedback/alert/), [`Tooltip`](/components/overlays/tooltip/) and [`Toast`](/components/overlays/toast/) also use it for their internal spacing. Their defaults live in `components`.
 
 ```ts
 spacing: { xs: '0.25rem', sm: '0.5rem', md: '1rem', lg: '1.5rem', xl: '2rem' },

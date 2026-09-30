@@ -18,13 +18,14 @@ import { Tooltip } from '@yarcl/react';
 </Preview>
 
 ```tsx
-<Tooltip content="Search">
+<Tooltip content="Search" radius="md" padding="sm" textStyle="caption">
   <IconButton aria-label="Search"><SearchIcon /></IconButton>
 </Tooltip>
 ```
 
 - Opens after `delay` (400 ms) on hover, immediately on keyboard focus; closes on <kbd>Esc</kbd>.
 - Sets `aria-describedby` on the trigger.
+- `radius`, `padding` and `textStyle` use keys from your config and can be set in `components.Tooltip`.
 - Keep the content short and plain. Tooltips can't contain interactive elements; use [HoverCard](/components/overlays/hover-card/) or [Popover](/components/overlays/popover/) for that.
 
 ## Props

@@ -6,7 +6,7 @@ import { useDefaults } from '../runtime';
 
 
 /** Props for {@link Textarea}. Accepts all native `<textarea>` attributes except `color`. */
-export interface TextareaProps extends Omit<ComponentProps<'textarea'>, 'color'>, TokenProps {}
+export interface TextareaProps extends Omit<ComponentProps<'textarea'>, 'color'>, TokenProps<'Textarea'> {}
 
 /**
  * A multi-line text input. Uses the size's font size and padding, and grows from
@@ -21,6 +21,6 @@ export function Textarea(props: TextareaProps) {
   const own = useDefaults('Textarea');
   const { size, radius, color, className, ...rest } = useFieldProps(props);
   return (
-    <textarea className={cx('yarcl-textarea', sizeClass(size ?? own.size), radiusClass(radius ?? own.radius, size ?? own.size), colorClass(color ?? own.color), className)} {...rest} />
+    <textarea className={cx('yarcl-textarea', sizeClass(size ?? own.size, 'Textarea'), radiusClass(radius ?? own.radius, size ?? own.size), colorClass(color ?? own.color), className)} {...rest} />
   );
 }

@@ -42,7 +42,7 @@ export interface CommandPaletteCommand {
 
 /** Props for {@link CommandPalette}. */
 export interface CommandPaletteProps
-  extends TokenProps,
+  extends TokenProps<'CommandPalette'>,
     Omit<ComponentProps<'dialog'>, 'color' | 'open' | 'onSelect' | 'children' | 'title'> {
   /** The commands to search. Commands with the same `group` are listed together under a heading. */
   commands: readonly CommandPaletteCommand[];
@@ -419,7 +419,7 @@ export function CommandPalette({
         className={cx(
           'yarcl-modal yarcl-dialog yarcl-command-palette',
           `yarcl-modal-size-${config.defaults.modalSize}`,
-          sizeClass(resolvedSize),
+          sizeClass(resolvedSize, 'CommandPalette'),
           radiusClass(radius ?? own.radius, resolvedSize),
           colorClass(color ?? own.color),
           className,

@@ -7,8 +7,18 @@ export default async function ({ page, check, focused, htmlOverflow, setTiming }
   const floatingSearch = page.locator('section', { has: page.getByRole('heading', { name: 'Floating' }) }).getByRole('button', { name: 'Search' });
   await floatingSearch.hover();
   await page.getByRole('tooltip').waitFor();
-  check('tooltip opens on hover', await page.getByRole('tooltip').isVisible());
+  const tooltip = page.getByRole('tooltip');
+  check('tooltip opens on hover', await tooltip.isVisible());
   check('tooltip describes trigger', (await floatingSearch.getAttribute('aria-describedby')) !== null);
+  const tooltipStyle = await tooltip.evaluate((el) => {
+    const style = getComputedStyle(el);
+    return { radius: style.borderRadius, padding: style.padding, fontSize: style.fontSize };
+  });
+  check(
+    'tooltip uses component radius, spacing and text defaults',
+    tooltipStyle.radius === '6px' && tooltipStyle.padding === '6px 8px' && tooltipStyle.fontSize === '13px',
+    JSON.stringify(tooltipStyle),
+  );
   await page.mouse.move(0, 0);
   await page.getByRole('tooltip').waitFor({ state: 'hidden' });
   check('tooltip closes on leave', !(await page.getByRole('tooltip').isVisible()));
@@ -29,6 +39,7 @@ export default async function ({ page, check, focused, htmlOverflow, setTiming }
   await actions.click();
   const menu = page.getByRole('menu');
   check('menu opens on click', await menu.isVisible());
+  check('menu uses its sm size override', (await menu.evaluate((el) => getComputedStyle(el).getPropertyValue('--yarcl-px'))) === '0.625rem');
   check('menu trigger aria-expanded', (await actions.getAttribute('aria-expanded')) === 'true');
   await page.keyboard.press('Escape');
   await actions.focus();
