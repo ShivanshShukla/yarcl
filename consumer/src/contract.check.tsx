@@ -1,5 +1,6 @@
 import {
   Accordion,
+  Grid,
   Button,
   Card,
   Checkbox,
@@ -57,6 +58,11 @@ void [bodyFont, invalidFont];
 
 export const contract = (
   <>
+    <Grid as="section" columns={3} gap="normal" ref={() => {}} style={{ width: '100%' }} />
+    <Grid columns="16rem minmax(0, 1fr)" />
+    <Grid minItemWidth="16rem" />
+    {/* @ts-expect-error unknown spacing */}
+    <Grid gap="4" />
     <Button size="xl" color="warning" radius="rounded" variant="subtle" />
     <Input size="xs" color="danger" radius="square" />
     <IconButton aria-label="Add" variant="quiet" />

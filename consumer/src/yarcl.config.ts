@@ -61,6 +61,7 @@ export default defineConfig({
   zIndex: { ...defaults.zIndex, banner: 900 },
   focusRing: { ...defaults.focusRing, color: 'brand' },
   components: {
+    Grid: { gap: 'tight' },
     Avatar: { radius: 'rounded' },
     EmptyState: { color: 'neutral', gap: 'tight', padding: 'normal', textStyle: 'caption' },
     Alert: { gap: 'tight', padding: 'normal', textStyle: 'label' },

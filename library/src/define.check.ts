@@ -3,6 +3,15 @@ import defaults from './yarcl.config';
 
 defineConfig({ ...defaults, colors: { ...defaults.colors, brand: { light: '#000', dark: '#fff' } } });
 
+defineConfig({ ...defaults, components: { Grid: { gap: 'sm' } } });
+defineConfig({
+  ...defaults,
+  components: {
+    // @ts-expect-error unknown spacing
+    Grid: { gap: 'missing' },
+  },
+});
+
 defineConfig({
   ...defaults,
   // @ts-expect-error

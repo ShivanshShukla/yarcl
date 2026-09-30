@@ -15,6 +15,7 @@ import {
   Divider,
   EmptyState,
   Heading,
+  Grid,
   Inline,
   Label,
   Link,
@@ -261,6 +262,17 @@ export function App() {
             <Progress value={185} max={200} label="€ 15 away from free express shipping" />
 
             <Divider />
+
+            <Grid columns={3} data-testid="grid-equal">
+              {['Materials', 'Origin', 'Care', 'Delivery'].map((label) => <Text key={label}>{label}</Text>)}
+            </Grid>
+            <Grid minItemWidth="12rem" gap="6" data-testid="grid-auto">
+              {['Natural linen', 'Organic cotton', 'Soft wool'].map((label) => <Text key={label}>{label}</Text>)}
+            </Grid>
+            <Grid columns="6rem minmax(0, 1fr)" data-testid="grid-sidebar">
+              <Text>Details</Text>
+              <Text>Collection</Text>
+            </Grid>
 
             <EmptyState
               data-testid="brand-b-empty-state"

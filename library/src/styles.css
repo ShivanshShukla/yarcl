@@ -623,6 +623,21 @@ p.yarcl-text {
 .yarcl-justify-end { justify-content: flex-end; }
 .yarcl-justify-between { justify-content: space-between; }
 
+/* Grid */
+
+.yarcl-grid {
+  display: grid;
+  grid-template-columns: var(--yarcl-grid-columns);
+  gap: var(--yarcl-component-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.yarcl-grid > * {
+  min-width: 0;
+}
+
 /* VisuallyHidden */
 
 .yarcl-visually-hidden {

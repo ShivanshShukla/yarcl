@@ -128,6 +128,7 @@ export interface ComponentTokenProps {
   Accordion: 'size' | 'radius' | 'color';
   Table: 'density' | 'radius';
   Stack: 'gap';
+  Grid: 'gap';
   Inline: 'gap';
   Text: 'textStyle' | 'color';
   Label: 'textStyle' | 'color' | 'variant' | 'size' | 'radius';

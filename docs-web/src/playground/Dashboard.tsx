@@ -14,6 +14,7 @@ import {
   Drawer,
   Field,
   Heading,
+  Grid,
   IconButton,
   Inline,
   Input,
@@ -323,7 +324,7 @@ export function Dashboard() {
             </Alert>
           )}
 
-          <div className="pg-stats">
+          <Grid minItemWidth="12rem">
             {stats.map((stat) => (
               <Card key={stat.label} shadow="sm">
                 <Stack gap="xs">
@@ -337,7 +338,7 @@ export function Dashboard() {
                 </Stack>
               </Card>
             ))}
-          </div>
+          </Grid>
 
           <div className="pg-columns">
             <Card shadow="sm" className="pg-panel">

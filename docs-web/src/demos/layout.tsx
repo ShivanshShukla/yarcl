@@ -1,5 +1,25 @@
-import { Badge, Button, Card, Divider, Heading, Inline, Stack, Text, VisuallyHidden, config, type Shadow, type Spacing } from '@yarcl/react';
+import { Badge, Button, Card, Divider, Grid, Heading, Inline, Stack, Text, VisuallyHidden, config, type Shadow, type Spacing } from '@yarcl/react';
 import { SearchIcon } from './icons';
+
+export function GridDemo() {
+  return (
+    <Stack style={{ width: '100%' }}>
+      <Text textStyle="label">Equal columns</Text>
+      <Grid columns={3}>
+        {['Revenue', 'Orders', 'Visitors'].map((label) => <Card key={label} padding="sm">{label}</Card>)}
+      </Grid>
+      <Text textStyle="label">Cards that fit the available space</Text>
+      <Grid minItemWidth="12rem">
+        {['Overview', 'Activity', 'Reports'].map((label) => <Card key={label}>{label}</Card>)}
+      </Grid>
+      <Text textStyle="label">Sidebar and content</Text>
+      <Grid columns="6rem minmax(0, 1fr)">
+        <Card padding="sm">Menu</Card>
+        <Card padding="sm">Workspace</Card>
+      </Grid>
+    </Stack>
+  );
+}
 
 const spacings = Object.keys(config.spacing) as Spacing[];
 const shadows = Object.keys(config.shadows) as Shadow[];

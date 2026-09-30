@@ -18,6 +18,7 @@ import {
   EmptyState,
   Field,
   Heading,
+  Grid,
   HoverCard,
   IconButton,
   Inline,
@@ -70,6 +71,7 @@ const components = [
   EmptyState,
   Field,
   Heading,
+  Grid,
   HoverCard,
   IconButton,
   Inline,
@@ -168,6 +170,7 @@ export function DemoYarcl({ title = 'yarcl demo' }: DemoYarclProps) {
           <Alert title="Installation works">Every public component is available to this build.</Alert>
           <Skeleton lines={2} aria-label="Loading content" />
           <EmptyState title="Nothing here" description="This is the empty state component." />
+          <Grid columns={2}><Card>Overview</Card><Card>Activity</Card></Grid>
           <Breadcrumb aria-label="Breadcrumb">
             <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
             <Breadcrumb.Item>Demo</Breadcrumb.Item>
