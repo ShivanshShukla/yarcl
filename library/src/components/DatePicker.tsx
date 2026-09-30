@@ -227,10 +227,12 @@ export function DatePicker(props: DatePickerProps) {
   } = useFieldProps(props as DatePickerProps & { required?: boolean });
   const range = mode === 'range';
   const labels = { ...defaultLabels, ...labelsProp };
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
   const [value, setValue] = useControllable<Date | DateRange | null>(
     valueProp,
     defaultValue,
     onValueChange as ((value: Date | DateRange | null) => void) | undefined,
+    triggerRef,
   );
   const from = value == null ? null : value instanceof Date ? value : value.from;
   const to = value == null ? null : value instanceof Date ? value : value.to;
@@ -329,6 +331,12 @@ export function DatePicker(props: DatePickerProps) {
       <Popover open={open} onOpenChange={onOpenChange} placement="bottom-start" modal>
         <Popover.Trigger>
           <button
+            ref={(node) => {
+              triggerRef.current = node;
+              const incomingRef = (rest as { ref?: React.Ref<HTMLButtonElement> }).ref;
+              if (typeof incomingRef === 'function') incomingRef(node);
+              else if (incomingRef && 'current' in incomingRef) (incomingRef as React.MutableRefObject<HTMLButtonElement | null>).current = node;
+            }}
             type="button"
             className={cx('yarcl-input yarcl-select yarcl-date-picker', sizeClass(s, 'DatePicker'), radiusClass(radius ?? own.radius, s), colorClass(color ?? own.color), className)}
             {...rest}

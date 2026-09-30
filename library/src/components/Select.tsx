@@ -85,7 +85,8 @@ export function Select<V extends string = string>(props: SelectProps<V>) {
     ...rest
   } = useFieldProps(props);
 
-  const [value, setValue] = useControllable<V | null>(valueProp, defaultValue, onValueChange);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const [value, setValue] = useControllable<V | null>(valueProp, defaultValue, onValueChange, triggerRef);
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const listRef = useRef<(HTMLElement | null)[]>([]);
@@ -135,7 +136,7 @@ export function Select<V extends string = string>(props: SelectProps<V>) {
     }),
   ]);
 
-  const buttonRef = useMergeRefs([refs.setReference, (rest as { ref?: React.Ref<HTMLButtonElement> }).ref]);
+  const buttonRef = useMergeRefs([triggerRef, refs.setReference, (rest as { ref?: React.Ref<HTMLButtonElement> }).ref]);
 
   return (
     <>

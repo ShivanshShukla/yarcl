@@ -247,9 +247,10 @@ function SingleCombobox<V extends string>(props: SingleProps<V>) {
     ...rest
   } = useFieldProps(props);
 
-  const [value, setValue] = useControllable<V | null>(valueProp, defaultValue, onValueChange);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [value, setValue] = useControllable<V | null>(valueProp, defaultValue, onValueChange, inputRef);
   const labelOf = (v: V | null) => options.find((option) => option.value === v)?.label ?? (allowCustomValue ? (v ?? '') : '');
-  const [text, setText] = useControllable(inputValueProp, labelOf(defaultValue), onInputValueChange);
+  const [text, setText] = useControllable(inputValueProp, labelOf(defaultValue), onInputValueChange, inputRef);
 
   function choose(option: SelectOption<V>) {
     if (option.disabled) return;
@@ -297,7 +298,7 @@ function SingleCombobox<V extends string>(props: SingleProps<V>) {
     else close();
   }
 
-  const referenceRef = useMergeRefs([refs.setReference, (rest as { ref?: React.Ref<HTMLInputElement> }).ref]);
+  const referenceRef = useMergeRefs([inputRef, refs.setReference, (rest as { ref?: React.Ref<HTMLInputElement> }).ref]);
 
   return (
     <>
@@ -354,10 +355,10 @@ function MultipleCombobox<V extends string>(props: MultipleProps<V>) {
     ...rest
   } = useFieldProps(props);
 
-  const [values, setValues] = useControllable<readonly V[]>(valueProp, defaultValue, onValueChange as (value: readonly V[]) => void);
-  const [text, setText] = useControllable(inputValueProp, '', onInputValueChange);
   const controlRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const [values, setValues] = useControllable<readonly V[]>(valueProp, defaultValue, onValueChange as (value: readonly V[]) => void, controlRef);
+  const [text, setText] = useControllable(inputValueProp, '', onInputValueChange, controlRef);
   const chipsRef = useRef<HTMLUListElement>(null);
   const knownLabels = useRef(new Map<V, string>());
   const quietFocus = useRef(false);

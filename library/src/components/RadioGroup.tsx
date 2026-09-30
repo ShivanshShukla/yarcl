@@ -1,4 +1,4 @@
-import { createContext, useContext, useId, type ComponentProps, type ReactNode } from 'react';
+import { createContext, useContext, useId, useRef, type ComponentProps, type ReactNode } from 'react';
 import { cx, typeClass } from '../classes';
 import { useControllable } from '../hooks';
 import type { Color, ComponentSize, Size } from '../types';
@@ -82,7 +82,13 @@ export function RadioGroup({
 }: RadioGroupProps) {
   const config = useConfig();
   const id = useId();
-  const [value, setValue] = useControllable<string | null>(valueProp, defaultValue, (v) => v != null && onValueChange?.(v));
+  const fieldsetRef = useRef<HTMLFieldSetElement | null>(null);
+  const [value, setValue] = useControllable<string | null>(
+    valueProp,
+    defaultValue,
+    (v) => v != null && onValueChange?.(v),
+    fieldsetRef,
+  );
   const descriptionId = description != null ? `${id}-description` : undefined;
   const errorId = error != null && error !== false ? `${id}-error` : undefined;
 
@@ -91,6 +97,12 @@ export function RadioGroup({
       value={{ name: name ?? id, value, select: setValue, size, color, invalid: errorId != null, disabled }}
     >
       <fieldset
+        ref={(node) => {
+          fieldsetRef.current = node;
+          const incomingRef = (props as { ref?: React.Ref<HTMLFieldSetElement> }).ref;
+          if (typeof incomingRef === 'function') incomingRef(node);
+          else if (incomingRef && 'current' in incomingRef) (incomingRef as React.MutableRefObject<HTMLFieldSetElement | null>).current = node;
+        }}
         className={cx('yarcl-field yarcl-radio-group', className)}
         aria-describedby={cx(descriptionId, errorId) || undefined}
         disabled={disabled}
