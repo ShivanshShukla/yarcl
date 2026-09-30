@@ -1,4 +1,11 @@
 import { Accordion, Alert, Avatar, AvatarGroup, Badge, Breadcrumb, Button, Combobox, CommandPalette, DatePicker, Dialog, EmptyState, Heading, Inline, Input, Label, NumberInput, Pagination, Progress, Slider, Stack, Table, Text, Tooltip, VisuallyHidden, toast } from '@yarcl/react';
+import config from './yarcl.config';
+
+type FontFamily = keyof typeof config.typography.families;
+const headingFont: FontFamily = config.typography.fonts.heading;
+// @ts-expect-error unknown font families cannot be assigned to a role
+const invalidFont: FontFamily = 'missing';
+void [headingFont, invalidFont];
 
 export const contract = (
   <>

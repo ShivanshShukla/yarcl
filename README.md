@@ -89,7 +89,7 @@ Use the matching `@yarcl/react/webpack`, `/rspack`, `/rollup` or `/esbuild` entr
 | `shadows` | open | `shadow` prop, floating panels |
 | `density` | open, `{ paddingX, paddingY, fontSize }` | `Table` |
 | `modalSizes` | open, widths | `Dialog` and `Drawer` `size` |
-| `typography` | `fontFaces`, `families`, `styles` (open), `headings` h1–h6 | `Text`, `Heading`, labels |
+| `typography` | `fontFaces`, `families`, `fonts`, `styles` (open), `headings` h1–h6 | `Text`, `Heading`, labels |
 | `zIndex`, `motion`, `borders` | required keys + any | layering, transitions |
 | `focusRing`, `defaults` | references to keys above | focus outline, omitted props |
 | `components` | per-component defaults, e.g. `{ Button: { radius: 'square' } }` | omitted props, before `defaults` |

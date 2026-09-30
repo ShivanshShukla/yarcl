@@ -24,13 +24,14 @@ Components never set inline styles. They render class names, and all values come
 | `--yarcl-radius-{key}` | `radii` |
 | `--yarcl-space-{key}` | `spacing` |
 | `--yarcl-shadow-{key}` | `shadows` |
-| `--yarcl-font-{key}` | `typography.families` |
+| `--yarcl-font-family-{key}`, `--yarcl-font-{key}` | `typography.families` |
+| `--yarcl-font-body`, `--yarcl-font-heading`, `--yarcl-font-mono` | `typography.fonts` |
 | `--yarcl-modal-{key}` | `modalSizes` |
 | `--yarcl-z-{key}` | `zIndex` |
 | `--yarcl-motion-{key}` | `motion` |
 | `--yarcl-border-{key}` | `borders` |
 | `--yarcl-focus-width`, `-offset`, `-color`, `-style` | `focusRing` |
-| `--yarcl-error`, `--yarcl-floating-shadow`, `--yarcl-padding`, `--yarcl-gap` | `defaults` |
+| `--yarcl-accent`, `--yarcl-error`, `--yarcl-floating-shadow`, `--yarcl-padding`, `--yarcl-gap` | `defaults` |
 | `--yarcl-h`, `--yarcl-px`, `--yarcl-fs`, `--yarcl-icon`, `--yarcl-r` | default size and radius |
 
 Colors are emitted as `light-dark(light, dark)`, and `:root` gets `color-scheme: light dark`.
@@ -78,9 +79,12 @@ The generated file grows with the number of token keys and configured component 
 }
 
 .page-title {
-  font-family: var(--yarcl-font-serif);
+  color: var(--yarcl-accent);
+  font-family: var(--yarcl-font-heading);
 }
 ```
+
+Use stable role variables for application semantics. Key variables such as `--yarcl-font-family-serif` are available when a style intentionally targets one config key.
 
 Or reuse the modifier classes on your own elements, for example `class="yarcl-type-caption"`.
 

@@ -66,6 +66,7 @@ export default defineConfig({
       sans: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
       mono: 'ui-monospace, "SF Mono", Menlo, Consolas, monospace',
     },
+    fonts: { body: 'sans', heading: 'sans', mono: 'mono' },
     styles: {
       display: { family: 'sans', size: '2.25rem', weight: 800, lineHeight: 1.1, letterSpacing: '-0.02em' },
       heading: { family: 'sans', size: '1.5rem', weight: 700, lineHeight: 1.25, letterSpacing: '-0.01em' },

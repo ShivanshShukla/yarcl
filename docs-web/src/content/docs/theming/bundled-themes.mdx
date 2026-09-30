@@ -51,8 +51,9 @@ Every bundled theme satisfies `ThemeContract`: the same keys as the library defa
 | `shadows` | `sm`, `md`, `lg` |
 | `density` | `compact`, `comfortable` |
 | `modalSizes` | `sm`, `md`, `lg`, `xl`, `full` |
+| `typography.fonts` | `body`, `heading`, `mono` |
 | `typography.styles` | `display`, `heading`, `subheading`, `body`, `caption`, `code`, `label` |
 
 ## Fonts
 
-Themes name their font families (JetBrains Mono, Nunito, IBM Plex Sans, Helvetica Neue) but don't ship font files. Without them, each stack falls back to a similar system font. To load them, add `typography.fontFaces` with your own files, or load them from a font service in your HTML.
+Themes name their font families (JetBrains Mono, Nunito, IBM Plex Sans, Helvetica Neue) but don't ship font files. Without them, each stack falls back to a similar system font. Every theme maps the stable `body`, `heading` and `mono` roles to those families. To load a family, add `typography.fontFaces` with your own files, or load it from a font service in your HTML.

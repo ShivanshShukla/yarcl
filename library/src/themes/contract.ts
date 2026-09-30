@@ -19,6 +19,7 @@ export interface ThemeContract {
   modalSizes: Record<keyof Defaults['modalSizes'], string>;
   typography: {
     families: Record<keyof Defaults['typography']['families'], string>;
+    fonts: Record<keyof Defaults['typography']['fonts'], keyof Defaults['typography']['families']>;
     styles: Record<keyof Defaults['typography']['styles'], TextStyleToken>;
   };
 }

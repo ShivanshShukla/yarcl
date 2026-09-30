@@ -215,12 +215,22 @@ export function generateCss(config: YarclShape, warn: (message: string) => void 
     );
   }
 
-  for (const [key, value] of Object.entries(config.typography.families)) root.push([`--yarcl-font-${ident(key)}`, value]);
+  const fontFamilies = Object.entries(config.typography.families);
+  const familyVariables = new Set(fontFamilies.map(([key]) => `--yarcl-font-family-${ident(key)}`));
+  for (const [key, value] of fontFamilies) {
+    const family = ident(key);
+    root.push([`--yarcl-font-family-${family}`, value]);
+    const alias = `--yarcl-font-${family}`;
+    if (!familyVariables.has(alias)) root.push([alias, value]);
+  }
+  for (const [role, family] of Object.entries(config.typography.fonts)) {
+    root.push([`--yarcl-font-${role}`, `var(--yarcl-font-family-${ident(family)})`]);
+  }
 
   for (const [key, style] of Object.entries(config.typography.styles)) {
     rules.push(
       rule(`.yarcl-type-${ident(key)}`, [
-        ['font-family', `var(--yarcl-font-${ident(style.family)})`],
+        ['font-family', `var(--yarcl-font-family-${ident(style.family)})`],
         ['font-size', style.size],
         ['font-weight', style.weight],
         ['line-height', style.lineHeight],
@@ -240,6 +250,7 @@ export function generateCss(config: YarclShape, warn: (message: string) => void 
     ['--yarcl-focus-offset', config.focusRing.offset],
     ['--yarcl-focus-style', config.focusRing.style ?? 'solid'],
     ['--yarcl-focus-color', `var(--yarcl-color-${ident(config.focusRing.color)})`],
+    ['--yarcl-accent', `var(--yarcl-color-${ident(config.defaults.color)})`],
     ['--yarcl-error', `var(--yarcl-color-${ident(config.defaults.errorColor)})`],
     ['--yarcl-floating-shadow', `var(--yarcl-shadow-${ident(config.defaults.floatingShadow)})`],
     ['--yarcl-padding', `var(--yarcl-space-${ident(config.defaults.padding)})`],

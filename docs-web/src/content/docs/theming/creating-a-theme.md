@@ -55,7 +55,7 @@ components: { Button: { radius: 'rounded' }, Card: { radius: 'lg' } },
 
 ### 5. Type
 
-`typography.fontFaces`, `families` and `styles`, plus `headings` for the h1 to h6 scale and `defaults.labelStyle` for form labels.
+`typography.fontFaces`, `families`, stable `fonts` roles and `styles`, plus `headings` for the h1 to h6 scale and `defaults.labelStyle` for form labels.
 
 ### 6. Variants
 

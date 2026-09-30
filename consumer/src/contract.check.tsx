@@ -47,6 +47,13 @@ import {
   Textarea,
   VisuallyHidden,
 } from '@yarcl/react';
+import config from './yarcl.config';
+
+type FontFamily = keyof typeof config.typography.families;
+const bodyFont: FontFamily = config.typography.fonts.body;
+// @ts-expect-error unknown font families cannot be assigned to a role
+const invalidFont: FontFamily = 'missing';
+void [bodyFont, invalidFont];
 
 export const contract = (
   <>
