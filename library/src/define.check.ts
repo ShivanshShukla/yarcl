@@ -26,6 +26,15 @@ defineConfig({
   typography: {
     ...defaults.typography,
     // @ts-expect-error
+    fonts: { ...defaults.typography.fonts, body: 'serif' },
+  },
+});
+
+defineConfig({
+  ...defaults,
+  typography: {
+    ...defaults.typography,
+    // @ts-expect-error
     styles: { body: { family: 'serif', size: '1rem', weight: 400, lineHeight: 1.5 } },
   },
 });

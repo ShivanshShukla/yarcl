@@ -47,6 +47,7 @@ export const compact = defineConfig({
       sans: '"IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif',
       mono: '"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace',
     },
+    fonts: { body: 'sans', heading: 'sans', mono: 'mono' },
     styles: {
       display: { family: 'sans', size: '1.5rem', weight: 600, lineHeight: 1.25 },
       heading: { family: 'sans', size: '1.125rem', weight: 600, lineHeight: 1.3 },

@@ -146,7 +146,7 @@
 
 .playground-preview {
   grid-area: preview;
-  font-family: var(--yarcl-font-sans);
+  font-family: var(--yarcl-font-body);
   color: var(--yarcl-neutral-text);
   display: flex;
   align-items: center;

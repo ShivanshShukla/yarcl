@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: var(--yarcl-font-sans);
+  font-family: var(--yarcl-font-body);
   color: var(--yarcl-neutral-text);
   background: var(--yarcl-neutral-bg);
 }

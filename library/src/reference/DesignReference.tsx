@@ -281,7 +281,7 @@ export function DesignReference({ title = 'Design reference' }: DesignReferenceP
           caption="Families"
           rows={Object.entries(typography.families).map(([key, stack]) => [
             key,
-            <span style={{ fontFamily: `var(--yarcl-font-${key})` }}>
+            <span style={{ fontFamily: `var(--yarcl-font-family-${key})` }}>
               The quick brown fox <Code>{stack}</Code>
             </span>,
           ])}

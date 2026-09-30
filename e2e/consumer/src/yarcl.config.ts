@@ -57,6 +57,7 @@ export default defineConfig({
       serif: 'Fraunces, Georgia, "Times New Roman", serif',
       sans: '"Helvetica Neue", Helvetica, Arial, sans-serif',
     },
+    fonts: { body: 'sans', heading: 'serif', mono: 'sans' },
     styles: {
       headline: { family: 'serif', size: '2.75rem', weight: 500, lineHeight: 1.05, letterSpacing: '-0.02em' },
       title: { family: 'serif', size: '1.5rem', weight: 500, lineHeight: 1.2 },

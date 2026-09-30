@@ -46,6 +46,7 @@ export const bloom = defineConfig({
       sans: 'Nunito, "SF Pro Rounded", ui-rounded, "Varela Round", system-ui, sans-serif',
       mono: 'ui-monospace, "SF Mono", Menlo, Consolas, monospace',
     },
+    fonts: { body: 'sans', heading: 'sans', mono: 'mono' },
     styles: {
       display: { family: 'sans', size: '2.5rem', weight: 800, lineHeight: 1.1, letterSpacing: '-0.02em' },
       heading: { family: 'sans', size: '1.625rem', weight: 800, lineHeight: 1.2 },

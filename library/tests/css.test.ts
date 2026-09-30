@@ -25,7 +25,12 @@ describe('generateCss', () => {
     expect(css).toContain('.yarcl-padding-md {\n  --yarcl-component-padding: var(--yarcl-space-md);');
     expect(css).toContain('.yarcl-shadow-md {\n  box-shadow: var(--yarcl-shadow-md);');
     expect(css).toContain('.yarcl-density-comfortable {\n  --yarcl-cell-px: 0.75rem;');
-    expect(css).toContain('.yarcl-type-body {\n  font-family: var(--yarcl-font-sans);');
+    expect(css).toContain('--yarcl-font-body: var(--yarcl-font-family-sans);');
+    expect(css).toContain('--yarcl-font-heading: var(--yarcl-font-family-sans);');
+    expect(css).toContain('--yarcl-font-mono: var(--yarcl-font-family-mono);');
+    expect(css).toContain('--yarcl-font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;');
+    expect(css).toContain('--yarcl-accent: var(--yarcl-color-primary);');
+    expect(css).toContain('.yarcl-type-body {\n  font-family: var(--yarcl-font-family-sans);');
     expect(css).toContain('--yarcl-r: var(--yarcl-radius-md, 0);');
   });
 
@@ -77,8 +82,35 @@ describe('generateCss', () => {
     expect(css).toContain('.yarcl-color-brand\\/bright {');
     expect(css).toContain('--yarcl-size-2\\ xl-height: 2.5rem;');
     expect(css).toContain('.yarcl-size-2\\ xl {');
-    expect(css).toContain('--yarcl-font-display\\.alt: Georgia, serif;');
-    expect(css).toContain('font-family: var(--yarcl-font-display\\.alt);');
+    expect(css).toContain('--yarcl-font-family-display\\.alt: Georgia, serif;');
+    expect(css).toContain('font-family: var(--yarcl-font-family-display\\.alt);');
+  });
+
+  it('keeps role variables stable when font family and accent color keys change', () => {
+    const css = generateCss(
+      withConfig({
+        colors: {
+          action: { light: '#123456', dark: '#abcdef' },
+          failure: { light: '#a00000', dark: '#ff8080' },
+        },
+        typography: {
+          ...defaults.typography,
+          families: {
+            prose: 'Inter, sans-serif',
+            display: 'Georgia, serif',
+            code: 'Menlo, monospace',
+          },
+          fonts: { body: 'prose', heading: 'display', mono: 'code' },
+        },
+        defaults: { ...defaults.defaults, color: 'action', errorColor: 'failure' },
+      }),
+    );
+
+    expect(css).toContain('--yarcl-font-body: var(--yarcl-font-family-prose);');
+    expect(css).toContain('--yarcl-font-heading: var(--yarcl-font-family-display);');
+    expect(css).toContain('--yarcl-font-mono: var(--yarcl-font-family-code);');
+    expect(css).toContain('--yarcl-accent: var(--yarcl-color-action);');
+    expect(css).toContain('--yarcl-error: var(--yarcl-color-failure);');
   });
 
   it('emits font faces with inferred formats and optional descriptors', () => {

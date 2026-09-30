@@ -1,6 +1,6 @@
 ---
 title: Typography
-description: Font files, families, text styles, heading levels and label styles.
+description: Font files, families, stable roles, text styles, heading levels and label styles.
 sidebar:
   order: 5
 ---
@@ -16,6 +16,7 @@ typography: {
     sans: 'system-ui, sans-serif',
     mono: 'ui-monospace, Menlo, monospace',
   },
+  fonts: { body: 'sans', heading: 'serif', mono: 'mono' },
   styles: {
     display: { family: 'serif', size: '2.75rem', weight: 500, lineHeight: 1.05, letterSpacing: '-0.02em' },
     body:    { family: 'sans',  size: '1rem',    weight: 400, lineHeight: 1.5 },
@@ -39,7 +40,23 @@ typography: {
 
 ## Families
 
-Font stacks, referenced by name from text styles. Each is also a CSS variable (`--yarcl-font-sans`), handy for `body`.
+Font stacks, referenced by name from text styles and font roles. Each is also available as a key-specific CSS variable such as `--yarcl-font-family-sans`.
+
+## Font roles
+
+`fonts` maps the stable `body`, `heading` and `mono` roles to keys in `families`. The generated `--yarcl-font-body`, `--yarcl-font-heading` and `--yarcl-font-mono` variables keep application CSS independent of family key names:
+
+```css
+body {
+  font-family: var(--yarcl-font-body);
+}
+
+h1 {
+  font-family: var(--yarcl-font-heading);
+}
+```
+
+Use a `--yarcl-font-family-{key}` variable only when the application intentionally depends on that specific family key. The existing `--yarcl-font-{key}` variables remain available, but role names take precedence when a family key is also named `body`, `heading` or `mono`.
 
 ## Text styles
 

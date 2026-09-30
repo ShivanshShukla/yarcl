@@ -207,12 +207,14 @@ export interface YarclShape {
    * Keys become the valid values of their `size` prop. Separate from `sizes`, which sets control heights.
    */
   modalSizes: Record<string, string>;
-  /** Font files, font families, named text styles and heading levels. */
+  /** Font files, font families, stable font roles, named text styles and heading levels. */
   typography: {
     /** Font files to load. Reference their `family` names in `families`. */
     fontFaces?: readonly FontFaceToken[];
     /** Font stacks, e.g. `{ sans: 'Inter, system-ui, sans-serif' }`. */
     families: Record<string, string>;
+    /** Stable application font roles. Each value must be a key of `families`. */
+    fonts: { body: string; heading: string; mono: string };
     /** Named text styles. Keys become the valid text style names. */
     styles: Record<string, TextStyleToken>;
     /** Text style for each heading level, used by `Heading`. Each must be a key of `styles`. */
@@ -374,6 +376,7 @@ type Checks<T extends YarclShape> = {
   modalSizes: KeyCheck<T['modalSizes']>;
   typography: {
     families: KeyCheck<T['typography']['families']>;
+    fonts: Record<'body' | 'heading' | 'mono', keyof T['typography']['families']>;
     styles: KeyCheck<T['typography']['styles']> & {
       [K in keyof T['typography']['styles']]: { family: keyof T['typography']['families'] };
     };
@@ -403,7 +406,7 @@ type Checks<T extends YarclShape> = {
  *
  * Checks at compile time that:
  * - every color has a `light` and `dark` value
- * - `defaults`, `focusRing.color`, `typography.headings` and each text style's `family` reference existing keys
+ * - `defaults`, `focusRing.color`, `typography.fonts`, `typography.headings` and each text style's `family` reference existing keys
  * - no key contains whitespace
  * - `components` only names known components, only sets supported options, and only uses existing keys
  *

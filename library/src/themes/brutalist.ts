@@ -47,6 +47,7 @@ export const brutalist = defineConfig({
       sans: '"JetBrains Mono", "SF Mono", ui-monospace, Menlo, Consolas, monospace',
       mono: '"JetBrains Mono", "SF Mono", ui-monospace, Menlo, Consolas, monospace',
     },
+    fonts: { body: 'sans', heading: 'sans', mono: 'mono' },
     styles: {
       display: { family: 'sans', size: '2.5rem', weight: 800, lineHeight: 1, letterSpacing: '-0.04em' },
       heading: { family: 'sans', size: '1.5rem', weight: 800, lineHeight: 1.15, letterSpacing: '-0.02em' },

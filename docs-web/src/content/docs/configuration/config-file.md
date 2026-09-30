@@ -34,7 +34,7 @@ export default defineConfig({
 | `shadows` | open | `shadow`, floating panels | [Spacing, shadows, density](/configuration/spacing-shadows-density/) |
 | `density` | open | `Table` density | [Spacing, shadows, density](/configuration/spacing-shadows-density/) |
 | `modalSizes` | open | `Dialog` and `Drawer` width | [Sizes and radii](/configuration/sizes-and-radii/#modal-sizes) |
-| `typography` | `fontFaces`, `families`, `styles` (open), `headings` | `Text`, `Heading`, labels | [Typography](/configuration/typography/) |
+| `typography` | `fontFaces`, `families`, `fonts`, `styles` (open), `headings` | `Text`, `Heading`, labels | [Typography](/configuration/typography/) |
 | `zIndex` | `dropdown`, `tooltip`, `dialog`, `toast` + any | stacking of floating layers | [Motion, layers and focus](/configuration/motion-layers-focus/) |
 | `motion` | `fast`, `base`, `easing` + any | transitions | [Motion, layers and focus](/configuration/motion-layers-focus/) |
 | `borders` | `width` + any | border width | [Motion, layers and focus](/configuration/motion-layers-focus/) |
@@ -65,7 +65,7 @@ Replacing a group removes the library's keys. That's intended: if your design sy
 At compile time:
 
 - every color has both a `light` and a `dark` value
-- every `defaults` entry, `focusRing.color`, each `typography.headings` level and each text style's `family` points at a key that exists
+- every `defaults` entry, `focusRing.color`, font role, heading level and text style family points at a key that exists
 - `components` only names known components, sets supported options, and uses existing keys; size restrictions are non-empty and contain the resolved default
 - required keys are present
 - no key contains whitespace

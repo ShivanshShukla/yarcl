@@ -39,6 +39,7 @@ export const editorial = defineConfig({
       sans: '"Helvetica Neue", Helvetica, "Inter", "Segoe UI", Arial, sans-serif',
       mono: 'ui-monospace, "SF Mono", Menlo, Consolas, monospace',
     },
+    fonts: { body: 'sans', heading: 'sans', mono: 'mono' },
     styles: {
       display: { family: 'sans', size: '2.75rem', weight: 300, lineHeight: 1.05, letterSpacing: '-0.03em' },
       heading: { family: 'sans', size: '1.75rem', weight: 300, lineHeight: 1.2, letterSpacing: '-0.015em' },
