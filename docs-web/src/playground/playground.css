@@ -100,12 +100,6 @@ body {
   padding: 1.5rem clamp(1rem, 3vw, 2rem) 3rem;
 }
 
-.pg-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-  gap: var(--yarcl-gap);
-}
-
 .pg-columns {
   display: grid;
   grid-template-columns: minmax(0, 1.7fr) minmax(18rem, 1fr);

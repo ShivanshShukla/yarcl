@@ -75,6 +75,7 @@ export default defineConfig({
   borders: { width: '1px' },
   focusRing: { width: '2px', offset: '3px', color: 'clay' },
   components: {
+    Grid: { gap: '4' },
     Avatar: { size: 'talla-s', radius: 'hairline', color: 'clay', variant: 'wash' },
     AvatarGroup: { size: 'talla-s', radius: 'square', color: 'moss', variant: 'wash' },
     EmptyState: { color: 'clay', gap: '3', padding: '6', textStyle: 'fine' },

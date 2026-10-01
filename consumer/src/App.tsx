@@ -25,6 +25,7 @@ import {
   Toaster,
   ToggleGroup,
   VisuallyHidden,
+  Grid,
   config,
   type Color,
   type Radius,
@@ -427,6 +428,16 @@ export function App() {
           </Section>
 
           <Section title="Layout">
+            <Grid columns={3} data-testid="grid-equal">
+              {['Revenue', 'Members', 'Orders', 'Visitors'].map((label) => <Card key={label} padding="tight">{label}</Card>)}
+            </Grid>
+            <Grid minItemWidth="12rem" gap="normal" data-testid="grid-auto">
+              {['Overview', 'Activity', 'Reports'].map((label) => <Card key={label}>{label}</Card>)}
+            </Grid>
+            <Grid columns="6rem minmax(0, 1fr)" data-testid="grid-sidebar">
+              <Text>Navigation</Text>
+              <Text>Workspace</Text>
+            </Grid>
             <Button variant="outline" data-testid="visually-hidden-demo">
               <SearchIcon />
               <VisuallyHidden>Search projects</VisuallyHidden>

@@ -15,6 +15,7 @@ import {
   EmptyState,
   Field,
   Heading,
+  Grid,
   IconButton,
   Inline,
   Input,
@@ -340,6 +341,12 @@ const groups: Record<string, Item[]> = {
           {box('4')}
         </Inline>
       ),
+    },
+    {
+      name: 'Grid',
+      href: '/components/layout/grid/',
+      description: 'Equal columns, responsive cards, and sidebar layouts.',
+      preview: <Grid columns={2} gap="sm">{box('1')}{box('2')}{box('3')}{box('4')}</Grid>,
     },
     {
       name: 'Card',

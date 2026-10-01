@@ -83,7 +83,7 @@ For any token prop, the first value found wins:
 | `Tabs` | `size`, `color` |
 | `Accordion` | `size`, `radius`, `color` |
 | `Table` | `density`, `radius` |
-| `Stack`, `Inline` | `gap` |
+| `Stack`, `Inline`, `Grid` | `gap` |
 | `Text`, `Label`, `Breadcrumb` | `textStyle`, `color` |
 | `Link` | `color` |
 | `Toast` | `radius`, `color`, `gap`, `padding`, `textStyle` |

@@ -1,4 +1,4 @@
-import { Accordion, Alert, Avatar, AvatarGroup, Badge, Breadcrumb, Button, Combobox, CommandPalette, DatePicker, Dialog, EmptyState, Heading, Inline, Input, Label, NumberInput, Pagination, Progress, Slider, Stack, Table, Text, Tooltip, VisuallyHidden, toast } from '@yarcl/react';
+import { Accordion, Alert, Avatar, AvatarGroup, Badge, Breadcrumb, Button, Combobox, CommandPalette, DatePicker, Dialog, EmptyState, Grid, Heading, Inline, Input, Label, NumberInput, Pagination, Progress, Slider, Stack, Table, Text, Tooltip, VisuallyHidden, toast } from '@yarcl/react';
 import config from './yarcl.config';
 
 type FontFamily = keyof typeof config.typography.families;
@@ -9,6 +9,11 @@ void [headingFont, invalidFont];
 
 export const contract = (
   <>
+    <Grid as="section" columns={3} gap="4" ref={() => {}} style={{ width: '100%' }} />
+    <Grid columns="16rem minmax(0, 1fr)" />
+    <Grid minItemWidth="16rem" />
+    {/* @ts-expect-error unknown spacing */}
+    <Grid gap="normal" />
     <Button size="talla-l" color="clay" variant="wash" radius="hairline" />
     {/* @ts-expect-error Button excludes the global talla-m size */}
     <Button size="talla-m" />

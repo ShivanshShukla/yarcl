@@ -1,0 +1,50 @@
+---
+title: Grid
+description: Equal columns, responsive cards, and sidebar layouts with spacing from your config.
+sidebar:
+  order: 3
+---
+
+import Preview from '@/components/Preview.astro';
+import Props from '@/components/Props.astro';
+import { GridDemo } from '@/demos/layout';
+
+```tsx
+import { Grid } from '@yarcl/react';
+```
+
+<Preview>
+  <GridDemo client:visible />
+</Preview>
+
+```tsx
+<Grid columns={3} gap="md">
+  <Card>Revenue</Card>
+  <Card>Subscriptions</Card>
+  <Card>Orders</Card>
+</Grid>
+
+<Grid minItemWidth="16rem">
+  <Card>Overview</Card>
+  <Card>Activity</Card>
+</Grid>
+
+<Grid columns="16rem minmax(0, 1fr)">
+  <aside>Navigation</aside>
+  <section>Workspace</section>
+</Grid>
+```
+
+Numeric `columns` creates equal-width tracks. Children fill each row in DOM order, then create more rows. It defaults to one column; positive column counts are rounded down, and values below one or non-finite values use one column.
+
+`minItemWidth` takes precedence over `columns` and uses CSS `auto-fit` to fit as many columns as the container permits. The minimum is clamped to the container width so items shrink on small screens. Fixed columns and explicit track definitions do not change automatically at breakpoints; use `minItemWidth` for responsive cards or override `--yarcl-grid-columns` in your own media queries.
+
+`gap` accepts keys from [spacing](/configuration/spacing-shadows-density/) and resolves from `components.Grid.gap`, then `defaults.gap`. Column definitions are caller-supplied layout values stored in an inline CSS custom property; spacing remains in generated token classes. A strict CSP that blocks style attributes requires supplying the column definition through your own CSS.
+
+Use `as` for semantic elements such as `section`, `nav`, or `ul`; list styles are reset. Grid preserves native semantics and keyboard order. It does not add the interactive ARIA `grid` role. Use `li` children with `as="ul"` or `as="ol"`.
+
+## Props
+
+Accepts every native `<div>` attribute, including `ref`, `className`, and `style`.
+
+<Props of="GridProps" />
