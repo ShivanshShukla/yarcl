@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { createContext, useContext, type ReactNode } from 'react';
 import { contrast, parseHex, readableOn } from '../color';
 import type { ColorPair, ColorToken, YarclShape } from '../define';
 import {
@@ -24,6 +24,7 @@ import { useConfig } from '../runtime';
 import './reference.css';
 
 const keys = <T extends string>(group: object) => Object.keys(group) as T[];
+const SectionLevel = createContext<1 | 2 | 3 | 4 | 5 | 6>(2);
 
 function ratio(background: string, token: ColorToken, mode: keyof ColorPair): string {
   const bg = parseHex(background);
@@ -34,9 +35,10 @@ function ratio(background: string, token: ColorToken, mode: keyof ColorPair): st
 }
 
 function Section({ title, description, children }: { title: string; description?: ReactNode; children: ReactNode }) {
+  const level = useContext(SectionLevel);
   return (
     <Stack as="section" className="yarcl-ref-section">
-      <Heading level={2}>{title}</Heading>
+      <Heading level={level}>{title}</Heading>
       {description != null && (
         <Text as="p" muted>
           {description}
@@ -80,6 +82,11 @@ export interface DesignReferenceProps {
    * @default 'Design reference'
    */
   title?: ReactNode;
+  /**
+   * Heading level for the title. Sections use the next level, capped at six.
+   * @default 1
+   */
+  headingLevel?: 1 | 2 | 3 | 4 | 5 | 6;
 }
 
 /**
@@ -95,7 +102,7 @@ export interface DesignReferenceProps {
  * <DesignReference title="Acme design system" />
  * ```
  */
-export function DesignReference({ title = 'Design reference' }: DesignReferenceProps) {
+export function DesignReference({ title = 'Design reference', headingLevel = 1 }: DesignReferenceProps) {
   const config = useConfig();
   const shape = config as unknown as YarclShape;
   const colors = keys<Color>(config.colors);
@@ -103,8 +110,9 @@ export function DesignReference({ title = 'Design reference' }: DesignReferenceP
   const { typography } = shape;
 
   return (
+    <SectionLevel.Provider value={Math.min(headingLevel + 1, 6) as 1 | 2 | 3 | 4 | 5 | 6}>
     <Stack gap={config.defaults.padding} className="yarcl-ref">
-      <Heading level={1}>{title}</Heading>
+      <Heading level={headingLevel}>{title}</Heading>
 
       <Section title="Colors" description="Semantic colors for the color prop. Ratios are foreground on background, light / dark.">
         <div className="yarcl-ref-grid">
@@ -370,5 +378,6 @@ export function DesignReference({ title = 'Design reference' }: DesignReferenceP
         />
       </Section>
     </Stack>
+    </SectionLevel.Provider>
   );
 }
