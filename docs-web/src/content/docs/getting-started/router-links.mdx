@@ -1,0 +1,85 @@
+---
+title: Router links
+description: Use yarcl links and navigation components with a client-side router.
+sidebar:
+  order: 5
+---
+
+`Link` and `Breadcrumb.Item` render native anchors. Keep their `href` so copying a URL, opening a new tab, and navigation without JavaScript still work. A router click handler can intercept ordinary internal clicks.
+
+This example uses [React Router's `useHref` and `useLinkClickHandler`](https://reactrouter.com/api/hooks/useLinkClickHandler):
+
+```tsx
+import { Link, type LinkProps } from '@yarcl/react';
+import { useHref, useLinkClickHandler, type To } from 'react-router';
+
+type RouterLinkProps = Omit<LinkProps, 'href' | 'external'> & { to: To };
+
+function RouterLink({ to, target, onClick, ...props }: RouterLinkProps) {
+  const href = useHref(to);
+  const handleClick = useLinkClickHandler(to, { target });
+
+  return (
+    <Link
+      {...props}
+      href={href}
+      target={target}
+      onClick={(event) => {
+        onClick?.(event);
+        if (!event.defaultPrevented) handleClick(event);
+      }}
+    />
+  );
+}
+```
+
+Use `RouterLink` for internal navigation and `Link href="https://example.com" external` for external destinations. The router handler handles modifier keys and non-default targets so those clicks retain normal anchor behavior.
+
+## Breadcrumbs
+
+`Breadcrumb.Item` needs to stay inside `Breadcrumb` to receive its current-page state. Wrap the item itself with the same hooks:
+
+```tsx
+import { Breadcrumb, type BreadcrumbItemProps } from '@yarcl/react';
+import { useHref, useLinkClickHandler, type To } from 'react-router';
+
+type RouterBreadcrumbItemProps = Omit<BreadcrumbItemProps, 'href'> & { to: To };
+
+function RouterBreadcrumbItem({ to, target, onClick, ...props }: RouterBreadcrumbItemProps) {
+  const href = useHref(to);
+  const handleClick = useLinkClickHandler(to, { target });
+
+  return (
+    <Breadcrumb.Item
+      {...props}
+      href={href}
+      target={target}
+      onClick={(event) => {
+        onClick?.(event);
+        if (!event.defaultPrevented) handleClick(event);
+      }}
+    />
+  );
+}
+
+<Breadcrumb>
+  <RouterBreadcrumbItem to="/projects">Projects</RouterBreadcrumbItem>
+  <Breadcrumb.Item>Current project</Breadcrumb.Item>
+</Breadcrumb>
+```
+
+## Menus and buttons
+
+`Menu.Item` and `Button` render buttons. Use them for actions, including navigation that happens after an action. A menu item can call the router in `onSelect`:
+
+```tsx
+import { Menu } from '@yarcl/react';
+import { useNavigate } from 'react-router';
+
+function OpenSettingsItem() {
+  const navigate = useNavigate();
+  return <Menu.Item onSelect={() => navigate('/settings')}>Open settings</Menu.Item>;
+}
+```
+
+For a destination that users should be able to copy or open in a new tab, use an anchor such as `RouterLink` instead of a button.
