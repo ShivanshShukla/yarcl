@@ -16,6 +16,15 @@ import { DesignReference } from '@yarcl/react/reference';
 <DesignReference title="Acme design system" />
 ```
 
+When the surrounding page already has a heading, set `headingLevel` to fit its structure. Section headings use the next level.
+
+```tsx
+import { Heading } from '@yarcl/react';
+
+<Heading level={1}>Design</Heading>
+<DesignReference title="Tokens" headingLevel={2} />
+```
+
 Add it to an internal route, a Storybook page or your docs, and it stays accurate because it reads the same config your app uses.
 
 Use `DemoYarcl` when you want a build smoke test for the complete package. It renders the design reference and a representative instance of every exported component, so a consumer build verifies that the package entry points, components and styles all work together.
