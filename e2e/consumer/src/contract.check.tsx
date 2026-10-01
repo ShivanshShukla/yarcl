@@ -33,7 +33,7 @@ export const contract = (
           <Table.HeaderCell align="end">Chest</Table.HeaderCell>
         </Table.Row>
       </Table.Head>
-      <Table.VirtualBody items={[{ s: 'XS', c: 96 }]} estimateRowHeight={34}>
+      <Table.VirtualBody items={[{ s: 'XS', c: 96 }]} rowHeight={34}>
         {(item) => (
           <Table.Row key={item.s} selected>
             <Table.SelectionCell aria-label={`Select size ${item.s}`} checked />

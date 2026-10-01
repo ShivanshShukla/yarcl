@@ -1446,7 +1446,7 @@ html:has(.yarcl-modal[open]) {
 
 .yarcl-table-sticky-wrap {
   overflow-y: auto;
-  max-height: 28rem;
+  max-height: calc(var(--yarcl-h) * 12);
 }
 
 .yarcl-table-sticky-wrap thead th {

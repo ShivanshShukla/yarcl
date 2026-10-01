@@ -26,7 +26,7 @@ import { Table } from '@yarcl/react';
       <Table.HeaderCell align="end">Amount</Table.HeaderCell>
     </Table.Row>
   </Table.Head>
-  <Table.VirtualBody items={invoices}>
+  <Table.VirtualBody items={invoices} rowHeight={36}>
     {(invoice) => (
       <Table.Row key={invoice.id} selected={selectedIds.has(invoice.id)}>
         <Table.SelectionCell
@@ -46,7 +46,7 @@ import { Table } from '@yarcl/react';
 - `radius` accepts the keys of your [radii](/configuration/sizes-and-radii/#radii) group and styles the table frame.
 - `sortable` on `Table.HeaderCell` manages `aria-sort` state and accessible sort triggers.
 - `Table.SelectAllCell` and `Table.SelectionCell` provide accessible row selection checkboxes.
-- `Table.VirtualBody` efficiently renders large datasets by windowing rows in the viewport.
+- `Table.VirtualBody` efficiently renders large datasets by windowing rows in the viewport. It is opt in and requires equal height rows. Pass their rendered height in CSS pixels as `rowHeight`; update it when row height changes. Use `Table.Body` for variable height rows.
 - `align="end"` also uses tabular numbers, so amounts line up.
 - `caption` is visible and names the table for screen readers.
 

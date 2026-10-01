@@ -16,7 +16,6 @@ import type { Density, Radius } from '../types';
 import { useDefaults } from '../runtime';
 
 interface TableContextValue {
-  density?: Density;
   wrapRef: RefObject<HTMLDivElement | null>;
 }
 
@@ -66,7 +65,7 @@ function TableRoot({
   const wrapRef = useRef<HTMLDivElement>(null);
 
   return (
-    <TableContext value={{ density: resolvedDensity, wrapRef }}>
+    <TableContext value={{ wrapRef }}>
       <div
         ref={wrapRef}
         className={cx(
@@ -282,18 +281,12 @@ function TableSelectionCell({
   );
 }
 
-function defaultDensityRowHeight(density?: string): number {
-  if (density === 'compact' || density === 'dense') return 32;
-  if (density === 'relaxed' || density === 'cozy') return 48;
-  return 40;
-}
-
 /** Props for `Table.VirtualBody`. */
 export interface TableVirtualBodyProps<T> extends Omit<ComponentProps<'tbody'>, 'children'> {
   /** Array of items to render. */
   items: T[];
-  /** Estimated or fixed row height in pixels. Defaults to density-based height. */
-  estimateRowHeight?: number;
+  /** Rendered height of every row in CSS pixels. Rows must have the same height. */
+  rowHeight: number;
   /** Number of buffer rows to render above and below the visible viewport. @default 5 */
   overscan?: number;
   /** Render prop called for each visible item. */
@@ -306,7 +299,7 @@ export interface TableVirtualBodyProps<T> extends Omit<ComponentProps<'tbody'>, 
 
 function TableVirtualBody<T>({
   items,
-  estimateRowHeight,
+  rowHeight,
   overscan = 5,
   children,
   getItemKey,
@@ -317,6 +310,7 @@ function TableVirtualBody<T>({
   const context = useContext(TableContext);
   const [scrollTop, setScrollTop] = useState(0);
   const [viewportHeight, setViewportHeight] = useState(0);
+  const [columnCount, setColumnCount] = useState(1);
 
   useEffect(() => {
     const el = scrollRef?.current ?? context?.wrapRef.current;
@@ -324,7 +318,9 @@ function TableVirtualBody<T>({
 
     const update = () => {
       setScrollTop(el.scrollTop);
-      setViewportHeight(el.clientHeight);
+      const header = context?.wrapRef.current?.querySelector('thead');
+      setViewportHeight(Math.max(0, el.clientHeight - (header?.getBoundingClientRect().height ?? 0)));
+      setColumnCount(context?.wrapRef.current?.querySelectorAll('thead tr:last-child > th').length || 1);
     };
 
     update();
@@ -339,7 +335,7 @@ function TableVirtualBody<T>({
     };
   }, [scrollRef, context?.wrapRef]);
 
-  const rowHeight = estimateRowHeight ?? defaultDensityRowHeight(context?.density);
+  if (!Number.isFinite(rowHeight) || rowHeight <= 0) throw new Error('yarcl: Table.VirtualBody rowHeight must be a positive number');
   const effectiveViewportHeight = viewportHeight || 600;
   const count = items.length;
 
@@ -354,7 +350,7 @@ function TableVirtualBody<T>({
     <tbody className={cx('yarcl-table-virtual-body', className)} {...props}>
       {topHeight > 0 && (
         <tr aria-hidden="true" className="yarcl-table-virtual-spacer" style={{ height: topHeight }}>
-          <td colSpan={100} style={{ height: topHeight, padding: 0, border: 0 }} />
+          <td colSpan={columnCount} style={{ height: topHeight, padding: 0, border: 0 }} />
         </tr>
       )}
       {visibleItems.map((item, i) => {
@@ -366,7 +362,7 @@ function TableVirtualBody<T>({
       })}
       {bottomHeight > 0 && (
         <tr aria-hidden="true" className="yarcl-table-virtual-spacer" style={{ height: bottomHeight }}>
-          <td colSpan={100} style={{ height: bottomHeight, padding: 0, border: 0 }} />
+          <td colSpan={columnCount} style={{ height: bottomHeight, padding: 0, border: 0 }} />
         </tr>
       )}
     </tbody>
@@ -386,7 +382,7 @@ function TableVirtualBody<T>({
  *       <Table.HeaderCell align="end">Amount</Table.HeaderCell>
  *     </Table.Row>
  *   </Table.Head>
- *   <Table.VirtualBody items={invoices}>
+ *   <Table.VirtualBody items={invoices} rowHeight={36}>
  *     {(invoice) => (
  *       <Table.Row key={invoice.id} selected={selected.has(invoice.id)}>
  *         <Table.SelectionCell aria-label={`Select ${invoice.customer}`} checked={selected.has(invoice.id)} onCheckedChange={() => toggle(invoice.id)} />

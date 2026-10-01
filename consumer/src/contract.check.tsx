@@ -208,7 +208,7 @@ export const contract = (
           <Table.HeaderCell align="end">Value</Table.HeaderCell>
         </Table.Row>
       </Table.Head>
-      <Table.VirtualBody items={[{ id: '1', name: 'Item 1' }]} estimateRowHeight={36} overscan={5} getItemKey={(item) => item.id}>
+      <Table.VirtualBody items={[{ id: '1', name: 'Item 1' }]} rowHeight={36} overscan={5} getItemKey={(item) => item.id}>
         {(item) => (
           <Table.Row key={item.id} selected>
             <Table.SelectionCell aria-label="Select row" checked onCheckedChange={(c: boolean) => c} />
