@@ -4,9 +4,12 @@ import { describe, expect, it } from 'vitest';
 const allowed = [
   'border-radius: 0 max(0px, var(--yarcl-r) - var(--yarcl-border-width)) max(0px, var(--yarcl-r) - var(--yarcl-border-width)) 0;',
   'border-radius: 9999px;',
+  'gap: 0.375em;',
   'height: 0.8em;',
   'height: 0.8em;',
+  'height: 1.125em;',
   'height: 1.1em;',
+  'height: 1em;',
   'height: 1em;',
   'margin: calc((1lh - 0.8em) / 2) 0;',
   'max-height: min(24rem, 60dvh);',
@@ -16,7 +19,9 @@ const allowed = [
   'text-underline-offset: 0.25em;',
   'text-underline-offset: 0.2em;',
   'width: 0.8em;',
+  'width: 1.125em;',
   'width: 1.1em;',
+  'width: 1em;',
   'width: 1em;',
   'width: min(22rem, calc(100vw - var(--yarcl-padding) * 2));',
 ];
