@@ -1,6 +1,7 @@
 import { execFileSync } from 'node:child_process';
 import { access, cp, mkdir, mkdtemp, readFile, readdir, realpath, rm, writeFile } from 'node:fs/promises';
 import { platform, tmpdir } from 'node:os';
+import process from 'node:process';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createRequire } from 'node:module';
@@ -42,7 +43,14 @@ try {
     access(join(installed, 'dist/styles.css')),
     access(join(installed, 'dist/yarcl.config.js')),
     access(join(installed, 'dist/yarcl.config.d.ts')),
+    access(join(installed, 'dist/css.js')),
   ]);
+
+  execFileSync(
+    process.execPath,
+    ['--input-type=module', '-e', "import { generateCss } from '@yarcl/react/generate'; import config from '@yarcl/react/defaults'; if (!generateCss(config).includes('--yarcl-color-primary')) process.exit(1);"],
+    { cwd: consumer, stdio: 'inherit' },
+  );
 
   const installedReal = await realpath(installed);
   const { default: yarcl } = await import(pathToFileURL(join(installedReal, 'dist/vite.js')).href);

@@ -69,7 +69,14 @@ Pass `onWarning` to receive contrast warnings, and use `useConfig()` from `@yarc
 applyTheme(theme, { onWarning: (message) => console.warn(message) });
 ```
 
-This is how the [theme playground](/theming/playground/) and the demo on the home page work. `generateCss` is exported from `@yarcl/react/css` as well, if you only need the stylesheet.
+This is how the [theme playground](/theming/playground/) and the demo on the home page work. For a Node build script that only needs the stylesheet, import `generateCss` from `@yarcl/react/generate`. This entry has no runtime config import:
+
+```ts
+import { generateCss } from '@yarcl/react/generate';
+import config from './src/yarcl.config';
+
+const css = generateCss(config);
+```
 
 ## Light and dark
 
