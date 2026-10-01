@@ -21,6 +21,7 @@ const entries = {
   '@yarcl/react/demo': 'demo.js',
   '@yarcl/react/themes': 'themes/index.js',
   '@yarcl/react/css': 'apply.js',
+  '@yarcl/react/generate': 'css.js',
   'yarcl CLI': 'cli.js',
 };
 const budgets = {
@@ -36,6 +37,7 @@ const budgets = {
   '@yarcl/react/demo': { js: 28 * 1024, css: 7 * 1024 },
   '@yarcl/react/themes': { js: 3.5 * 1024, css: 0 },
   '@yarcl/react/css': { js: 3 * 1024, css: 0 },
+  '@yarcl/react/generate': { js: 4 * 1024, css: 0 },
   'yarcl CLI': { js: 3.25 * 1024, css: 0 },
   Button: { js: 2.1 * 1024, css: 8.5 * 1024 },
   'Button + Input': { js: 2.25 * 1024, css: 8.5 * 1024 },

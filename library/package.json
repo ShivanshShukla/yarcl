@@ -84,6 +84,10 @@
     "./css": {
       "types": "./dist/apply.d.ts",
       "default": "./dist/apply.js"
+    },
+    "./generate": {
+      "types": "./dist/css.d.ts",
+      "default": "./dist/css.js"
     }
   },
   "scripts": {
